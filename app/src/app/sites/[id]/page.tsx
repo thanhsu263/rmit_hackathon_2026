@@ -188,7 +188,7 @@ function SiteDetailContent() {
 
       <SealSiteSection site={site} onSiteSealed={handleSiteSealed} />
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "24px", marginTop: "24px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(340px, 100%), 1fr))", gap: "24px", marginTop: "24px" }}>
         <RequestAccessSection site={site} onRequestCreated={handleAuditLogged} />
 
         <section className="vault-card">

@@ -72,7 +72,7 @@ export default function SitesPage() {
         className="rise-in"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(340px, 100%), 1fr))",
           gap: "56px",
           alignItems: "center",
           margin: "24px 0 88px",
@@ -200,7 +200,7 @@ export default function SitesPage() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(min(320px, 100%), 1fr))",
             gap: "28px",
           }}
         >
@@ -215,7 +215,7 @@ export default function SitesPage() {
         style={{
           marginTop: "96px",
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))",
           gap: "32px",
           borderTop: "1.5px solid var(--ink)",
           paddingTop: "28px",
