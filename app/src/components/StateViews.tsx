@@ -22,11 +22,11 @@ export function LoadingSpinner({ message = "Decrypting vault records..." }: { me
           width: "36px",
           height: "36px",
           borderRadius: "50%",
-          border: "3px solid rgba(245, 158, 11, 0.2)",
-          borderTopColor: "var(--amber-primary)",
+          border: "3px solid rgba(245, 158, 11, 0.18)",
+          borderTopColor: "var(--gold-primary)",
         }}
       />
-      <p style={{ color: "var(--text-secondary)", fontSize: "0.92rem", fontWeight: 500 }}>
+      <p style={{ color: "var(--text-secondary)", fontSize: "0.92rem", fontWeight: 500, fontFamily: "var(--font-mono)" }}>
         {message}
       </p>
     </div>
@@ -46,16 +46,16 @@ export function ErrorRetryView({
       className="vault-card"
       style={{
         border: "1px solid var(--rose-border)",
-        background: "rgba(244, 63, 94, 0.05)",
+        background: "rgba(244, 63, 94, 0.04)",
         textAlign: "center",
-        padding: "40px 24px",
+        padding: "48px 24px",
         margin: "24px 0",
       }}
     >
       <div
         style={{
-          width: "48px",
-          height: "48px",
+          width: "52px",
+          height: "52px",
           borderRadius: "50%",
           background: "var(--rose-bg)",
           color: "var(--rose-primary)",
@@ -63,20 +63,24 @@ export function ErrorRetryView({
           alignItems: "center",
           justifyContent: "center",
           marginBottom: "16px",
+          boxShadow: "0 0 16px rgba(244, 63, 94, 0.2)",
         }}
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="10" />
           <line x1="12" y1="8" x2="12" y2="12" />
           <line x1="12" y1="16" x2="12.01" y2="16" />
         </svg>
       </div>
-      <h3 style={{ fontSize: "1.1rem", marginBottom: "8px", color: "var(--text-primary)" }}>
-        Connection or Security Error
+
+      <h3 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "8px", color: "var(--text-primary)" }}>
+        Connection or Governance Error
       </h3>
-      <p style={{ color: "var(--text-secondary)", marginBottom: "20px", maxWidth: "480px", margin: "0 auto 20px" }}>
+
+      <p style={{ color: "var(--text-secondary)", marginBottom: "22px", maxWidth: "520px", margin: "0 auto 22px", lineHeight: 1.6 }}>
         {message}
       </p>
+
       <button
         type="button"
         onClick={onRetry}
@@ -108,22 +112,23 @@ export function EmptyStateView({
       className="vault-card"
       style={{
         textAlign: "center",
-        padding: "50px 24px",
+        padding: "54px 24px",
         borderStyle: "dashed",
-        background: "rgba(14, 19, 31, 0.4)",
+        background: "rgba(14, 19, 32, 0.4)",
       }}
     >
       <div
         style={{
-          width: "48px",
-          height: "48px",
+          width: "52px",
+          height: "52px",
           borderRadius: "50%",
-          background: "rgba(255, 255, 255, 0.05)",
+          background: "rgba(255, 255, 255, 0.04)",
           color: "var(--text-muted)",
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
           marginBottom: "16px",
+          border: "1px solid var(--border-subtle)",
         }}
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -131,10 +136,15 @@ export function EmptyStateView({
           <path d="M7 11V7a5 5 0 0 1 10 0v4" />
         </svg>
       </div>
-      <h3 style={{ fontSize: "1.05rem", color: "var(--text-primary)", marginBottom: "6px" }}>{title}</h3>
-      <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", maxWidth: "420px", margin: "0 auto 18px" }}>
+
+      <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.2rem", color: "var(--text-primary)", marginBottom: "8px" }}>
+        {title}
+      </h3>
+
+      <p style={{ color: "var(--text-secondary)", fontSize: "0.92rem", maxWidth: "460px", margin: "0 auto 20px", lineHeight: 1.6 }}>
         {description}
       </p>
+
       {action}
     </div>
   );

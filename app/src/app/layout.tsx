@@ -7,7 +7,7 @@ import { Header } from "../components/Header";
 export const metadata: Metadata = {
   title: "Custodian Vault | Archaeological Heritage Protection",
   description:
-    "End-to-end encrypted archaeological site coordinates protected by 2-of-3 TideCloak steward consensus.",
+    "End-to-end encrypted archaeological site coordinates protected by 2-of-3 TideCloak multi-party steward consensus.",
 };
 
 export default function RootLayout({
@@ -19,29 +19,37 @@ export default function RootLayout({
     <html lang="en">
       <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         <TideCloakProvider>
-          <Suspense fallback={<div style={{ height: "105px", background: "#07090E" }} />}>
+          <Suspense fallback={<div style={{ height: "108px", background: "#07080B" }} />}>
             <Header />
           </Suspense>
-          <main style={{ flex: 1, padding: "32px 0 64px" }}>
-            <Suspense fallback={<div className="container" style={{ padding: "40px 0" }}>Loading...</div>}>
+          <main style={{ flex: 1, padding: "36px 0 68px" }}>
+            <Suspense fallback={<div className="container" style={{ padding: "48px 0" }}>Loading vault environment...</div>}>
               {children}
             </Suspense>
           </main>
           <footer
             style={{
               borderTop: "1px solid var(--border-subtle)",
-              padding: "24px 0",
-              background: "rgba(7, 9, 14, 0.95)",
+              padding: "28px 0",
+              background: "rgba(7, 8, 11, 0.95)",
               color: "var(--text-muted)",
-              fontSize: "0.82rem",
+              fontSize: "0.84rem",
             }}
           >
-            <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
-              <div>
-                <strong style={{ color: "var(--text-secondary)" }}>Custodian Vault</strong> • UNLOCKED Challenge 2 • Hackathon Prototype
+            <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <span style={{ fontFamily: "var(--font-serif)", fontWeight: 700, color: "var(--text-secondary)" }}>
+                  Custodian Vault
+                </span>
+                <span>•</span>
+                <span>UNLOCKED Challenge 2</span>
+                <span>•</span>
+                <span>Hackathon Prototype</span>
               </div>
-              <div>
-                Threshold Governance: 2 of 3 Stewards (Community Custodian, Heritage Authority, Dig Lead)
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                <span>Threshold Governance:</span>
+                <span style={{ color: "var(--gold-primary)", fontWeight: 600 }}>2 of 3 Stewards</span>
+                <span>(Community Custodian, Heritage Authority, Dig Lead)</span>
               </div>
             </div>
           </footer>
