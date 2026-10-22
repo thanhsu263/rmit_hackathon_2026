@@ -117,10 +117,8 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
     <div
       className="vault-card"
       style={{
-        border: "1px solid var(--gold-border)",
-        background: "rgba(245, 158, 11, 0.03)",
-        marginTop: "24px",
-        marginBottom: "24px",
+        marginTop: "32px",
+        marginBottom: "32px",
       }}
     >
       {/* Lead Title & Authorization Badge */}
@@ -130,58 +128,57 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
           alignItems: "center",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          gap: "12px",
+          gap: "16px",
           marginBottom: "16px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <div
             style={{
-              width: "36px",
-              height: "36px",
+              width: "32px",
+              height: "32px",
               borderRadius: "var(--radius-sm)",
-              background: "var(--gold-bg)",
-              color: "var(--gold-primary)",
+              background: "rgba(255, 255, 255, 0.05)",
+              color: "var(--ink)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 0 12px rgba(245, 158, 11, 0.2)",
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             </svg>
           </div>
           <div>
-            <h3 style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--text-primary)" }}>
+            <h3 style={{ fontSize: "1.15rem", fontWeight: 500, letterSpacing: "-0.018em", color: "var(--ink)" }}>
               Dig Lead Vault Sealing Console
             </h3>
-            <span style={{ fontSize: "0.78rem", color: "var(--gold-primary)", fontWeight: 700 }}>
-              Authorized by realm role: <code style={{ fontFamily: "var(--font-mono)" }}>_tide_sitecoords.selfencrypt</code>
+            <span style={{ fontSize: "0.78rem", color: "var(--ink-3)" }}>
+              Authorized by realm role: <code style={{ fontFamily: "var(--font-mono)", color: "var(--ink-2)" }}>_tide_sitecoords.selfencrypt</code>
             </span>
           </div>
         </div>
 
         <span className="badge badge-unsealed">
-          🔒 Field Sealing Authorized
+          Field Sealing Authorized
         </span>
       </div>
 
-      <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "20px" }}>
+      <p style={{ color: "var(--ink-2)", fontSize: "0.88rem", lineHeight: 1.55, marginBottom: "20px" }}>
         Enter true GPS coordinates to commit this archaeological discovery. Coordinates are encrypted locally in your browser {AUTH_MODE === "mock" ? "with simulated E2EE" : "with TideCloak"}. The server only receives ciphertext, and a generalized 50 km boundary is derived automatically.
       </p>
 
       {/* Success banner */}
       {successMessage && (
         <div className="alert-banner alert-banner-success" role="status">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--emerald-primary)" strokeWidth="2.5" style={{ flexShrink: 0 }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" strokeWidth="2" style={{ flexShrink: 0 }}>
             <polyline points="20 6 9 17 4 12" />
           </svg>
           <div>
-            <strong style={{ display: "block", color: "var(--emerald-light)", marginBottom: "2px" }}>
+            <strong style={{ display: "block", color: "var(--ok)", fontWeight: 500, marginBottom: "2px" }}>
               Vault Sealed Successfully
             </strong>
-            <p style={{ fontSize: "0.88rem" }}>{successMessage}</p>
+            <p style={{ fontSize: "0.86rem", color: "var(--ink)" }}>{successMessage}</p>
           </div>
         </div>
       )}
@@ -237,11 +234,9 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
         {hasValidInputs && previewBlurredLat !== null && previewBlurredLng !== null && (
           <div
             style={{
-              background: "#080B13",
-              border: "1px solid rgba(255, 255, 255, 0.08)",
-              borderRadius: "var(--radius-md)",
-              padding: "14px 18px",
-              marginBottom: "18px",
+              borderTop: "1px solid var(--line)",
+              paddingTop: "14px",
+              marginBottom: "16px",
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
@@ -250,10 +245,10 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
             }}
           >
             <div>
-              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block" }}>
+              <span style={{ fontSize: "0.72rem", color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block" }}>
                 Auto-Derived Generalized Boundary (Contract Formula)
               </span>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.92rem", color: "var(--gold-light)", fontWeight: 600 }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.92rem", color: "var(--ink)", fontWeight: 500 }}>
                 Approximate: {previewBlurredLat.toFixed(1)}, {previewBlurredLng.toFixed(1)} (within 50 km)
               </span>
             </div>
@@ -267,7 +262,7 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
         {/* Quick Demo Fill Buttons & Submit */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px", marginTop: "12px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-            <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>Demo Quick-Fill:</span>
+            <span style={{ fontSize: "0.78rem", color: "var(--ink-3)" }}>Demo Quick-Fill:</span>
             <button
               type="button"
               onClick={() => handleFillDemoCoords(36.4128, 25.4317)}

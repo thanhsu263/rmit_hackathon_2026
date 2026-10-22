@@ -46,10 +46,10 @@ export default function AuditPage() {
 
   return (
     <div className="container">
-      {/* Header section */}
-      <section style={{ marginBottom: "28px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "20px" }}>
-          <div style={{ maxWidth: "740px" }}>
+      {/* Header section - 64px rhythm */}
+      <section style={{ marginBottom: "48px" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "24px" }}>
+          <div style={{ maxWidth: "720px" }}>
             <div
               style={{
                 display: "inline-flex",
@@ -57,42 +57,34 @@ export default function AuditPage() {
                 gap: "8px",
                 fontSize: "0.76rem",
                 textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "var(--gold-primary)",
-                background: "var(--gold-bg)",
-                border: "1px solid var(--gold-border)",
-                padding: "4px 12px",
-                borderRadius: "9999px",
-                fontWeight: 700,
-                marginBottom: "12px",
+                letterSpacing: "0.06em",
+                color: "var(--ink-3)",
+                fontWeight: 500,
+                marginBottom: "16px",
               }}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
               Cryptographic Audit Stream
             </div>
 
             <h1
               style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "2.4rem",
-                fontWeight: 700,
-                letterSpacing: "-0.01em",
-                marginBottom: "10px",
-                color: "var(--text-primary)",
+                fontSize: "clamp(2rem, 4vw, 2.75rem)",
+                fontWeight: 500,
+                letterSpacing: "-0.022em",
+                lineHeight: 1.1,
+                marginBottom: "14px",
+                color: "var(--ink)",
               }}
             >
               Immutable Governance Trail
             </h1>
 
-            <p style={{ color: "var(--text-secondary)", fontSize: "1.02rem", lineHeight: 1.65 }}>
+            <p style={{ color: "var(--ink-2)", fontSize: "1.02rem", lineHeight: 1.6, maxWidth: "680px" }}>
               All client-side decryption attempts, access requests, and site sealing actions are permanently recorded. Actor identities are extracted directly from {AUTH_MODE === "mock" ? "simulated session tokens" : "verified TideCloak JWT tokens"}. Ordered newest first.
             </p>
           </div>
 
-          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
             <button
               type="button"
               onClick={loadAudit}
@@ -106,7 +98,7 @@ export default function AuditPage() {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2.5"
+                strokeWidth="2"
                 className={loading ? "animate-spin" : ""}
               >
                 <polyline points="1 4 1 10 7 10" />
@@ -115,7 +107,7 @@ export default function AuditPage() {
               </svg>
               Refresh Log
             </button>
-            <Link href="/" className="btn btn-primary btn-sm">
+            <Link href="/" className="btn btn-secondary btn-sm">
               View Sites
             </Link>
           </div>

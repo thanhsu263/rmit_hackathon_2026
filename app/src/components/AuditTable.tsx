@@ -153,19 +153,9 @@ export function AuditTable({ events }: AuditTableProps) {
 
                   {/* Actor */}
                   <td>
-                    <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "var(--bg-surface-elevated)", padding: "4px 10px", borderRadius: "9999px", border: "1px solid var(--border-subtle)" }}>
-                      <span
-                        style={{
-                          width: "6px",
-                          height: "6px",
-                          borderRadius: "50%",
-                          background: ev.actor === "diglead" ? "var(--gold-primary)" : "var(--emerald-primary)",
-                        }}
-                      />
-                      <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.82rem", fontWeight: 600 }}>
-                        {ev.actor}
-                      </span>
-                    </div>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.82rem", color: "var(--ink)", fontWeight: 500 }}>
+                      {ev.actor}
+                    </span>
                   </td>
 
                   {/* Site */}

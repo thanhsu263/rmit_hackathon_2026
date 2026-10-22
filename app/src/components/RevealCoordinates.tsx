@@ -26,46 +26,44 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
       <div
         className="vault-card"
         style={{
-          background: "rgba(245, 158, 11, 0.04)",
-          border: "1px dashed var(--gold-border)",
-          padding: "24px",
+          padding: "28px",
           height: "100%",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
           <div
             style={{
-              width: "32px",
-              height: "32px",
-              borderRadius: "var(--radius-sm)",
-              background: "var(--gold-bg)",
-              color: "var(--gold-primary)",
+              width: "28px",
+              height: "28px",
+              borderRadius: "var(--radius-xs)",
+              background: "rgba(255, 255, 255, 0.04)",
+              color: "var(--ink-3)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="12" cy="12" r="10" />
               <line x1="12" y1="8" x2="12" y2="12" />
               <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
           </div>
           <div>
-            <h4 style={{ color: "var(--gold-primary)", fontSize: "1.05rem", fontWeight: 700 }}>
+            <h4 style={{ color: "var(--ink)", fontSize: "1.05rem", fontWeight: 500 }}>
               Not sealed yet
             </h4>
-            <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
+            <span style={{ fontSize: "0.76rem", color: "var(--ink-3)" }}>
               {AUTH_MODE === "mock"
                 ? "Exact coordinates not yet committed to E2EE vault (simulated)"
                 : "Exact coordinates not yet committed to TideCloak E2EE"}
             </span>
           </div>
         </div>
-        <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6 }}>
+        <p style={{ color: "var(--ink-2)", fontSize: "0.88rem", lineHeight: 1.55 }}>
           This archaeological site currently only has generalized boundary data. A dig lead holding the{" "}
-          <code style={{ color: "var(--gold-primary)", fontFamily: "var(--font-mono)", background: "rgba(245,158,11,0.1)", padding: "2px 6px", borderRadius: "4px" }}>
+          <code style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", background: "rgba(255,255,255,0.06)", padding: "2px 6px", borderRadius: "4px" }}>
             _tide_sitecoords.selfencrypt
           </code>{" "}
           role can seal the high-precision GPS coordinates below.
@@ -157,35 +155,18 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
           alignItems: "flex-start",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          gap: "14px",
-          marginBottom: "18px",
+          gap: "16px",
+          marginBottom: "16px",
         }}
       >
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-            <div
-              style={{
-                width: "28px",
-                height: "28px",
-                borderRadius: "var(--radius-sm)",
-                background: "var(--emerald-bg)",
-                color: "var(--emerald-primary)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-            </div>
-            <h3 style={{ fontSize: "1.18rem", fontWeight: 700, color: "var(--text-primary)" }}>
+            <h3 style={{ fontSize: "1.15rem", fontWeight: 500, letterSpacing: "-0.018em", color: "var(--ink)" }}>
               High-Precision Location Vault
             </h3>
           </div>
-          <p style={{ color: "var(--text-secondary)", fontSize: "0.86rem", lineHeight: 1.5 }}>
-            Client-side zero-knowledge encrypted under tag <code style={{ color: "var(--gold-primary)", fontFamily: "var(--font-mono)" }}>sitecoords</code>. Decryption strictly enforces 2-of-3 multi-party quorum.
+          <p style={{ color: "var(--ink-2)", fontSize: "0.86rem", lineHeight: 1.5 }}>
+            Client-side zero-knowledge encrypted under tag <code style={{ color: "var(--ink)", fontFamily: "var(--font-mono)" }}>sitecoords</code>. Decryption strictly enforces 2-of-3 multi-party quorum.
           </p>
         </div>
 
@@ -195,7 +176,7 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
             id="reveal-exact-btn"
             onClick={handleReveal}
             disabled={isLoading}
-            className="btn btn-emerald"
+            className="btn btn-primary"
             aria-label="Reveal exact archaeological coordinates"
           >
             {isLoading ? (
@@ -206,7 +187,7 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
                     width: "14px",
                     height: "14px",
                     borderRadius: "50%",
-                    border: "2px solid #FFF",
+                    border: "2px solid #000",
                     borderTopColor: "transparent",
                   }}
                 />
@@ -214,7 +195,7 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
               </>
             ) : (
               <>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
@@ -229,27 +210,25 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
       {!exactCoordinates && !deniedMessage && !isLoading && (
         <div
           style={{
-            background: "#080B13",
-            border: "1px solid var(--border-subtle)",
-            borderRadius: "var(--radius-md)",
-            padding: "18px",
+            borderTop: "1px solid var(--line)",
+            paddingTop: "16px",
             marginTop: "auto",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
             <span
               style={{
-                width: "8px",
-                height: "8px",
+                width: "6px",
+                height: "6px",
                 borderRadius: "50%",
-                background: "var(--gold-primary)",
+                background: "var(--ink-3)",
               }}
             />
-            <span style={{ fontSize: "0.78rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--gold-primary)", fontWeight: 700 }}>
+            <span style={{ fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--ink-3)", fontWeight: 500 }}>
               Threshold Consensus Rule
             </span>
           </div>
-          <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", lineHeight: 1.55 }}>
+          <p style={{ fontSize: "0.85rem", color: "var(--ink-2)", lineHeight: 1.55 }}>
             Clicking &quot;Reveal Exact Location&quot; invokes local WebCrypto decryption. If your token does not contain authorization signed by at least 2 of 3 independent stewards, the {AUTH_MODE === "mock" ? "security policy (simulated)" : "TideCloak security policy"} immediately denies decryption.
           </p>
         </div>
@@ -257,24 +236,24 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
 
       {/* Denied State: Detailed 2-of-3 Quorum Visualization */}
       {deniedMessage && (
-        <div style={{ marginTop: "10px" }}>
+        <div style={{ marginTop: "16px" }}>
           <div className="alert-banner alert-banner-denied" role="alert">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--rose-primary)" strokeWidth="2.5" style={{ flexShrink: 0, marginTop: "2px" }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--no)" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
               <circle cx="12" cy="12" r="10" />
               <line x1="12" y1="8" x2="12" y2="12" />
               <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             <div>
-              <strong style={{ display: "block", color: "var(--rose-primary)", fontSize: "0.95rem", marginBottom: "4px" }}>
+              <strong style={{ display: "block", color: "var(--no)", fontSize: "0.92rem", fontWeight: 500, marginBottom: "4px" }}>
                 {AUTH_MODE === "mock"
                   ? "Decryption Denied (TideCloak Simulation)"
                   : "Decryption Denied by TideCloak Policy"}
               </strong>
               {/* Mandatory contract copy */}
-              <p style={{ color: "#FFE4E6", fontWeight: 600, fontSize: "0.92rem", marginBottom: "8px" }}>
+              <p style={{ color: "var(--ink)", fontWeight: 500, fontSize: "0.92rem", marginBottom: "6px" }}>
                 {deniedMessage}
               </p>
-              <p style={{ fontSize: "0.82rem", color: "var(--text-secondary)", lineHeight: 1.5 }}>
+              <p style={{ fontSize: "0.82rem", color: "var(--ink-2)", lineHeight: 1.5 }}>
                 A lone administrator or researcher is cryptographically blocked. {AUTH_MODE === "mock" ? "Multi-party quorum signatures are required before unsealing cultural coordinates." : "TideCloak requires multi-party quorum signatures before unsealing cultural coordinates."}
               </p>
             </div>
@@ -283,15 +262,13 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
           {/* Steward Threshold Status Breakdown */}
           <div
             style={{
-              background: "#080B14",
-              border: "1px solid var(--border-subtle)",
-              borderRadius: "var(--radius-md)",
-              padding: "16px",
-              marginTop: "12px",
+              borderTop: "1px solid var(--line)",
+              paddingTop: "16px",
+              marginTop: "16px",
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-              <span style={{ fontSize: "0.78rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--text-secondary)" }}>
+              <span style={{ fontSize: "0.75rem", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--ink-3)" }}>
                 Multi-Party Steward Quorum
               </span>
               <span className="badge badge-danger" style={{ fontSize: "0.7rem" }}>
@@ -299,34 +276,34 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
               </span>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "10px" }}>
-              <div style={{ background: "rgba(255,255,255,0.02)", padding: "10px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-subtle)" }}>
-                <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", display: "block" }}>Steward 1</span>
-                <strong style={{ fontSize: "0.82rem", color: "var(--text-primary)", display: "block" }}>Community Custodian</strong>
-                <span style={{ fontSize: "0.72rem", color: "var(--rose-light)" }}>⏳ Pending authorization</span>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "12px" }}>
+              <div style={{ borderLeft: "2px solid var(--line)", paddingLeft: "10px" }}>
+                <span style={{ fontSize: "0.72rem", color: "var(--ink-3)", display: "block" }}>Steward 1</span>
+                <strong style={{ fontSize: "0.82rem", color: "var(--ink)", fontWeight: 500, display: "block" }}>Community Custodian</strong>
+                <span style={{ fontSize: "0.72rem", color: "var(--no)" }}>Pending authorization</span>
               </div>
 
-              <div style={{ background: "rgba(255,255,255,0.02)", padding: "10px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-subtle)" }}>
-                <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", display: "block" }}>Steward 2</span>
-                <strong style={{ fontSize: "0.82rem", color: "var(--text-primary)", display: "block" }}>Heritage Authority</strong>
-                <span style={{ fontSize: "0.72rem", color: "var(--rose-light)" }}>⏳ Pending authorization</span>
+              <div style={{ borderLeft: "2px solid var(--line)", paddingLeft: "10px" }}>
+                <span style={{ fontSize: "0.72rem", color: "var(--ink-3)", display: "block" }}>Steward 2</span>
+                <strong style={{ fontSize: "0.82rem", color: "var(--ink)", fontWeight: 500, display: "block" }}>Heritage Authority</strong>
+                <span style={{ fontSize: "0.72rem", color: "var(--no)" }}>Pending authorization</span>
               </div>
 
-              <div style={{ background: "rgba(255,255,255,0.02)", padding: "10px", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-subtle)" }}>
-                <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", display: "block" }}>Steward 3</span>
-                <strong style={{ fontSize: "0.82rem", color: "var(--text-primary)", display: "block" }}>Dig Lead</strong>
-                <span style={{ fontSize: "0.72rem", color: "var(--rose-light)" }}>⏳ Pending authorization</span>
+              <div style={{ borderLeft: "2px solid var(--line)", paddingLeft: "10px" }}>
+                <span style={{ fontSize: "0.72rem", color: "var(--ink-3)", display: "block" }}>Steward 3</span>
+                <strong style={{ fontSize: "0.82rem", color: "var(--ink)", fontWeight: 500, display: "block" }}>Dig Lead</strong>
+                <span style={{ fontSize: "0.72rem", color: "var(--no)" }}>Pending authorization</span>
               </div>
             </div>
 
             {/* Quick Demo Helper Button */}
-            <div style={{ marginTop: "14px", paddingTop: "12px", borderTop: "1px solid var(--border-subtle)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
-              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>
+            <div style={{ marginTop: "16px", paddingTop: "12px", borderTop: "1px solid var(--line)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
+              <span style={{ fontSize: "0.78rem", color: "var(--ink-2)" }}>
                 Need to authorize this access request?
               </span>
               <a
                 href="/mock/approvals"
-                className="btn btn-outline-gold btn-sm"
+                className="btn btn-secondary btn-sm"
                 style={{ fontSize: "0.76rem" }}
               >
                 Go to Simulated Approvals (2 of 3) →
@@ -340,13 +317,13 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
       {exactCoordinates && (
         <div style={{ marginTop: "auto" }}>
           <div className="alert-banner alert-banner-success" style={{ marginBottom: "16px" }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--emerald-primary)" strokeWidth="2.5" style={{ flexShrink: 0, marginTop: "2px" }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               <polyline points="9 12 11 14 15 10" />
             </svg>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-                <strong style={{ color: "var(--emerald-light)", fontSize: "0.95rem" }}>
+                <strong style={{ color: "var(--ok)", fontSize: "0.92rem", fontWeight: 500 }}>
                   Cryptographic Threshold Quorum Verified
                 </strong>
                 <span className="badge badge-sealed" style={{ fontSize: "0.68rem", padding: "1px 6px" }}>
@@ -354,23 +331,78 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
                 </span>
               </div>
               {/* Mandatory contract copy */}
-              <p style={{ color: "#D1FAE5", fontSize: "0.92rem", fontWeight: 600 }}>
+              <p style={{ color: "var(--ink)", fontSize: "0.92rem", fontWeight: 500 }}>
                 Decrypted in your browser. The server only stores ciphertext.
               </p>
-              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)", marginTop: "2px", display: "block" }}>
-                Tag: <code style={{ fontFamily: "var(--font-mono)", color: "var(--emerald-light)" }}>sitecoords</code> • Plaintext held in ephemeral client memory only.
+              <span style={{ fontSize: "0.78rem", color: "var(--ink-3)", marginTop: "2px", display: "block" }}>
+                Tag: <code style={{ fontFamily: "var(--font-mono)", color: "var(--ink-2)" }}>sitecoords</code> • Plaintext held in ephemeral client memory only.
               </span>
             </div>
           </div>
 
-          {/* Coordinate Readout Box */}
-          <div className="coord-box" style={{ borderColor: "var(--emerald-border)", flexDirection: "column", alignItems: "stretch", gap: "14px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "10px" }}>
-              <div>
-                <span style={{ display: "block", fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.07em", fontWeight: 700, marginBottom: "4px" }}>
-                  High-Precision Archaeological GPS (WGS84 Datum)
+          {/* Coordinate Readout Box with Kỹ thuật 4 signature */}
+          <div
+            style={{
+              borderTop: "1px solid var(--line)",
+              paddingTop: "16px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+              {/* 50 km circle with illuminated amber dot + radiant pulse wave */}
+              <div
+                style={{
+                  width: "56px",
+                  height: "56px",
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                }}
+                title="50 km generalized radius unsealed: Exact pinpoint illuminated"
+              >
+                <svg width="56" height="56" viewBox="0 0 56 56" style={{ overflow: "visible" }}>
+                  {/* 50 km dashed outer boundary */}
+                  <circle
+                    cx="28"
+                    cy="28"
+                    r="24"
+                    fill="none"
+                    stroke="var(--ink-3)"
+                    strokeWidth="1"
+                    strokeDasharray="3 3"
+                  />
+                  {/* Radiant pulse wave */}
+                  <circle
+                    cx="28"
+                    cy="28"
+                    r="8"
+                    fill="none"
+                    stroke="var(--accent)"
+                    strokeWidth="1"
+                    style={{
+                      transformOrigin: "center",
+                      animation: "radiantPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite",
+                    }}
+                  />
+                  {/* True center coordinate dot */}
+                  <circle
+                    cx="28"
+                    cy="28"
+                    r="3.5"
+                    fill="var(--accent)"
+                  />
+                </svg>
+              </div>
+
+              <div style={{ flex: "1 1 200px" }}>
+                <span style={{ display: "block", fontSize: "0.72rem", color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 500, marginBottom: "2px" }}>
+                  High-Precision Archaeological GPS (WGS84)
                 </span>
-                <span className="coord-exact-value">
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "1.2rem", fontWeight: 500, color: "var(--ink)", letterSpacing: "-0.01em" }}>
                   {exactCoordinates}
                 </span>
               </div>
@@ -383,10 +415,10 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
               >
                 {copied ? (
                   <>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--emerald-primary)" strokeWidth="2.5">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" strokeWidth="2.5">
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
-                    <span style={{ color: "var(--emerald-light)" }}>Copied to Clipboard!</span>
+                    <span style={{ color: "var(--ok)" }}>Copied</span>
                   </>
                 ) : (
                   <>
@@ -402,14 +434,14 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
 
             {/* Split Latitude / Longitude Chips */}
             {latVal && lngVal && (
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", paddingTop: "10px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-                <div style={{ background: "rgba(16, 185, 129, 0.05)", padding: "8px 12px", borderRadius: "var(--radius-sm)", border: "1px solid var(--emerald-border)" }}>
-                  <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase", display: "block" }}>Latitude</span>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.95rem", color: "var(--emerald-light)", fontWeight: 600 }}>{latVal}° N</span>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", paddingTop: "12px", borderTop: "1px solid var(--line)" }}>
+                <div>
+                  <span style={{ fontSize: "0.72rem", color: "var(--ink-3)", textTransform: "uppercase", display: "block" }}>Latitude</span>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.95rem", color: "var(--ink)", fontWeight: 500 }}>{latVal}° N</span>
                 </div>
-                <div style={{ background: "rgba(16, 185, 129, 0.05)", padding: "8px 12px", borderRadius: "var(--radius-sm)", border: "1px solid var(--emerald-border)" }}>
-                  <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", textTransform: "uppercase", display: "block" }}>Longitude</span>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.95rem", color: "var(--emerald-light)", fontWeight: 600 }}>{lngVal}° E</span>
+                <div>
+                  <span style={{ fontSize: "0.72rem", color: "var(--ink-3)", textTransform: "uppercase", display: "block" }}>Longitude</span>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.95rem", color: "var(--ink)", fontWeight: 500 }}>{lngVal}° E</span>
                 </div>
               </div>
             )}

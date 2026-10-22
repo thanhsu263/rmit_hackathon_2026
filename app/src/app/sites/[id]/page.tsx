@@ -160,7 +160,7 @@ function SiteDetailContent() {
       </nav>
 
       {/* Main Dossier Header Card */}
-      <div className="vault-card" style={{ marginBottom: "24px", padding: "30px" }}>
+      <div className="vault-card" style={{ marginBottom: "32px", padding: "32px" }}>
         <div
           style={{
             display: "flex",
@@ -168,39 +168,36 @@ function SiteDetailContent() {
             justifyContent: "space-between",
             flexWrap: "wrap",
             gap: "16px",
-            marginBottom: "18px",
+            marginBottom: "16px",
           }}
         >
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px", flexWrap: "wrap" }}>
               <span
                 style={{
-                  fontSize: "0.76rem",
+                  fontSize: "0.74rem",
                   textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  fontWeight: 700,
-                  color: "var(--gold-primary)",
-                  background: "var(--gold-bg)",
-                  border: "1px solid var(--gold-border)",
-                  padding: "4px 10px",
-                  borderRadius: "var(--radius-xs)",
+                  letterSpacing: "0.06em",
+                  fontWeight: 500,
+                  color: "var(--ink-3)",
                 }}
               >
                 {site.era}
               </span>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+              <span style={{ color: "var(--ink-3)", fontSize: "0.74rem" }}>•</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.76rem", color: "var(--ink-3)" }}>
                 VAULT ID: {site.id}
               </span>
             </div>
 
             <h1
               style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "2.4rem",
-                fontWeight: 700,
-                letterSpacing: "-0.01em",
-                lineHeight: 1.2,
-                color: "var(--text-primary)",
+                fontSize: "clamp(2rem, 4vw, 2.75rem)",
+                fontWeight: 500,
+                letterSpacing: "-0.022em",
+                lineHeight: 1.15,
+                color: "var(--ink)",
+                marginBottom: "12px",
               }}
             >
               {site.name}
@@ -210,55 +207,45 @@ function SiteDetailContent() {
           <StatusBadge status={isSealed ? "sealed" : "unsealed"} />
         </div>
 
-        <p style={{ color: "var(--text-secondary)", fontSize: "1.02rem", lineHeight: 1.7, marginBottom: "26px", maxWidth: "880px" }}>
+        <p style={{ color: "var(--ink-2)", fontSize: "1.02rem", lineHeight: 1.6, marginBottom: "32px", maxWidth: "840px" }}>
           {site.summary}
         </p>
 
-        {/* Generalized Location & Seal Metadata Box */}
+        {/* Generalized Location & Seal Metadata - clean borderTop without nested box */}
         <div
           style={{
-            background: "#080B13",
-            border: "1px solid rgba(255, 255, 255, 0.08)",
-            borderRadius: "var(--radius-md)",
-            padding: "20px 24px",
+            borderTop: "1px solid var(--line)",
+            paddingTop: "24px",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "20px",
+            gap: "24px",
           }}
         >
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" strokeWidth="2.5">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                <path d="M2 12h20" />
-              </svg>
-              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--text-muted)", fontWeight: 700 }}>
+              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--ink-3)" }}>
                 Generalized Public Coordinates (50 km Blur Radius)
               </span>
             </div>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: "1.05rem", color: "var(--text-primary)", fontWeight: 600 }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: "1rem", color: "var(--ink)", fontWeight: 500 }}>
               Approximate location: {site.blurred.lat.toFixed(1)}, {site.blurred.lng.toFixed(1)} (within {site.blurred.radiusKm} km)
             </div>
           </div>
 
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--emerald-primary)" strokeWidth="2.5">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--text-muted)", fontWeight: 700 }}>
+              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--ink-3)" }}>
                 Cryptographic Seal State
               </span>
             </div>
-            <div style={{ fontSize: "0.9rem", color: "var(--text-secondary)" }}>
+            <div style={{ fontSize: "0.88rem", color: "var(--ink-2)" }}>
               {isSealed ? (
                 <>
-                  Sealed by <strong style={{ color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>{site.sealedBy}</strong> on{" "}
+                  Sealed by <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{site.sealedBy}</strong> on{" "}
                   <span suppressHydrationWarning>{site.sealedAt ? formatDateTime(site.sealedAt) : "Confirmed"}</span>
                 </>
               ) : (
-                <span style={{ color: "var(--gold-primary)", fontWeight: 600 }}>
+                <span style={{ color: "var(--ink-3)" }}>
                   Awaiting field sealing by Dig Lead
                 </span>
               )}
@@ -280,22 +267,22 @@ function SiteDetailContent() {
       <SealSiteSection site={site} onSiteSealed={handleSiteSealed} />
 
       {/* Section 4: Site-Specific Immutable Audit Trail */}
-      <section className="vault-card" style={{ marginTop: "24px", padding: "26px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "18px", flexWrap: "wrap", gap: "10px" }}>
+      <section className="vault-card" style={{ marginTop: "32px", padding: "32px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px", flexWrap: "wrap", gap: "12px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <div
               style={{
-                width: "30px",
-                height: "30px",
-                borderRadius: "var(--radius-sm)",
-                background: "var(--gold-bg)",
-                color: "var(--gold-primary)",
+                width: "28px",
+                height: "28px",
+                borderRadius: "var(--radius-xs)",
+                background: "rgba(255, 255, 255, 0.04)",
+                color: "var(--ink-2)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                 <polyline points="14 2 14 8 20 8" />
                 <line x1="16" y1="13" x2="8" y2="13" />
@@ -303,26 +290,26 @@ function SiteDetailContent() {
               </svg>
             </div>
             <div>
-              <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 500, color: "var(--ink)" }}>
                 Cryptographic Governance &amp; Security Trail
               </h3>
-              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>
+              <span style={{ fontSize: "0.78rem", color: "var(--ink-3)" }}>
                 Immutable event stream for {site.name}
               </span>
             </div>
           </div>
 
-          <span className="badge" style={{ background: "rgba(255,255,255,0.05)", color: "var(--text-secondary)", border: "1px solid var(--border-subtle)" }}>
+          <span style={{ fontSize: "0.76rem", color: "var(--ink-3)", fontFamily: "var(--font-mono)" }}>
             {siteAuditEvents.length} events logged
           </span>
         </div>
 
         {siteAuditEvents.length === 0 ? (
-          <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", fontStyle: "italic", padding: "16px 0" }}>
+          <p style={{ color: "var(--ink-3)", fontSize: "0.88rem", padding: "16px 0" }}>
             No cryptographic events recorded yet for this site.
           </p>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          <div style={{ display: "flex", flexDirection: "column" }}>
             {siteAuditEvents.map((ev, i) => (
               <div
                 key={i}
@@ -330,10 +317,8 @@ function SiteDetailContent() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "12px 16px",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  borderRadius: "var(--radius-sm)",
-                  border: "1px solid var(--border-subtle)",
+                  padding: "12px 0",
+                  borderTop: i > 0 ? "1px solid var(--line)" : "none",
                   fontSize: "0.88rem",
                   flexWrap: "wrap",
                   gap: "10px",
@@ -341,11 +326,11 @@ function SiteDetailContent() {
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
                   <StatusBadge status={ev.action} size="sm" />
-                  <span style={{ fontFamily: "var(--font-mono)", color: "var(--text-secondary)", fontSize: "0.84rem" }}>
-                    actor: <strong style={{ color: "var(--text-primary)" }}>{ev.actor}</strong>
+                  <span style={{ fontFamily: "var(--font-mono)", color: "var(--ink-2)", fontSize: "0.82rem" }}>
+                    actor: <strong style={{ color: "var(--ink)", fontWeight: 500 }}>{ev.actor}</strong>
                   </span>
                 </div>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.78rem", color: "var(--text-muted)" }} suppressHydrationWarning>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.76rem", color: "var(--ink-3)" }} suppressHydrationWarning>
                   {formatDateTime(ev.at)}
                 </span>
               </div>

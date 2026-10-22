@@ -31,16 +31,15 @@ export default function RootLayout({
           </main>
           <footer
             style={{
-              borderTop: "1px solid var(--border-subtle)",
-              padding: "28px 0",
-              background: "rgba(7, 8, 11, 0.95)",
-              color: "var(--text-muted)",
-              fontSize: "0.84rem",
+              borderTop: "1px solid var(--line)",
+              padding: "32px 0",
+              color: "var(--ink-3)",
+              fontSize: "0.82rem",
             }}
           >
             <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "16px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <span style={{ fontFamily: "var(--font-serif)", fontWeight: 700, color: "var(--text-secondary)" }}>
+                <span style={{ fontFamily: "var(--font-heading)", fontWeight: 500, color: "var(--ink)" }}>
                   Custodian Vault
                 </span>
                 <span>•</span>
@@ -48,9 +47,9 @@ export default function RootLayout({
                 <span>•</span>
                 <span>Hackathon Prototype</span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.8rem", color: "var(--ink-3)" }}>
                 <span>Threshold Governance:</span>
-                <span style={{ color: "var(--gold-primary)", fontWeight: 600 }}>2 of 3 Stewards</span>
+                <span style={{ color: "var(--ink-2)", fontWeight: 500 }}>2 of 3 Stewards</span>
                 <span>(Community Custodian, Heritage Authority, Dig Lead)</span>
               </div>
             </div>

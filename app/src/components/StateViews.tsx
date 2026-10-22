@@ -12,21 +12,21 @@ export function LoadingSpinner({ message = "Decrypting vault records..." }: { me
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "60px 20px",
+        padding: "64px 20px",
         gap: "16px",
       }}
     >
       <div
         className="animate-spin"
         style={{
-          width: "36px",
-          height: "36px",
+          width: "28px",
+          height: "28px",
           borderRadius: "50%",
-          border: "3px solid rgba(245, 158, 11, 0.18)",
-          borderTopColor: "var(--gold-primary)",
+          border: "2px solid rgba(255, 255, 255, 0.1)",
+          borderTopColor: "var(--accent)",
         }}
       />
-      <p style={{ color: "var(--text-secondary)", fontSize: "0.92rem", fontWeight: 500, fontFamily: "var(--font-mono)" }}>
+      <p style={{ color: "var(--ink-2)", fontSize: "0.88rem", fontWeight: 400, fontFamily: "var(--font-mono)" }}>
         {message}
       </p>
     </div>
@@ -45,39 +45,36 @@ export function ErrorRetryView({
       role="alert"
       className="vault-card"
       style={{
-        border: "1px solid var(--rose-border)",
-        background: "rgba(244, 63, 94, 0.04)",
         textAlign: "center",
         padding: "48px 24px",
-        margin: "24px 0",
+        margin: "32px 0",
       }}
     >
       <div
         style={{
-          width: "52px",
-          height: "52px",
+          width: "40px",
+          height: "40px",
           borderRadius: "50%",
-          background: "var(--rose-bg)",
-          color: "var(--rose-primary)",
+          background: "rgba(251, 113, 133, 0.1)",
+          color: "var(--no)",
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
           marginBottom: "16px",
-          boxShadow: "0 0 16px rgba(244, 63, 94, 0.2)",
         }}
       >
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="10" />
           <line x1="12" y1="8" x2="12" y2="12" />
           <line x1="12" y1="16" x2="12.01" y2="16" />
         </svg>
       </div>
 
-      <h3 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "8px", color: "var(--text-primary)" }}>
+      <h3 style={{ fontSize: "1.15rem", fontWeight: 500, letterSpacing: "-0.018em", marginBottom: "8px", color: "var(--ink)" }}>
         Connection or Governance Error
       </h3>
 
-      <p style={{ color: "var(--text-secondary)", marginBottom: "22px", maxWidth: "520px", margin: "0 auto 22px", lineHeight: 1.6 }}>
+      <p style={{ color: "var(--ink-2)", marginBottom: "24px", maxWidth: "480px", margin: "0 auto 24px", lineHeight: 1.55, fontSize: "0.9rem" }}>
         {message}
       </p>
 
@@ -87,7 +84,7 @@ export function ErrorRetryView({
         className="btn btn-primary btn-sm"
         aria-label="Retry loading data"
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <polyline points="1 4 1 10 7 10" />
           <polyline points="23 20 23 14 17 14" />
           <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
@@ -112,36 +109,33 @@ export function EmptyStateView({
       className="vault-card"
       style={{
         textAlign: "center",
-        padding: "54px 24px",
-        borderStyle: "dashed",
-        background: "rgba(14, 19, 32, 0.4)",
+        padding: "64px 24px",
       }}
     >
       <div
         style={{
-          width: "52px",
-          height: "52px",
+          width: "44px",
+          height: "44px",
           borderRadius: "50%",
           background: "rgba(255, 255, 255, 0.04)",
-          color: "var(--text-muted)",
+          color: "var(--ink-3)",
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
           marginBottom: "16px",
-          border: "1px solid var(--border-subtle)",
         }}
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
           <path d="M7 11V7a5 5 0 0 1 10 0v4" />
         </svg>
       </div>
 
-      <h3 style={{ fontFamily: "var(--font-serif)", fontSize: "1.2rem", color: "var(--text-primary)", marginBottom: "8px" }}>
+      <h3 style={{ fontSize: "1.15rem", fontWeight: 500, letterSpacing: "-0.018em", color: "var(--ink)", marginBottom: "8px" }}>
         {title}
       </h3>
 
-      <p style={{ color: "var(--text-secondary)", fontSize: "0.92rem", maxWidth: "460px", margin: "0 auto 20px", lineHeight: 1.6 }}>
+      <p style={{ color: "var(--ink-2)", fontSize: "0.9rem", maxWidth: "440px", margin: "0 auto 24px", lineHeight: 1.55 }}>
         {description}
       </p>
 

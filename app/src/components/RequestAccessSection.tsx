@@ -58,52 +58,33 @@ export function RequestAccessSection({ site, onRequestCreated }: RequestAccessSe
   return (
     <div className="vault-card" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
-        <div
-          style={{
-            width: "28px",
-            height: "28px",
-            borderRadius: "var(--radius-sm)",
-            background: "var(--cyan-bg)",
-            color: "var(--cyan-primary)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-            <line x1="16" y1="13" x2="8" y2="13" />
-            <line x1="16" y1="17" x2="8" y2="17" />
-          </svg>
-        </div>
-        <h3 style={{ fontSize: "1.18rem", fontWeight: 700, color: "var(--text-primary)" }}>
+      <div style={{ marginBottom: "6px" }}>
+        <h3 style={{ fontSize: "1.15rem", fontWeight: 500, letterSpacing: "-0.018em", color: "var(--ink)" }}>
           Request Location Access
         </h3>
       </div>
 
-      <p style={{ color: "var(--text-secondary)", fontSize: "0.86rem", lineHeight: 1.55, marginBottom: "16px" }}>
+      <p style={{ color: "var(--ink-2)", fontSize: "0.86rem", lineHeight: 1.55, marginBottom: "16px" }}>
         Submit formal archaeological justification. Grants require multi-party consensus from 2 of 3 designated stewards.
       </p>
 
       {/* Confirmation Banner */}
       {confirmed && (
         <div className="alert-banner alert-banner-info" role="status">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cyan-primary)" strokeWidth="2.5" style={{ flexShrink: 0, marginTop: "2px" }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
             <circle cx="12" cy="12" r="10" />
             <line x1="12" y1="16" x2="12" y2="12" />
             <line x1="12" y1="8" x2="12.01" y2="8" />
           </svg>
           <div>
-            <strong style={{ display: "block", color: "var(--cyan-light)", fontSize: "0.95rem", marginBottom: "2px" }}>
+            <strong style={{ display: "block", color: "var(--ink)", fontSize: "0.92rem", fontWeight: 500, marginBottom: "2px" }}>
               Access Request Registered
             </strong>
             {/* Required contract copy */}
-            <p style={{ color: "#E0F2FE", fontSize: "0.92rem", fontWeight: 600 }}>
+            <p style={{ color: "var(--ink)", fontSize: "0.92rem", fontWeight: 500 }}>
               Approvals happen with the stewards (2 of 3) in TideCloak, not in this app.
             </p>
-            <p style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginTop: "4px", lineHeight: 1.5 }}>
+            <p style={{ fontSize: "0.82rem", color: "var(--ink-2)", marginTop: "4px", lineHeight: 1.5 }}>
               The Community Custodian, Heritage Authority, and Dig Lead will review your submission in Tide Console (QEA Governance).
             </p>
           </div>
@@ -116,13 +97,13 @@ export function RequestAccessSection({ site, onRequestCreated }: RequestAccessSe
         </div>
       )}
 
-      <form onSubmit={handleSubmit} style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: "14px" }}>
+      <form onSubmit={handleSubmit} style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: "16px" }}>
         <div className="form-group" style={{ marginBottom: 0 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
             <label htmlFor="access-reason" className="form-label">
               Academic Justification
             </label>
-            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
+            <span style={{ fontSize: "0.75rem", color: "var(--ink-3)" }}>
               Public Audit Logged
             </span>
           </div>
@@ -141,7 +122,7 @@ export function RequestAccessSection({ site, onRequestCreated }: RequestAccessSe
 
         {/* Quick Sample Presets */}
         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-          <span style={{ fontSize: "0.74rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 700 }}>
+          <span style={{ fontSize: "0.74rem", color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 500 }}>
             Quick Sample Justifications:
           </span>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
