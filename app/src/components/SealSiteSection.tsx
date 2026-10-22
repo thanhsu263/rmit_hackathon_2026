@@ -164,8 +164,8 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
         </span>
       </div>
 
-      <p style={{ color: "var(--ink-2)", fontSize: "0.88rem", lineHeight: 1.55, marginBottom: "20px" }}>
-        Enter true GPS coordinates to commit this archaeological discovery. Coordinates are encrypted locally in your browser {AUTH_MODE === "mock" ? "with simulated E2EE" : "with TideCloak"}. The server only receives ciphertext, and a generalized 50 km boundary is derived automatically.
+      <p style={{ color: "var(--ink-2)", fontSize: "0.9rem", lineHeight: 1.5, marginBottom: "20px" }}>
+        Enter raw discovery GPS. Coordinates are encrypted locally in your browser with tag <code style={{ color: "var(--ink)", fontFamily: "var(--font-mono)" }}>sitecoords</code>. A generalized 50 km blur boundary is auto-derived for public protection.
       </p>
 
       {/* Success banner */}

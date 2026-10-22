@@ -228,8 +228,8 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
               Threshold Consensus Rule
             </span>
           </div>
-          <p style={{ fontSize: "0.85rem", color: "var(--ink-2)", lineHeight: 1.55 }}>
-            Clicking &quot;Reveal Exact Location&quot; invokes local WebCrypto decryption. If your token does not contain authorization signed by at least 2 of 3 independent stewards, the {AUTH_MODE === "mock" ? "security policy (simulated)" : "TideCloak security policy"} immediately denies decryption.
+          <p style={{ fontSize: "0.88rem", color: "var(--ink)", lineHeight: 1.5 }}>
+            Decryption enforces <strong>2-of-3 multi-party quorum</strong>. If fewer than 2 stewards have authorized access, decryption is cryptographically blocked.
           </p>
         </div>
       )}
@@ -244,17 +244,17 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
               <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             <div>
-              <strong style={{ display: "block", color: "var(--no)", fontSize: "0.92rem", fontWeight: 500, marginBottom: "4px" }}>
+              <strong style={{ display: "block", color: "var(--no)", fontSize: "0.92rem", fontWeight: 600, marginBottom: "4px" }}>
                 {AUTH_MODE === "mock"
                   ? "Decryption Denied (TideCloak Simulation)"
                   : "Decryption Denied by TideCloak Policy"}
               </strong>
               {/* Mandatory contract copy */}
-              <p style={{ color: "var(--ink)", fontWeight: 500, fontSize: "0.92rem", marginBottom: "6px" }}>
+              <p style={{ color: "var(--ink)", fontWeight: 600, fontSize: "0.95rem", marginBottom: "6px" }}>
                 {deniedMessage}
               </p>
-              <p style={{ fontSize: "0.82rem", color: "var(--ink-2)", lineHeight: 1.5 }}>
-                A lone administrator or researcher is cryptographically blocked. {AUTH_MODE === "mock" ? "Multi-party quorum signatures are required before unsealing cultural coordinates." : "TideCloak requires multi-party quorum signatures before unsealing cultural coordinates."}
+              <p style={{ fontSize: "0.84rem", color: "var(--ink-2)", lineHeight: 1.45 }}>
+                A lone administrator is cryptographically blocked. Multi-party quorum signatures from 2 of 3 stewards are required.
               </p>
             </div>
           </div>

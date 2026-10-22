@@ -116,14 +116,33 @@ export default function SitesPage() {
 
             <p
               style={{
-                color: "var(--ink-2)",
-                fontSize: "1.02rem",
-                lineHeight: 1.6,
-                maxWidth: "680px",
+                color: "var(--ink)",
+                fontSize: "1.06rem",
+                fontWeight: 400,
+                lineHeight: 1.55,
+                maxWidth: "640px",
+                marginBottom: "20px",
+                textShadow: "0 1px 3px rgba(0,0,0,0.8)",
               }}
             >
-              Exact excavation coordinates are sealed in the browser with {AUTH_MODE === "mock" ? "simulated end-to-end encryption (mock mode)" : "Tide end-to-end encryption"} under tag <code style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", background: "rgba(255,255,255,0.06)", padding: "2px 6px", borderRadius: "4px" }}>sitecoords</code>. Public researchers view generalized 50 km boundary circles. Decrypting unblurred locations requires consensus from 2 of 3 multi-party stewards.
+              Zero-knowledge cryptographic protection for classified excavation coordinates. Raw GPS is sealed in-browser; unsealing strictly requires consensus from <strong>2 of 3 independent stewards</strong>.
             </p>
+
+            {/* Core Feature Badges - Crisp, High-Contrast Key Points */}
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "8px" }}>
+              <span className="key-pill">
+                <span className="key-pill-dot" style={{ background: "var(--ok)" }} />
+                <span><strong>2-of-3 Quorum:</strong> Anti Lone-Admin</span>
+              </span>
+              <span className="key-pill">
+                <span className="key-pill-dot" style={{ background: "var(--accent)" }} />
+                <span><strong>50 km Blur:</strong> Anti-Looting Shield</span>
+              </span>
+              <span className="key-pill">
+                <span className="key-pill-dot" style={{ background: "#60A5FA" }} />
+                <span><strong>Client E2EE:</strong> Zero Server Plaintext</span>
+              </span>
+            </div>
           </div>
 
           {/* Quick Metrics - clean whitespace separation, no nested border soup */}

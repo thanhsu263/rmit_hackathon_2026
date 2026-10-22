@@ -7,10 +7,10 @@
   --surface:   #0E1016;   /* Thẻ, panel. Chênh nền vừa đủ để thấy, không cần viền */
   --line:      rgba(255, 255, 255, 0.07);
 
-  /* Chữ: KHÔNG dùng #fff thuần cho văn bản dài */
-  --ink:       #F7F8F8;   /* Tiêu đề, số liệu quan trọng */
-  --ink-2:     #9BA1AC;   /* Mô tả, nhãn */
-  --ink-3:     #61666E;   /* Chú thích, metadata */
+  /* Chữ: Nổi bật, sắc nét, độ tương phản cao */
+  --ink:       #FFFFFF;   /* Tiêu đề, số liệu quan trọng - 100% trắng sáng */
+  --ink-2:     #E2E8F0;   /* Mô tả, nhãn - sáng rõ nét, không bị mờ */
+  --ink-3:     #94A3B8;   /* Chú thích, metadata - rõ ràng, tương phản cao */
 
   /* MỘT màu nhấn duy nhất — Vàng hổ phách */
   --accent:    #F59E0B;
@@ -135,31 +135,63 @@ body {
   -webkit-mask-image: radial-gradient(circle at 50% 35%, black 50%, transparent 95%);
 }
 
-/* Kỹ thuật 1: Giảm lửa phần chữ */
+/* Typography - Crisp, Bold, High Contrast */
 h1 {
   font-family: var(--font-sans);
   font-size: clamp(2.2rem, 5vw, 3.25rem);
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.022em;
   line-height: 1.08;
   color: var(--ink);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
 }
 
 h2 {
   font-family: var(--font-sans);
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.018em;
   line-height: 1.15;
   color: var(--ink);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 h3 {
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: -0.014em;
   line-height: 1.25;
   color: var(--ink);
+}
+
+/* Key Highlight Pills - Crisp & Concise Features */
+.key-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(14, 16, 22, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  color: var(--ink);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.key-pill:hover {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.key-pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 /* Layout container - 8pt grid */

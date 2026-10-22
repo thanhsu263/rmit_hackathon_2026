@@ -17,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column", position: "relative" }} suppressHydrationWarning>
         {/* Thematic Archaeological Cartography & Survey Grid Background Layers */}
         <div className="bg-archaeo-ambient" aria-hidden="true" />

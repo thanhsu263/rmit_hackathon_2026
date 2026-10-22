@@ -147,13 +147,13 @@ export function AuditTable({ events }: AuditTableProps) {
               filteredEvents.map((ev, idx) => (
                 <tr key={`${ev.at}-${idx}`}>
                   {/* Timestamp */}
-                  <td style={{ fontFamily: "var(--font-mono)", fontSize: "0.82rem", whiteSpace: "nowrap" }} suppressHydrationWarning>
-                    <span style={{ color: "var(--text-primary)" }}>{formatTimestamp(ev.at)}</span>
+                  <td style={{ fontFamily: "var(--font-mono)", fontSize: "0.84rem", whiteSpace: "nowrap" }} suppressHydrationWarning>
+                    <span style={{ color: "var(--ink)", fontWeight: 500 }}>{formatTimestamp(ev.at)}</span>
                   </td>
 
                   {/* Actor */}
                   <td>
-                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.82rem", color: "var(--ink)", fontWeight: 500 }}>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.84rem", color: "var(--ink)", fontWeight: 600 }}>
                       {ev.actor}
                     </span>
                   </td>
@@ -163,7 +163,7 @@ export function AuditTable({ events }: AuditTableProps) {
                     <Link
                       href={`/sites/${ev.siteId}`}
                       style={{
-                        color: "var(--text-primary)",
+                        color: "var(--ink)",
                         fontWeight: 600,
                         textDecoration: "none",
                         display: "inline-flex",
@@ -171,7 +171,7 @@ export function AuditTable({ events }: AuditTableProps) {
                         gap: "6px",
                       }}
                     >
-                      <span style={{ borderBottom: "1px dotted var(--border-medium)" }}>
+                      <span style={{ borderBottom: "1px dotted var(--line)" }}>
                         {ev.siteName || ev.siteId}
                       </span>
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -188,7 +188,7 @@ export function AuditTable({ events }: AuditTableProps) {
                   </td>
 
                   {/* Governance Context */}
-                  <td style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>
+                  <td style={{ fontSize: "0.84rem", color: "var(--ink-2)", lineHeight: 1.45 }}>
                     {getActionExplanation(ev.action)}
                   </td>
                 </tr>

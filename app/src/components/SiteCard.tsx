@@ -14,7 +14,7 @@ export function SiteCard({ site }: SiteCardProps) {
 
   return (
     <article
-      className="vault-card"
+      className="vault-card site-card"
       style={{
         display: "flex",
         flexDirection: "column",
@@ -46,12 +46,12 @@ export function SiteCard({ site }: SiteCardProps) {
         <StatusBadge status={isSealed ? "sealed" : "unsealed"} />
       </div>
 
-      {/* Site Name - Inter font, weight 500 */}
+      {/* Site Name - Inter font, weight 600 */}
       <h3
         style={{
           fontFamily: "var(--font-sans)",
           fontSize: "1.25rem",
-          fontWeight: 500,
+          fontWeight: 600,
           color: "var(--ink)",
           marginBottom: "10px",
           lineHeight: 1.25,
@@ -65,7 +65,8 @@ export function SiteCard({ site }: SiteCardProps) {
       <p
         style={{
           color: "var(--ink-2)",
-          fontSize: "0.9rem",
+          fontSize: "0.92rem",
+          fontWeight: 400,
           lineHeight: 1.55,
           marginBottom: "24px",
           flexGrow: 1,
