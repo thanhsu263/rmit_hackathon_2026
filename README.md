@@ -16,17 +16,32 @@ The blocker is custody, not encryption. Someone always holds the master key: an 
 
 ### 3. Value & impact
 
-Communities keep authority over their places; researchers get real coordinates. A pressured or mistaken steward cannot act alone, and every reveal and refusal is recorded. Example: a survey team's request for a burial mound stays sealed until two stewards agree.
+Communities keep authority over their places; researchers get real coordinates. A pressured or mistaken steward cannot act alone, and every reveal and refusal is recorded. Example: a survey team's request stays sealed until two stewards agree.
 
 ### 4. Why TideCloak matters
 
 With Tide's Emergent Authority (live mode), coordinates are sealed in the browser (`sitecoords` tag), reading them needs the `_tide_sitecoords.selfdecrypt` role, and granting or revoking it takes 2 of 3 admins (Quorum Enforced Authorization), so the server never sees plaintext. Ordinary login cannot promise this: whoever grants a permission can take it back alone.
 
-**Honest status:** Tide's licence service failed during the hackathon (`Midgard.FinalizeWallet` HTTP 500), so no realm could be provisioned. This demo runs in `mock`: a labelled SIMULATION MODE where the app's own server simulates roles, quorum and sealing, and could read the data. Mock mode is not TideCloak; the live path is untested.
+**Plan C:** Tide's network was overloaded, so no realm could be licensed (`Midgard.FinalizeWallet` HTTP 500). As the organisers' Plan C allows, this demo simulates TideCloak, under a labelled SIMULATION MODE banner. The simulating server could read the data; the live path is written but untested. See "Where TideCloak fits" below.
 
 ### 5. Prototype & storytelling
 
 The dig lead seals a site; a researcher is denied; one steward approves, still denied; the second approves and the coordinates appear; a 2-of-3 revocation closes access again. Every step is audited.
+
+## Where TideCloak fits (Plan C)
+
+Plan C asks teams that cannot license TideCloak to simulate it and show where it fits. The app has one auth interface (`useAuth()` for pages, `getUser()` for API routes) with two implementations, chosen by `NEXT_PUBLIC_AUTH_MODE`. Everything in the middle column runs today; the right column is the TideCloak code path already written behind the same interface.
+
+| Piece | Simulated today (`mock`) | TideCloak (`live`) |
+|---|---|---|
+| Sign-in | `/mock/login`, pick a demo account | `TideCloakProvider`, sign-in through the Tide enclave (`LiveBridge` in `app/src/lib/auth/client.tsx`) |
+| Roles | simulated store in `app/.mock-data/` | realm roles `_tide_sitecoords.selfencrypt`, `_tide_sitecoords.selfdecrypt`, `tide-realm-admin` |
+| 2-of-3 approval | `/mock/approvals`, same rule `max(1, floor(0.7 x admins))` | Quorum Enforced Authorization: role changes are change requests in tide-console, approved by 2 of 3 admins |
+| Sealing and reveal | `/api/mock/crypto`, the app's server holds the key | `doEncrypt` / `doDecrypt` in the browser with tag `sitecoords`; no server holds a key |
+| API identity | mock bearer tokens, `getUser()` | `verifyTideCloakToken()` (`app/src/lib/auth.ts`, `app/src/lib/auth/server.ts`) |
+| Realm setup | not needed | `app/init/tcinit.sh` creates the realm and admin |
+
+**What TideCloak makes possible here:** a sealed location that nobody can open alone. Nobody, including the operator, holds a master key, and granting or revoking access is itself a 2-of-3 decision. In `mock` the same flow is visible, but the app's own server could still read the data; that is the gap TideCloak closes. Where it fits was planned with Tide's MCP (Raziel), whose closest reference scenarios are *IGA Admin Governance* (multi-admin approval of role changes) and *Forseti E2EE* (browser-side encryption with `selfencrypt`/`selfdecrypt` roles).
 
 ## Demo video
 
