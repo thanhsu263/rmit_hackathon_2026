@@ -18,6 +18,10 @@ build/
 h2/
 tidecloak-data/
 
+# TideCloak adapter JSON - exported per machine from tide-console, never committed.
+# This repository goes public for the submission, so a leak here is permanent.
+tidecloak.json
+
 # logs, editor and OS files
 *.log
 npm-debug.log*
@@ -28,3 +32,10 @@ Thumbs.db
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Custodian Vault mock-mode state (simulated roles, approvals, key)
+.mock-data/
+
+# Third-party agent skills (kept local, not part of the submission)
+.agents/
+skills-lock.json

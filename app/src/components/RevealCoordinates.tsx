@@ -11,7 +11,7 @@ interface RevealCoordinatesProps {
 }
 
 export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProps) {
-  const { refreshToken, doDecrypt, token, user, switchUser } = useTideCloak();
+  const { refreshToken, doDecrypt, token, user } = useTideCloak();
 
   // Plaintext is kept ONLY in component state, never sent to server or stored in localStorage
   const [exactCoordinates, setExactCoordinates] = useState<string | null>(null);
@@ -316,22 +316,16 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
 
             {/* Quick Demo Helper Button */}
             <div style={{ marginTop: "14px", paddingTop: "12px", borderTop: "1px solid var(--border-subtle)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
-              <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
-                Ready to demonstrate quorum approval?
+              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>
+                Need to authorize this access request?
               </span>
-              <button
-                type="button"
-                onClick={() => {
-                  switchUser("researcher_approved");
-                  setTimeout(() => {
-                    handleReveal();
-                  }, 200);
-                }}
+              <a
+                href="/mock/approvals"
                 className="btn btn-outline-gold btn-sm"
                 style={{ fontSize: "0.76rem" }}
               >
-                Simulate 2-of-3 Approval &amp; Retry
-              </button>
+                Go to Simulated Approvals (2 of 3) →
+              </a>
             </div>
           </div>
         </div>

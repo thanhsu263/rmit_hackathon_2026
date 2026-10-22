@@ -56,12 +56,11 @@ export function Header() {
               onChange={(e) => switchUser(e.target.value)}
               aria-label="Switch active demo profile"
             >
-              <option value="researcher">Dr. Evelyn Vance • Researcher (Unapproved — Demonstrates Quorum Denial)</option>
-              <option value="researcher_approved">Dr. Evelyn Vance • Researcher (2-of-3 Authorized — Demonstrates Decrypt)</option>
-              <option value="diglead">Marcus Thorne • Dig Lead (Holds selfencrypt — Demonstrates Site Sealing)</option>
-              <option value="custodian">Elder Kaelen Vane • Community Custodian (Steward 1 of 3)</option>
-              <option value="heritage">Dr. Alistair Cross • Heritage Authority (Steward 2 of 3)</option>
-              <option value="unauthenticated">Unauthenticated Guest (Demonstrates 401 Protection)</option>
+              <option value="researcher">researcher (Field researcher - decrypt only after 2-of-3 approval)</option>
+              <option value="diglead">diglead (Lead Archaeologist - Can Seal)</option>
+              <option value="custodian">custodian (Community Steward 1 of 3)</option>
+              <option value="heritage">heritage (Heritage Authority Steward 2 of 3)</option>
+              <option value="unauthenticated">Unauthenticated Guest (Simulate 401)</option>
             </select>
           </div>
 

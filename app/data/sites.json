@@ -1,0 +1,32 @@
+[
+  {
+    "id": "site-thornwick-hollow",
+    "name": "Thornwick Hollow",
+    "era": "Late Bronze Age",
+    "summary": "A terraced settlement with intact grain pits, first surveyed after erosion exposed a retaining wall. The custodial council restricts exact coordinates while looting risk remains high.",
+    "blurred": { "lat": -31.5, "lng": 142.0, "radiusKm": 50 },
+    "sealedExact": null,
+    "sealedBy": null,
+    "sealedAt": null
+  },
+  {
+    "id": "site-mirelake-causeway",
+    "name": "Mirelake Causeway",
+    "era": "Early Iron Age",
+    "summary": "A submerged timber causeway preserved in peat, with carved posts still standing. Waterlogged conditions make the site fragile and easy to damage by unplanned visits.",
+    "blurred": { "lat": -37.0, "lng": 145.5, "radiusKm": 50 },
+    "sealedExact": null,
+    "sealedBy": null,
+    "sealedAt": null
+  },
+  {
+    "id": "site-calder-rise-ossuary",
+    "name": "Calder Rise Ossuary",
+    "era": "Early Medieval",
+    "summary": "A hillside ossuary holding communal burials that descendant families still consider active. Access is granted case by case, and never to the exact location by default.",
+    "blurred": { "lat": -34.5, "lng": 138.5, "radiusKm": 50 },
+    "sealedExact": null,
+    "sealedBy": null,
+    "sealedAt": null
+  }
+]

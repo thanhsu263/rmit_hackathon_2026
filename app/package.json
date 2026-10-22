@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "init": "bash init/tcinit.sh"
   },
   "dependencies": {
+    "@tidecloak/nextjs": "^0.14.40",
     "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0"
