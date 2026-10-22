@@ -95,11 +95,40 @@ html, body {
 
 body {
   background-color: var(--bg);
-  background-image: 
-    radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.025) 0%, transparent 60%);
   background-attachment: fixed;
   display: flex;
   flex-direction: column;
+}
+
+/* Atmospheric Archaeological Cartography & Survey Grid Background Layers */
+.bg-archaeo-ambient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 920px;
+  background-image: url('/archaeo-vault-bg.jpg');
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.22;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse 95% 80% at 50% 25%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 95% 80% at 50% 25%, black 40%, transparent 100%);
+}
+
+.bg-archaeo-grid {
+  position: fixed;
+  inset: 0;
+  background-image: url('/geodetic-grid.svg');
+  background-repeat: repeat;
+  background-position: top center;
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(circle at 50% 35%, black 45%, transparent 95%);
+  -webkit-mask-image: radial-gradient(circle at 50% 35%, black 45%, transparent 95%);
 }
 
 /* Kỹ thuật 1: Giảm lửa phần chữ */
