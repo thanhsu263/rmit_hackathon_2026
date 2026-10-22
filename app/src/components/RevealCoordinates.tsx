@@ -1,11 +1,35 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Site } from "./types";
 import { useTideCloak } from "./tidecloak";
 import { recordAuditEvent } from "./api";
 import { AUTH_MODE } from "../lib/auth/config";
 import { SurveyPlate } from "./SurveyPlate";
+
+/** Scrambles digits for a moment, then settles left to right on the real value. */
+function DecodingText({ value }: { value: string }) {
+  const [shown, setShown] = useState(value);
+  useEffect(() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const start = Date.now();
+    const duration = 650;
+    const delay = 700; // wait for the circle to land on the point
+    const timer = window.setInterval(() => {
+      const t = Math.min(1, Math.max(0, (Date.now() - start - delay) / duration));
+      const settled = Math.floor(t * value.length);
+      setShown(
+        value
+          .split("")
+          .map((ch, i) => (i < settled || !/[0-9]/.test(ch) ? ch : String(Math.floor(Math.random() * 10))))
+          .join("")
+      );
+      if (t >= 1) window.clearInterval(timer);
+    }, 40);
+    return () => window.clearInterval(timer);
+  }, [value]);
+  return <>{shown}</>;
+}
 
 interface RevealCoordinatesProps {
   site: Site;
@@ -20,6 +44,20 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [deniedMessage, setDeniedMessage] = useState<string | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
+
+  // Story beats for the survey plate: they replay on each new state change, not on re-render.
+  const [beat, setBeat] = useState<"sealed" | "denied" | null>(null);
+  const [beatKey, setBeatKey] = useState(0);
+  const playBeat = (b: "sealed" | "denied") => {
+    setBeat(b);
+    setBeatKey((k) => k + 1);
+  };
+  const wasSealed = useRef(Boolean(site.sealedExact));
+  useEffect(() => {
+    const sealedNow = Boolean(site.sealedExact);
+    if (sealedNow && !wasSealed.current) playBeat("sealed");
+    wasSealed.current = sealedNow;
+  }, [site.sealedExact]);
 
   const handleReveal = async () => {
     setIsLoading(true);
@@ -62,6 +100,7 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
         err?.message ||
         "You do not hold the decrypt role yet. Two of three stewards must approve.";
       setDeniedMessage(message);
+      playBeat("denied");
 
       // 6. Contract rule: POST /api/audit DECRYPT_DENIED
       try {
@@ -107,12 +146,15 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
   return (
     <section
       className="vault-card"
-      style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "36px", alignItems: "center", padding: "32px" }}
+      style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(320px, 100%), 1fr))", gap: "36px", alignItems: "center", padding: "32px" }}
     >
       <SurveyPlate
         siteId={site.id}
         blurred={site.blurred}
         exact={exactCoordinates}
+        drawIn={beatKey === 0 && !exactCoordinates}
+        beat={exactCoordinates ? null : beat}
+        beatKey={beatKey}
         caption={
           exactCoordinates
             ? "Exact point, decrypted in this browser only."
@@ -123,7 +165,7 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
       <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
         <div>
           <span className="eyebrow">Exact location</span>
-          <div className="state-word" style={{ marginTop: "6px", color: exactCoordinates ? "var(--accent-ink)" : deniedMessage ? "var(--no)" : "var(--ink)" }} aria-live="polite">
+          <div key={`${word}-${beatKey}`} className="state-word word-in" style={{ marginTop: "6px", color: exactCoordinates ? "var(--accent-ink)" : deniedMessage ? "var(--no)" : "var(--ink)", animationDelay: exactCoordinates ? "0.6s" : undefined }} aria-live="polite">
             {word}
           </div>
         </div>
@@ -155,7 +197,7 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
         {exactCoordinates && (
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             <div className="coord-box">
-              <span className="coord-exact-value">{latVal}, {lngVal}</span>
+              <span className="coord-exact-value"><DecodingText value={`${latVal}, ${lngVal}`} /></span>
               <button type="button" onClick={handleCopy} className="btn btn-secondary btn-sm" aria-label="Copy exact coordinates to clipboard">
                 {copied ? "Copied" : "Copy"}
               </button>

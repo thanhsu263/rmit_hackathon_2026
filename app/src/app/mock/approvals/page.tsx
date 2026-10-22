@@ -152,7 +152,7 @@ export default function MockApprovalsPage() {
         </section>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: '24px' }}>
         <section className="vault-card">
           <h3 style={{ marginBottom: '14px' }}>Who holds what</h3>
           <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column' }}>
@@ -172,7 +172,28 @@ export default function MockApprovalsPage() {
           {closed.length === 0 && <p style={{ color: 'var(--ink-3)', margin: 0 }}>Nothing approved or denied yet.</p>}
           <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column' }}>
             {closed.map((r, i) => (
-              <li key={r.id} style={{ padding: '10px 0', borderTop: i > 0 ? '1px solid var(--line)' : 'none', fontSize: '0.88rem', color: 'var(--ink-2)' }}>
+              <li key={r.id} style={{ position: 'relative', padding: '10px 0', borderTop: i > 0 ? '1px solid var(--line)' : 'none', fontSize: '0.88rem', color: 'var(--ink-2)' }}>
+                {r.closedAt && Date.now() - new Date(r.closedAt).getTime() < 20000 && (
+                  <span
+                    className="stamp-land"
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      right: 0,
+                      top: '6px',
+                      padding: '4px 12px',
+                      border: `2.5px solid ${r.status === 'COMMITTED' || r.status === 'APPROVED' ? 'var(--ok)' : 'var(--no)'}`,
+                      color: r.status === 'COMMITTED' || r.status === 'APPROVED' ? 'var(--ok)' : 'var(--no)',
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '1.15rem',
+                      letterSpacing: '0.12em',
+                      borderRadius: '4px',
+                      background: 'rgba(251, 248, 241, 0.85)',
+                    }}
+                  >
+                    {r.status}
+                  </span>
+                )}
                 <span className="badge" style={{ color: r.status === 'COMMITTED' || r.status === 'APPROVED' ? 'var(--ok)' : 'var(--no)', marginRight: '8px' }}>{r.status}</span>
                 <ChangeLabel r={r} />
                 <div style={{ fontSize: '0.78rem', color: 'var(--ink-3)', marginTop: '2px' }}>

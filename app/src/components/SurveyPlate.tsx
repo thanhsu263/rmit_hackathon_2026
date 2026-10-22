@@ -7,6 +7,12 @@ type SurveyPlateProps = {
   exact?: string | null;
   compact?: boolean;
   caption?: string;
+  /** Draw contours, circle and label in sequence on mount. */
+  drawIn?: boolean;
+  /** One-shot story beats, triggered by the parent on a state change. */
+  beat?: "sealed" | "denied" | null;
+  /** Changes on every beat so the same beat can replay. */
+  beatKey?: number;
 };
 
 // Small deterministic PRNG so server and client draw the same contours.
@@ -70,7 +76,7 @@ function exactOffset(exact: string, blurred?: { lat: number; lng: number } | nul
   return { x: CX + dx * R, y: CY - dy * R };
 }
 
-export function SurveyPlate({ siteId, blurred, exact, compact, caption }: SurveyPlateProps) {
+export function SurveyPlate({ siteId, blurred, exact, compact, caption, drawIn, beat, beatKey = 0 }: SurveyPlateProps) {
   const paths = contours(siteId);
   const point = exact ? exactOffset(exact, blurred) : null;
   const label = exact
@@ -79,6 +85,7 @@ export function SurveyPlate({ siteId, blurred, exact, compact, caption }: Survey
 
   return (
     <figure style={{ margin: 0 }}>
+      <div key={beat === "denied" ? `shake-${beatKey}` : "plate"} className={beat === "denied" ? "plate-shake" : undefined}>
       <svg
         viewBox={`0 0 ${W} ${H}`}
         role="img"
@@ -100,14 +107,38 @@ export function SurveyPlate({ siteId, blurred, exact, compact, caption }: Survey
         <rect width={W} height={H} fill={`url(#grid-${siteId})`} />
         <g fill="none" stroke="#8A6E4B">
           {paths.map((p, i) => (
-            <path key={i} d={p.d} strokeOpacity={p.major ? 0.42 : 0.2} strokeWidth={p.major ? 1.1 : 0.8} />
+            <path
+              key={i}
+              d={p.d}
+              pathLength={drawIn ? 1 : undefined}
+              className={drawIn ? "plate-draw" : undefined}
+              style={drawIn ? { animationDelay: `${(i % 9) * 45}ms` } : undefined}
+              strokeOpacity={p.major ? 0.42 : 0.2}
+              strokeWidth={p.major ? 1.1 : 0.8}
+            />
           ))}
         </g>
 
         {/* The 50 km blur */}
-        <circle cx={CX} cy={CY} r={R} fill="#B4532A" fillOpacity={point ? 0.04 : 0.09} stroke="#B4532A" strokeWidth="1.3" strokeDasharray="5 5" />
+        <g className={drawIn ? "plate-circle-in" : undefined}>
+          <circle
+            key={`blur-${beat ?? "none"}-${beatKey}`}
+            className={[point ? "plate-blur-fade" : "", beat === "denied" ? "plate-flash-no" : "", beat === "sealed" ? "plate-pulse" : ""].join(" ").trim() || undefined}
+            cx={CX}
+            cy={CY}
+            r={R}
+            fill="#B4532A"
+            fillOpacity={0.09}
+            stroke="#B4532A"
+            strokeWidth="1.3"
+            strokeDasharray="5 5"
+          />
+        </g>
+        {beat === "sealed" && !point && (
+          <circle key={`seal-${beatKey}`} className="plate-dissolve" cx={CX + 14} cy={CY - 10} r="6" fill="#B4532A" />
+        )}
         {!point && (
-          <>
+          <g className={drawIn ? "plate-label-in" : undefined}>
             <text x={CX} y={CY - 4} textAnchor="middle" fontFamily="var(--font-serif)" fontStyle="italic" fontSize={compact ? 20 : 17} fill="#7A3A1E">
               somewhere in here
             </text>
@@ -116,15 +147,26 @@ export function SurveyPlate({ siteId, blurred, exact, compact, caption }: Survey
                 ± 50 km
               </text>
             )}
-          </>
+          </g>
         )}
 
         {point && (
           <g>
-            <circle className="plate-ripple" cx={point.x} cy={point.y} r="3" fill="none" stroke="#B4532A" strokeWidth="1.5" />
-            <line x1={point.x - 14} y1={point.y} x2={point.x + 14} y2={point.y} stroke="#1F1B16" strokeWidth="1" />
-            <line x1={point.x} y1={point.y - 14} x2={point.x} y2={point.y + 14} stroke="#1F1B16" strokeWidth="1" />
-            <circle className="plate-dot" cx={point.x} cy={point.y} r="6" fill="#B4532A" stroke="#FBF8F1" strokeWidth="2" />
+            <circle
+              className="plate-contract"
+              cx={point.x}
+              cy={point.y}
+              r={R}
+              fill="none"
+              stroke="#B4532A"
+              strokeWidth="1.6"
+              strokeDasharray="5 5"
+              style={{ "--dx": `${CX - point.x}px`, "--dy": `${CY - point.y}px` } as React.CSSProperties}
+            />
+            <circle className="plate-ripple plate-ripple-late" cx={point.x} cy={point.y} r="3" fill="none" stroke="#B4532A" strokeWidth="1.5" style={{ opacity: 0 }} />
+            <line className="plate-cross" pathLength={1} x1={point.x - 14} y1={point.y} x2={point.x + 14} y2={point.y} stroke="#1F1B16" strokeWidth="1" />
+            <line className="plate-cross" pathLength={1} x1={point.x} y1={point.y - 14} x2={point.x} y2={point.y + 14} stroke="#1F1B16" strokeWidth="1" />
+            <circle className="plate-dot plate-dot-late" cx={point.x} cy={point.y} r="6" fill="#B4532A" stroke="#FBF8F1" strokeWidth="2" />
           </g>
         )}
 
@@ -142,6 +184,7 @@ export function SurveyPlate({ siteId, blurred, exact, compact, caption }: Survey
           </g>
         )}
       </svg>
+      </div>
       {caption && (
         <figcaption style={{ marginTop: "10px", fontSize: "0.8rem", color: "var(--ink-3)" }}>{caption}</figcaption>
       )}

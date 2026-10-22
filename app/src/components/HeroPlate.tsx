@@ -24,7 +24,7 @@ export function HeroPlate() {
       )}
 
       <div style={{ ...print, position: "absolute", left: 0, top: HERO_PHOTO ? "120px" : 0, width: HERO_PHOTO ? "74%" : "100%", padding: "12px 12px 16px", transform: "rotate(-1.5deg)" }}>
-        <SurveyPlate siteId="hero-plate-thornwick" />
+        <SurveyPlate siteId="hero-plate-thornwick" drawIn />
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: "10px", fontSize: "0.78rem", color: "var(--ink-3)" }}>
           <span style={{ fontFamily: "var(--font-serif)", fontStyle: "italic" }}>Plate 01 · location withheld</span>
           <span className="mono">± 50 km</span>
