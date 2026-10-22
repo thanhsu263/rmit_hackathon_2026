@@ -1,0 +1,10 @@
+# REPLACE these with the real times of each scene in demo/raw.mp4 (mm:ss.s), then delete this line.
+# Format: <scene number> <name> <start> <end>
+1 problem          00:00.0  00:15.0
+2 seal             00:15.0  00:30.0
+3 denied           00:30.0  00:48.0
+4 one-steward      00:48.0  01:05.0
+5 second-steward   01:05.0  01:22.0
+6 revoke           01:22.0  01:35.0
+7 audit            01:35.0  01:42.0
+8 plan-c           01:42.0  02:00.0
