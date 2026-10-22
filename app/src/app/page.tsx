@@ -67,16 +67,16 @@ export default function SitesPage() {
 
   return (
     <div className="container">
-      {/* Hero / Context Banner */}
-      <section style={{ marginBottom: "36px" }}>
+      {/* Hero / Context Banner - 64px spacing rhythm */}
+      <section style={{ marginBottom: "64px" }}>
         <div
           style={{
             display: "flex",
             alignItems: "flex-start",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            gap: "24px",
-            marginBottom: "28px",
+            gap: "32px",
+            marginBottom: "48px",
           }}
         >
           <div style={{ maxWidth: "720px" }}>
@@ -87,33 +87,23 @@ export default function SitesPage() {
                 gap: "8px",
                 fontSize: "0.76rem",
                 textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "var(--gold-primary)",
-                background: "var(--gold-bg)",
-                border: "1px solid var(--gold-border)",
-                padding: "4px 12px",
-                borderRadius: "9999px",
-                fontWeight: 700,
-                marginBottom: "14px",
+                letterSpacing: "0.06em",
+                color: "var(--ink-3)",
+                fontWeight: 500,
+                marginBottom: "16px",
               }}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-              Zero-Knowledge Archaeological Heritage Vault
+              Zero-Knowledge Archaeological Vault
             </div>
 
             <h1
               style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: "2.6rem",
-                fontWeight: 700,
-                letterSpacing: "-0.01em",
-                lineHeight: 1.15,
-                marginBottom: "14px",
-                background: "linear-gradient(135deg, #FFFFFF 40%, #CBD5E1 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
+                fontSize: "clamp(2.2rem, 5vw, 3.25rem)",
+                fontWeight: 500,
+                letterSpacing: "-0.022em",
+                lineHeight: 1.08,
+                marginBottom: "16px",
+                color: "var(--ink)",
               }}
             >
               Archaeological Heritage Sites
@@ -121,47 +111,36 @@ export default function SitesPage() {
 
             <p
               style={{
-                color: "var(--text-secondary)",
-                fontSize: "1.05rem",
-                lineHeight: 1.65,
+                color: "var(--ink-2)",
+                fontSize: "1.02rem",
+                lineHeight: 1.6,
+                maxWidth: "680px",
               }}
             >
-              Exact excavation coordinates are sealed in the browser with {AUTH_MODE === "mock" ? "simulated end-to-end encryption (mock mode)" : "Tide end-to-end encryption"} under tag <code style={{ color: "var(--gold-light)", fontFamily: "var(--font-mono)", background: "rgba(245,158,11,0.08)", padding: "2px 6px", borderRadius: "4px" }}>sitecoords</code>. Public researchers view generalized 50 km boundary circles. Decrypting unblurred locations requires consensus from 2 of 3 multi-party stewards.
+              Exact excavation coordinates are sealed in the browser with {AUTH_MODE === "mock" ? "simulated end-to-end encryption (mock mode)" : "Tide end-to-end encryption"} under tag <code style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", background: "rgba(255,255,255,0.06)", padding: "2px 6px", borderRadius: "4px" }}>sitecoords</code>. Public researchers view generalized 50 km boundary circles. Decrypting unblurred locations requires consensus from 2 of 3 multi-party stewards.
             </p>
           </div>
 
-          {/* Quick Metrics */}
-          <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
-            <div
-              className="vault-card"
-              style={{ padding: "18px 24px", minWidth: "140px", textAlign: "center" }}
-            >
-              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block", fontWeight: 700 }}>
+          {/* Quick Metrics - clean whitespace separation, no nested border soup */}
+          <div style={{ display: "flex", gap: "32px", alignItems: "flex-end" }}>
+            <div>
+              <span style={{ fontSize: "0.72rem", color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block", marginBottom: "4px" }}>
                 Total Vaults
               </span>
               <strong
-                style={{ fontSize: "2rem", color: "var(--text-primary)", fontWeight: 700, fontFamily: "var(--font-mono)" }}
+                style={{ fontSize: "2.2rem", color: "var(--ink)", fontWeight: 500, fontFamily: "var(--font-mono)", letterSpacing: "-0.02em" }}
                 suppressHydrationWarning
               >
                 {mounted ? totalSites : 0}
               </strong>
             </div>
 
-            <div
-              className="vault-card"
-              style={{
-                padding: "18px 24px",
-                minWidth: "140px",
-                textAlign: "center",
-                borderColor: "var(--emerald-border)",
-                background: "rgba(16, 185, 129, 0.04)",
-              }}
-            >
-              <span style={{ fontSize: "0.72rem", color: "var(--emerald-light)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block", fontWeight: 700 }}>
+            <div style={{ borderLeft: "1px solid var(--line)", paddingLeft: "32px" }}>
+              <span style={{ fontSize: "0.72rem", color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block", marginBottom: "4px" }}>
                 Sealed Vaults
               </span>
               <strong
-                style={{ fontSize: "2rem", color: "#6EE7B7", fontWeight: 700, fontFamily: "var(--font-mono)" }}
+                style={{ fontSize: "2.2rem", color: "var(--ok)", fontWeight: 500, fontFamily: "var(--font-mono)", letterSpacing: "-0.02em" }}
                 suppressHydrationWarning
               >
                 {mounted ? sealedCount : 0}
@@ -170,57 +149,54 @@ export default function SitesPage() {
           </div>
         </div>
 
-        {/* 4-Step Architectural Security Flow Banner */}
+        {/* 4-Step Architecture Flow - Gray monochrome, pure restraint */}
         <div
           style={{
-            background: "rgba(17, 22, 36, 0.5)",
-            border: "1px solid var(--border-subtle)",
-            borderRadius: "var(--radius-lg)",
-            padding: "16px 20px",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "16px",
-            marginBottom: "24px",
+            gap: "24px",
+            padding: "24px 0",
+            borderTop: "1px solid var(--line)",
+            borderBottom: "1px solid var(--line)",
+            marginBottom: "40px",
           }}
         >
           <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-            <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "var(--gold-bg)", color: "var(--gold-primary)", border: "1px solid var(--gold-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, flexShrink: 0 }}>1</span>
+            <span style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0 }}>01</span>
             <div>
-              <strong style={{ fontSize: "0.85rem", color: "var(--text-primary)", display: "block" }}>Field Sealing</strong>
-              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>Dig lead encrypts raw coordinates in-browser</span>
+              <strong style={{ fontSize: "0.88rem", color: "var(--ink)", fontWeight: 500, display: "block" }}>Field Sealing</strong>
+              <span style={{ fontSize: "0.82rem", color: "var(--ink-3)", lineHeight: 1.45 }}>Dig lead encrypts raw coordinates in-browser</span>
             </div>
           </div>
 
           <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-            <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "var(--cyan-bg)", color: "var(--cyan-primary)", border: "1px solid var(--cyan-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, flexShrink: 0 }}>2</span>
+            <span style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0 }}>02</span>
             <div>
-              <strong style={{ fontSize: "0.85rem", color: "var(--text-primary)", display: "block" }}>50 km Blur Derivation</strong>
-              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>Rounded to 0.5° to protect from illicit looting</span>
+              <strong style={{ fontSize: "0.88rem", color: "var(--ink)", fontWeight: 500, display: "block" }}>50 km Blur Radius</strong>
+              <span style={{ fontSize: "0.82rem", color: "var(--ink-3)", lineHeight: 1.45 }}>Derived to protect site from looting</span>
             </div>
           </div>
 
           <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-            <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "rgba(244, 63, 94, 0.1)", color: "var(--rose-primary)", border: "1px solid var(--rose-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, flexShrink: 0 }}>3</span>
+            <span style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0 }}>03</span>
             <div>
-              <strong style={{ fontSize: "0.85rem", color: "var(--text-primary)", display: "block" }}>2-of-3 Steward Quorum</strong>
-              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>Lone admin is blocked; requires multi-party vote</span>
+              <strong style={{ fontSize: "0.88rem", color: "var(--ink)", fontWeight: 500, display: "block" }}>2-of-3 Quorum</strong>
+              <span style={{ fontSize: "0.82rem", color: "var(--ink-3)", lineHeight: 1.45 }}>Lone admin blocked; multi-party consensus</span>
             </div>
           </div>
 
           <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-            <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "var(--emerald-bg)", color: "var(--emerald-primary)", border: "1px solid var(--emerald-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, flexShrink: 0 }}>4</span>
+            <span style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0 }}>04</span>
             <div>
-              <strong style={{ fontSize: "0.85rem", color: "var(--text-primary)", display: "block" }}>In-Browser Decrypt</strong>
-              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>Plaintext never touches server or databases</span>
+              <strong style={{ fontSize: "0.88rem", color: "var(--ink)", fontWeight: 500, display: "block" }}>In-Browser Decrypt</strong>
+              <span style={{ fontSize: "0.82rem", color: "var(--ink-3)", lineHeight: 1.45 }}>Plaintext never touches servers</span>
             </div>
           </div>
         </div>
 
-        {/* Filter and Search Bar */}
+        {/* Filter and Search Bar - Clean single line without heavy double-borders */}
         <div
-          className="vault-card"
           style={{
-            padding: "16px 20px",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -228,7 +204,7 @@ export default function SitesPage() {
             gap: "16px",
           }}
         >
-          <div style={{ position: "relative", flex: "1 1 320px" }}>
+          <div style={{ position: "relative", flex: "1 1 320px", maxWidth: "480px" }}>
             <input
               type="text"
               className="form-input"
@@ -239,11 +215,11 @@ export default function SitesPage() {
               aria-label="Search sites"
             />
             <svg
-              width="16"
-              height="16"
+              width="15"
+              height="15"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="var(--text-muted)"
+              stroke="var(--ink-3)"
               strokeWidth="2"
               style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)" }}
             >
@@ -252,36 +228,44 @@ export default function SitesPage() {
             </svg>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-            <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 600 }}>
-              Status:
-            </span>
-            <div style={{ display: "flex", gap: "6px" }}>
-              <button
-                type="button"
-                onClick={() => setSealFilter("ALL")}
-                className={`btn btn-sm ${sealFilter === "ALL" ? "btn-primary" : "btn-secondary"}`}
-                suppressHydrationWarning
-              >
-                All Sites ({mounted ? totalSites : 0})
-              </button>
-              <button
-                type="button"
-                onClick={() => setSealFilter("SEALED")}
-                className={`btn btn-sm ${sealFilter === "SEALED" ? "btn-emerald" : "btn-secondary"}`}
-                suppressHydrationWarning
-              >
-                Sealed ({mounted ? sealedCount : 0})
-              </button>
-              <button
-                type="button"
-                onClick={() => setSealFilter("UNSEALED")}
-                className={`btn btn-sm ${sealFilter === "UNSEALED" ? "btn-outline-gold" : "btn-secondary"}`}
-                suppressHydrationWarning
-              >
-                Not Sealed ({mounted ? totalSites - sealedCount : 0})
-              </button>
-            </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={() => setSealFilter("ALL")}
+              className="btn btn-sm btn-secondary"
+              style={{
+                background: sealFilter === "ALL" ? "rgba(255, 255, 255, 0.08)" : "transparent",
+                color: sealFilter === "ALL" ? "var(--ink)" : "var(--ink-3)",
+              }}
+              suppressHydrationWarning
+            >
+              All Sites ({mounted ? totalSites : 0})
+            </button>
+            <button
+              type="button"
+              onClick={() => setSealFilter("SEALED")}
+              className="btn btn-sm btn-secondary"
+              style={{
+                background: sealFilter === "SEALED" ? "rgba(110, 231, 183, 0.08)" : "transparent",
+                color: sealFilter === "SEALED" ? "var(--ok)" : "var(--ink-3)",
+                borderColor: sealFilter === "SEALED" ? "rgba(110, 231, 183, 0.2)" : "var(--line)",
+              }}
+              suppressHydrationWarning
+            >
+              Sealed ({mounted ? sealedCount : 0})
+            </button>
+            <button
+              type="button"
+              onClick={() => setSealFilter("UNSEALED")}
+              className="btn btn-sm btn-secondary"
+              style={{
+                background: sealFilter === "UNSEALED" ? "rgba(255, 255, 255, 0.05)" : "transparent",
+                color: sealFilter === "UNSEALED" ? "var(--ink)" : "var(--ink-3)",
+              }}
+              suppressHydrationWarning
+            >
+              Not Sealed ({mounted ? totalSites - sealedCount : 0})
+            </button>
           </div>
         </div>
       </section>

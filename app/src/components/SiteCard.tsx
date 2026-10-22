@@ -34,15 +34,11 @@ export function SiteCard({ site }: SiteCardProps) {
       >
         <span
           style={{
-            fontSize: "0.75rem",
+            fontSize: "0.74rem",
             textTransform: "uppercase",
-            letterSpacing: "0.07em",
-            fontWeight: 700,
-            color: "var(--gold-primary)",
-            background: "var(--gold-bg)",
-            border: "1px solid var(--gold-border)",
-            padding: "3px 10px",
-            borderRadius: "var(--radius-xs)",
+            letterSpacing: "0.06em",
+            fontWeight: 500,
+            color: "var(--ink-3)",
           }}
         >
           {site.era}
@@ -50,16 +46,16 @@ export function SiteCard({ site }: SiteCardProps) {
         <StatusBadge status={isSealed ? "sealed" : "unsealed"} />
       </div>
 
-      {/* Site Name */}
+      {/* Site Name - Inter font, weight 500 */}
       <h3
         style={{
-          fontFamily: "var(--font-serif)",
-          fontSize: "1.35rem",
-          fontWeight: 700,
-          color: "var(--text-primary)",
+          fontFamily: "var(--font-sans)",
+          fontSize: "1.25rem",
+          fontWeight: 500,
+          color: "var(--ink)",
           marginBottom: "10px",
-          lineHeight: 1.3,
-          letterSpacing: "0.01em",
+          lineHeight: 1.25,
+          letterSpacing: "-0.015em",
         }}
       >
         {site.name}
@@ -68,26 +64,23 @@ export function SiteCard({ site }: SiteCardProps) {
       {/* Summary */}
       <p
         style={{
-          color: "var(--text-secondary)",
-          fontSize: "0.92rem",
-          lineHeight: 1.6,
-          marginBottom: "20px",
+          color: "var(--ink-2)",
+          fontSize: "0.9rem",
+          lineHeight: 1.55,
+          marginBottom: "24px",
           flexGrow: 1,
         }}
       >
         {site.summary}
       </p>
 
-      {/* Approximate Location Notice with 50km Blur Radar Simulation */}
+      {/* Approximate Location Notice with 50km Blur Radar Signature */}
       <div
         style={{
-          background: "#080B12",
-          border: "1px solid rgba(255, 255, 255, 0.08)",
-          borderRadius: "var(--radius-md)",
-          padding: "14px 16px",
+          borderTop: "1px solid var(--line)",
+          paddingTop: "16px",
+          marginTop: "auto",
           marginBottom: "20px",
-          position: "relative",
-          overflow: "hidden",
         }}
       >
         <div
@@ -95,35 +88,25 @@ export function SiteCard({ site }: SiteCardProps) {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            marginBottom: "8px",
+            marginBottom: "10px",
           }}
         >
-          <div
+          <span
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              fontSize: "0.74rem",
-              color: "var(--text-muted)",
+              fontSize: "0.72rem",
+              color: "var(--ink-3)",
               textTransform: "uppercase",
-              letterSpacing: "0.06em",
-              fontWeight: 700,
+              letterSpacing: "0.05em",
             }}
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-              <path d="M2 12h20" />
-            </svg>
-            Location Protection (50 km Blur Zone)
-          </div>
+            50 km Blur Zone
+          </span>
 
           <span
             style={{
-              fontSize: "0.7rem",
+              fontSize: "0.72rem",
               fontFamily: "var(--font-mono)",
-              color: isSealed ? "var(--emerald-light)" : "var(--gold-primary)",
-              fontWeight: 600,
+              color: isSealed ? "var(--ok)" : "var(--ink-3)",
             }}
           >
             {isSealed ? "E2EE Sealed" : "Unsealed Draft"}
@@ -137,14 +120,11 @@ export function SiteCard({ site }: SiteCardProps) {
             gap: "12px",
           }}
         >
-          {/* Visual Mini Radar Graphic */}
+          {/* Nét ký riêng: Vòng tròn mờ 50 km SVG nét đứt */}
           <div
             style={{
-              width: "38px",
-              height: "38px",
-              borderRadius: "50%",
-              background: "rgba(245, 158, 11, 0.05)",
-              border: "1px solid var(--gold-border)",
+              width: "42px",
+              height: "42px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -153,35 +133,42 @@ export function SiteCard({ site }: SiteCardProps) {
             }}
             aria-hidden="true"
           >
-            {/* Concentric circle */}
-            <div
-              style={{
-                width: "20px",
-                height: "20px",
-                borderRadius: "50%",
-                border: "1px dashed rgba(245, 158, 11, 0.4)",
-              }}
-            />
-            {/* Center dot */}
-            <div
-              style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "var(--gold-primary)",
-                position: "absolute",
-              }}
-            />
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+              <circle
+                cx="21"
+                cy="21"
+                r="18"
+                stroke="var(--ink-3)"
+                strokeWidth="1.2"
+                strokeDasharray="3 3"
+                opacity="0.8"
+              />
+              <circle
+                cx="21"
+                cy="21"
+                r="9"
+                stroke="var(--ink-3)"
+                strokeWidth="0.8"
+                opacity="0.3"
+              />
+              {/* Toạ độ thật chưa mở khoá: điểm tâm mờ */}
+              <circle
+                cx="21"
+                cy="21"
+                r="2"
+                fill="var(--ink-3)"
+                opacity="0.5"
+              />
+            </svg>
           </div>
 
           {/* Mandatory contract copy: Approximate location: {lat}, {lng} (within 50 km) */}
           <div
             style={{
               fontFamily: "var(--font-mono)",
-              fontSize: "0.85rem",
-              color: "var(--text-primary)",
-              fontWeight: 600,
-              lineHeight: 1.4,
+              fontSize: "0.82rem",
+              color: "var(--ink)",
+              lineHeight: 1.45,
             }}
           >
             Approximate location: {site.blurred.lat.toFixed(1)}, {site.blurred.lng.toFixed(1)} (within {site.blurred.radiusKm} km)
@@ -196,18 +183,17 @@ export function SiteCard({ site }: SiteCardProps) {
         style={{
           width: "100%",
           justifyContent: "space-between",
-          padding: "11px 16px",
+          padding: "9px 14px",
         }}
       >
-        <span style={{ fontWeight: 600 }}>Inspect Site Vault</span>
+        <span>Inspect Site Vault</span>
         <svg
-          width="16"
-          height="16"
+          width="15"
+          height="15"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2.5"
-          style={{ transition: "transform 0.15s ease" }}
+          strokeWidth="2"
         >
           <line x1="5" y1="12" x2="19" y2="12" />
           <polyline points="12 5 19 12 12 19" />
