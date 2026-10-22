@@ -42,7 +42,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. The app starts in **mock (simulation) mode**: sign in as `diglead`, `heritage`, `custodian` or `researcher` at `/mock/login`, and approve role changes at `/mock/approvals`. A red banner marks the simulation on every page. Use a separate browser profile for each person. Data is shared through the server (`app/data/*.json`; `git checkout -- app/data` resets it).
+Open http://localhost:3000. The app starts in **mock (simulation) mode**: sign in as `diglead`, `heritage`, `custodian` or `researcher` at `/mock/login`, and approve role changes at `/mock/approvals`. A red banner marks the simulation on every page. Use a separate browser profile for each person. Data is shared through the server (`app/data/*.json`). `npm run demo:reset` restores the starting state; `npm run test:flow` runs the whole 2-of-3 demo flow against the running app and reports PASS/FAIL.
 
 **Live mode (TideCloak).** Start TideCloak (`tideorg/tidecloak-dev`), run `app/init/tcinit.sh` to create the realm and export `app/tidecloak.json`, create the `_tide_sitecoords.selfencrypt` and `_tide_sitecoords.selfdecrypt` roles, then set `NEXT_PUBLIC_AUTH_MODE=live`. Full details: [`docs/contract.md`](docs/contract.md).
 

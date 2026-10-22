@@ -21,7 +21,8 @@ Every approval below is a button click on `/mock/approvals`.
 
 ## Before you hit record
 
-1. Reset the data: `git checkout -- app/data`, then delete the `app/.mock-data` folder.
+1. Reset everything: `cd app && npm run demo:reset` (works while the app is running). Optional check: `npm run test:flow`
+   runs the whole flow and ends with the demo reset again.
 2. `cd app && npm run dev`, open http://localhost:3000. Check the red **SIMULATION MODE** banner is visible.
 3. Use the site **Thornwick Hollow** (it starts unsealed). Fictional coordinates to type: **-31.4321, 141.9876**.
 4. Close notifications; browser zoom 110%; hide bookmarks. Rehearse once, with a timer.

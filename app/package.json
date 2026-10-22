@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "init": "bash init/tcinit.sh"
+    "init": "bash init/tcinit.sh",
+    "demo:reset": "node scripts/demo-reset.mjs",
+    "test:flow": "node scripts/test-flow.mjs"
   },
   "dependencies": {
     "@tidecloak/nextjs": "^0.14.40",
