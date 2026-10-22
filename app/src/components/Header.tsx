@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTideCloak } from "./tidecloak";
@@ -8,13 +8,17 @@ import { resetMockData } from "./api";
 
 export function Header() {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const {
     authenticated,
     user,
     login,
     logout,
     switchUser,
-    availableUsers,
     currentProfileKey,
     hasRealmRole,
   } = useTideCloak();
@@ -27,7 +31,7 @@ export function Header() {
     setTimeout(() => {
       setResetMessage(null);
       window.location.reload();
-    }, 800);
+    }, 600);
   };
 
   const hasEncrypt = hasRealmRole("_tide_sitecoords.selfencrypt");
@@ -40,15 +44,15 @@ export function Header() {
         <div className="container demo-bar-inner">
           <div className="demo-role-selector">
             <span className="demo-label">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
-              TideCloak Demo Profile:
+              Demo Profile:
             </span>
             <select
               id="demo-profile-select"
               className="demo-select"
-              value={currentProfileKey}
+              value={mounted ? currentProfileKey : "researcher"}
               onChange={(e) => switchUser(e.target.value)}
               aria-label="Switch active demo profile"
             >
@@ -60,25 +64,25 @@ export function Header() {
             </select>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            {authenticated && (
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+            {mounted && authenticated && (
               <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
                 {hasEncrypt && (
                   <span
                     className="badge badge-info"
-                    style={{ fontSize: "0.72rem", padding: "2px 8px" }}
-                    title="User holds _tide_sitecoords.selfencrypt"
+                    style={{ fontSize: "0.72rem", padding: "3px 8px" }}
+                    title="User token holds _tide_sitecoords.selfencrypt"
                   >
-                    role: selfencrypt
+                    🔑 role: selfencrypt
                   </span>
                 )}
                 {hasDecrypt && (
                   <span
                     className="badge badge-sealed"
-                    style={{ fontSize: "0.72rem", padding: "2px 8px" }}
-                    title="User holds _tide_sitecoords.selfdecrypt (2 of 3 authorized)"
+                    style={{ fontSize: "0.72rem", padding: "3px 8px" }}
+                    title="User token holds _tide_sitecoords.selfdecrypt (2 of 3 stewards authorized)"
                   >
-                    role: selfdecrypt
+                    🔓 role: selfdecrypt
                   </span>
                 )}
                 {!hasEncrypt && !hasDecrypt && (
@@ -86,12 +90,13 @@ export function Header() {
                     className="badge"
                     style={{
                       fontSize: "0.72rem",
-                      padding: "2px 8px",
+                      padding: "3px 8px",
                       background: "rgba(255,255,255,0.06)",
-                      color: "var(--text-muted)",
+                      color: "var(--text-secondary)",
+                      border: "1px solid rgba(255,255,255,0.1)",
                     }}
                   >
-                    public blurred viewer
+                    👁️ generalized 50km view
                   </span>
                 )}
               </div>
@@ -101,10 +106,14 @@ export function Header() {
               type="button"
               onClick={handleResetData}
               className="btn btn-secondary btn-sm"
-              style={{ fontSize: "0.75rem", padding: "3px 8px", height: "26px" }}
+              style={{ fontSize: "0.75rem", padding: "4px 10px" }}
               title="Reset mock sites and audit log to initial state"
             >
-              {resetMessage || "Reset Demo Data"}
+              {resetMessage ? (
+                <span style={{ color: "var(--emerald-light)" }}>✓ {resetMessage}</span>
+              ) : (
+                "Reset Demo Data"
+              )}
             </button>
           </div>
         </div>
@@ -123,16 +132,7 @@ export function Header() {
             </div>
             <div>
               <span className="nav-brand-text">Custodian Vault</span>
-              <span
-                style={{
-                  display: "block",
-                  fontSize: "0.68rem",
-                  color: "var(--amber-primary)",
-                  fontWeight: 600,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                }}
-              >
+              <span className="nav-brand-sub">
                 TideCloak 2-of-3 E2EE Protected
               </span>
             </div>
@@ -143,18 +143,18 @@ export function Header() {
               href="/"
               className={`nav-link ${pathname === "/" ? "active" : ""}`}
             >
-              Sites
+              Archaeological Sites
             </Link>
             <Link
               href="/audit"
               className={`nav-link ${pathname === "/audit" ? "active" : ""}`}
             >
-              Audit Log
+              Audit Trail
             </Link>
           </div>
 
           <div className="nav-user-panel">
-            {authenticated && user ? (
+            {mounted && authenticated && user ? (
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <div className="user-badge" title={user.roleDescription}>
                   <div className="user-avatar-dot" />
@@ -166,7 +166,7 @@ export function Header() {
                   className="btn btn-secondary btn-sm"
                   aria-label="Sign out of Custodian Vault"
                 >
-                  Logout
+                  Sign Out
                 </button>
               </div>
             ) : (

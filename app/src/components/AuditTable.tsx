@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { AuditEvent, AuditAction } from "./types";
+import { AuditEvent } from "./types";
 import { StatusBadge } from "./StatusBadge";
 
 interface AuditTableProps {
@@ -44,6 +44,21 @@ export function AuditTable({ events }: AuditTableProps) {
     }
   };
 
+  const getActionExplanation = (action: string) => {
+    switch (action) {
+      case "DECRYPT_DENIED":
+        return "Quorum threshold unmet (TideCloak blocked lone actor)";
+      case "DECRYPT_SUCCEEDED":
+        return "2-of-3 steward consensus verified (Local client decrypt)";
+      case "SITE_SEALED":
+        return "Dig lead sealed raw GPS with tag 'sitecoords'";
+      case "ACCESS_REQUESTED":
+        return "Researcher submitted justification for steward review";
+      default:
+        return "Cryptographic operation verified";
+    }
+  };
+
   return (
     <div>
       {/* Search and Filters Bar */}
@@ -57,15 +72,15 @@ export function AuditTable({ events }: AuditTableProps) {
           marginBottom: "20px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: "1 1 300px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: "1 1 320px" }}>
           <div style={{ position: "relative", width: "100%" }}>
             <input
               type="text"
               className="form-input"
-              placeholder="Search by actor, site, or action..."
+              placeholder="Search audit trail by actor, site, or action..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ paddingLeft: "36px" }}
+              style={{ paddingLeft: "38px" }}
               aria-label="Filter audit log records"
             />
             <svg
@@ -75,7 +90,7 @@ export function AuditTable({ events }: AuditTableProps) {
               fill="none"
               stroke="var(--text-muted)"
               strokeWidth="2"
-              style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)" }}
+              style={{ position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)" }}
             >
               <circle cx="11" cy="11" r="8" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -83,22 +98,22 @@ export function AuditTable({ events }: AuditTableProps) {
           </div>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <label htmlFor="audit-filter-action" style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 500 }}>
-            Action:
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+          <label htmlFor="audit-filter-action" style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 600 }}>
+            Filter Action:
           </label>
           <select
             id="audit-filter-action"
             className="demo-select"
             value={filterAction}
             onChange={(e) => setFilterAction(e.target.value)}
-            style={{ padding: "8px 12px", minWidth: "160px" }}
+            style={{ padding: "8px 12px", minWidth: "180px" }}
           >
-            <option value="ALL">All Actions ({events.length})</option>
-            <option value="SITE_SEALED">Site Sealed</option>
-            <option value="ACCESS_REQUESTED">Access Requested</option>
-            <option value="DECRYPT_SUCCEEDED">Decryption Succeeded</option>
-            <option value="DECRYPT_DENIED">Decryption Denied</option>
+            <option value="ALL">All Events ({events.length})</option>
+            <option value="SITE_SEALED">Site Sealed ({events.filter(e => e.action === "SITE_SEALED").length})</option>
+            <option value="ACCESS_REQUESTED">Access Requested ({events.filter(e => e.action === "ACCESS_REQUESTED").length})</option>
+            <option value="DECRYPT_SUCCEEDED">Decryption Succeeded ({events.filter(e => e.action === "DECRYPT_SUCCEEDED").length})</option>
+            <option value="DECRYPT_DENIED">Decryption Denied ({events.filter(e => e.action === "DECRYPT_DENIED").length})</option>
           </select>
         </div>
       </div>
@@ -108,17 +123,17 @@ export function AuditTable({ events }: AuditTableProps) {
         <table className="audit-table" aria-label="Cryptographic Audit Event Registry">
           <thead>
             <tr>
-              <th scope="col">Timestamp (UTC)</th>
-              <th scope="col">Actor</th>
-              <th scope="col">Site</th>
-              <th scope="col">Action</th>
-              <th scope="col">Security Context</th>
+              <th scope="col">Timestamp</th>
+              <th scope="col">Actor (From JWT)</th>
+              <th scope="col">Site Dossier</th>
+              <th scope="col">Cryptographic Action</th>
+              <th scope="col">Security Governance Context</th>
             </tr>
           </thead>
           <tbody>
             {filteredEvents.length === 0 ? (
               <tr>
-                <td colSpan={5} style={{ textAlign: "center", padding: "40px 20px", color: "var(--text-muted)" }}>
+                <td colSpan={5} style={{ textAlign: "center", padding: "48px 20px", color: "var(--text-muted)" }}>
                   No audit events found matching the selected filter.
                 </td>
               </tr>
@@ -127,21 +142,21 @@ export function AuditTable({ events }: AuditTableProps) {
                 <tr key={`${ev.at}-${idx}`}>
                   {/* Timestamp */}
                   <td style={{ fontFamily: "var(--font-mono)", fontSize: "0.82rem", whiteSpace: "nowrap" }}>
-                    <span title={ev.at}>{formatTimestamp(ev.at)}</span>
+                    <span style={{ color: "var(--text-primary)" }}>{formatTimestamp(ev.at)}</span>
                   </td>
 
                   {/* Actor */}
                   <td>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "var(--bg-surface-elevated)", padding: "4px 10px", borderRadius: "9999px", border: "1px solid var(--border-subtle)" }}>
                       <span
                         style={{
                           width: "6px",
                           height: "6px",
                           borderRadius: "50%",
-                          background: ev.actor === "diglead" ? "var(--amber-primary)" : "var(--cyan-primary)",
+                          background: ev.actor === "diglead" ? "var(--gold-primary)" : "var(--emerald-primary)",
                         }}
                       />
-                      <span style={{ fontFamily: "var(--font-mono)", fontWeight: 600, fontSize: "0.86rem" }}>
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.82rem", fontWeight: 600 }}>
                         {ev.actor}
                       </span>
                     </div>
@@ -154,33 +169,31 @@ export function AuditTable({ events }: AuditTableProps) {
                       style={{
                         color: "var(--text-primary)",
                         fontWeight: 600,
-                        textDecoration: "underline",
-                        textDecorationColor: "rgba(255,255,255,0.2)",
+                        textDecoration: "none",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
                       }}
                     >
-                      {ev.siteName || ev.siteId}
+                      <span style={{ borderBottom: "1px dotted var(--border-medium)" }}>
+                        {ev.siteName || ev.siteId}
+                      </span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
+                      </svg>
                     </Link>
                   </td>
 
-                  {/* Action with Human Readable Label */}
+                  {/* Action */}
                   <td>
-                    <StatusBadge status={ev.action} />
+                    <StatusBadge status={ev.action} size="sm" />
                   </td>
 
-                  {/* Security Context */}
-                  <td style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-                    {ev.action === "DECRYPT_SUCCEEDED" && (
-                      <span style={{ color: "#6EE7B7" }}>2-of-3 Steward Threshold Verified</span>
-                    )}
-                    {ev.action === "DECRYPT_DENIED" && (
-                      <span style={{ color: "#FCA5A5" }}>Blocked: Unapproved Token</span>
-                    )}
-                    {ev.action === "SITE_SEALED" && (
-                      <span>E2EE Tag sitecoords</span>
-                    )}
-                    {ev.action === "ACCESS_REQUESTED" && (
-                      <span>Pending Tide QEA Review</span>
-                    )}
+                  {/* Governance Context */}
+                  <td style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>
+                    {getActionExplanation(ev.action)}
                   </td>
                 </tr>
               ))

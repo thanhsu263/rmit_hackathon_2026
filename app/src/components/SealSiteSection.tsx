@@ -39,6 +39,12 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
   const previewBlurredLat = hasValidInputs ? Math.round(numLat * 2) / 2 : null;
   const previewBlurredLng = hasValidInputs ? Math.round(numLng * 2) / 2 : null;
 
+  const handleFillDemoCoords = (lat: number, lng: number) => {
+    setLatInput(lat.toString());
+    setLngInput(lng.toString());
+    setErrorMessage(null);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -93,7 +99,7 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
       setLatInput("");
       setLngInput("");
       setSuccessMessage(
-        `Successfully sealed site coordinates with TideCloak E2EE! Blurred location set to ${blurred.lat}, ${blurred.lng}.`
+        `Successfully sealed site coordinates with TideCloak E2EE! Generalized boundary committed to ${blurred.lat}, ${blurred.lng} (50 km blur radius).`
       );
 
       onSiteSealed(updatedSite);
@@ -108,57 +114,76 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
     <div
       className="vault-card"
       style={{
-        border: "1px solid var(--amber-border)",
-        background: "rgba(245, 158, 11, 0.04)",
+        border: "1px solid var(--gold-border)",
+        background: "rgba(245, 158, 11, 0.03)",
+        marginTop: "24px",
         marginBottom: "24px",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px" }}>
+      {/* Lead Title & Authorization Badge */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: "12px",
+          marginBottom: "16px",
+        }}
+      >
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <div
             style={{
-              width: "32px",
-              height: "32px",
+              width: "36px",
+              height: "36px",
               borderRadius: "var(--radius-sm)",
-              background: "var(--amber-bg)",
-              color: "var(--amber-primary)",
+              background: "var(--gold-bg)",
+              color: "var(--gold-primary)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              boxShadow: "0 0 12px rgba(245, 158, 11, 0.2)",
             }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             </svg>
           </div>
           <div>
-            <h3 style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
-              Dig Lead Vault Seal Control
+            <h3 style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--text-primary)" }}>
+              Dig Lead Vault Sealing Console
             </h3>
-            <span style={{ fontSize: "0.78rem", color: "var(--amber-primary)", fontWeight: 600 }}>
-              Authorized by role: _tide_sitecoords.selfencrypt
+            <span style={{ fontSize: "0.78rem", color: "var(--gold-primary)", fontWeight: 700 }}>
+              Authorized by realm role: <code style={{ fontFamily: "var(--font-mono)" }}>_tide_sitecoords.selfencrypt</code>
             </span>
           </div>
         </div>
 
-        <span className="badge badge-unsealed">Dig Lead Role Active</span>
+        <span className="badge badge-unsealed">
+          🔒 Field Sealing Authorized
+        </span>
       </div>
 
-      <p style={{ color: "var(--text-secondary)", fontSize: "0.88rem", marginBottom: "20px" }}>
-        Enter true GPS coordinates from the field. They will be encrypted in your browser with tag{" "}
-        <code style={{ color: "var(--amber-primary)", fontFamily: "var(--font-mono)" }}>sitecoords</code>{" "}
-        before transmission. The server will only ever receive ciphertext and the blurred location.
+      <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "20px" }}>
+        Enter true GPS coordinates to commit this archaeological discovery. Coordinates are encrypted locally in your browser with TideCloak. The server only receives ciphertext, and a generalized 50 km boundary is derived automatically.
       </p>
 
+      {/* Success banner */}
       {successMessage && (
         <div className="alert-banner alert-banner-success" role="status">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--emerald-primary)" strokeWidth="2.5" style={{ flexShrink: 0 }}>
             <polyline points="20 6 9 17 4 12" />
           </svg>
-          <p>{successMessage}</p>
+          <div>
+            <strong style={{ display: "block", color: "var(--emerald-light)", marginBottom: "2px" }}>
+              Vault Sealed Successfully
+            </strong>
+            <p style={{ fontSize: "0.88rem" }}>{successMessage}</p>
+          </div>
         </div>
       )}
 
+      {/* Error banner */}
       {errorMessage && (
         <div className="alert-banner alert-banner-denied" role="alert">
           <p>{errorMessage}</p>
@@ -166,103 +191,130 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
       )}
 
       <form onSubmit={handleSubmit}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px" }}>
-          <div className="form-group">
-            <label htmlFor="exact-latitude" className="form-label">
-              Exact Latitude [-90 to 90]
+        {/* Input grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px", marginBottom: "16px" }}>
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <label htmlFor="seal-lat" className="form-label">
+              Exact Latitude (°N / °S)
             </label>
             <input
-              id="exact-latitude"
               type="number"
               step="any"
+              id="seal-lat"
               className="form-input"
-              placeholder="e.g. 36.3892"
+              placeholder="e.g. 36.4128"
               value={latInput}
               onChange={(e) => setLatInput(e.target.value)}
               disabled={isSubmitting}
               required
             />
+            <span className="form-hint">Valid range: -90.000000 to +90.000000</span>
           </div>
 
-          <div className="form-group">
-            <label htmlFor="exact-longitude" className="form-label">
-              Exact Longitude [-180 to 180]
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <label htmlFor="seal-lng" className="form-label">
+              Exact Longitude (°E / °W)
             </label>
             <input
-              id="exact-longitude"
               type="number"
               step="any"
+              id="seal-lng"
               className="form-input"
-              placeholder="e.g. 25.4611"
+              placeholder="e.g. 25.4317"
               value={lngInput}
               onChange={(e) => setLngInput(e.target.value)}
               disabled={isSubmitting}
               required
             />
+            <span className="form-hint">Valid range: -180.000000 to +180.000000</span>
           </div>
         </div>
 
-        {/* Real-time Computed Blurred Preview */}
-        {hasValidInputs && (
+        {/* Live Calculation & Blur Visualization Box */}
+        {hasValidInputs && previewBlurredLat !== null && previewBlurredLng !== null && (
           <div
             style={{
-              background: "#080B12",
-              border: "1px solid var(--border-subtle)",
+              background: "#080B13",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
               borderRadius: "var(--radius-md)",
-              padding: "12px 16px",
+              padding: "14px 18px",
               marginBottom: "18px",
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
               flexWrap: "wrap",
-              gap: "8px",
+              gap: "12px",
             }}
           >
             <div>
-              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", display: "block", textTransform: "uppercase" }}>
-                Auto-Computed Blurred Coordinates (Nearest 0.5°)
+              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block" }}>
+                Auto-Derived Generalized Boundary (Contract Formula)
               </span>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.95rem", color: "var(--amber-primary)", fontWeight: 600 }}>
-                {previewBlurredLat?.toFixed(1)}, {previewBlurredLng?.toFixed(1)} (radius 50 km)
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.92rem", color: "var(--gold-light)", fontWeight: 600 }}>
+                Approximate: {previewBlurredLat.toFixed(1)}, {previewBlurredLng.toFixed(1)} (within 50 km)
               </span>
             </div>
-            <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>
-              Public research map view
+
+            <span className="badge badge-info" style={{ fontSize: "0.7rem" }}>
+              Formula: Math.round(deg * 2) / 2
             </span>
           </div>
         )}
 
-        <button
-          type="submit"
-          id="seal-coordinates-btn"
-          disabled={isSubmitting || !latInput || !lngInput}
-          className="btn btn-primary"
-          aria-label="Encrypt and seal coordinates"
-        >
-          {isSubmitting ? (
-            <>
-              <div
-                className="animate-spin"
-                style={{
-                  width: "14px",
-                  height: "14px",
-                  borderRadius: "50%",
-                  border: "2px solid #000",
-                  borderTopColor: "transparent",
-                }}
-              />
-              Working...
-            </>
-          ) : (
-            <>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-              Seal Coordinates with TideCloak E2EE
-            </>
-          )}
-        </button>
+        {/* Quick Demo Fill Buttons & Submit */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px", marginTop: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+            <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>Demo Quick-Fill:</span>
+            <button
+              type="button"
+              onClick={() => handleFillDemoCoords(36.4128, 25.4317)}
+              className="btn btn-secondary btn-sm"
+              style={{ fontSize: "0.76rem", padding: "4px 8px" }}
+            >
+              Sanctuary (36.41, 25.43)
+            </button>
+            <button
+              type="button"
+              onClick={() => handleFillDemoCoords(52.0194, 1.3482)}
+              className="btn btn-secondary btn-sm"
+              style={{ fontSize: "0.76rem", padding: "4px 8px" }}
+            >
+              Barrow Mound (52.02, 1.35)
+            </button>
+          </div>
+
+          <button
+            type="submit"
+            id="submit-seal-btn"
+            disabled={isSubmitting || !latInput || !lngInput}
+            className="btn btn-primary"
+            aria-label="Encrypt and seal site coordinates"
+          >
+            {isSubmitting ? (
+              <>
+                <div
+                  className="animate-spin"
+                  style={{
+                    width: "14px",
+                    height: "14px",
+                    borderRadius: "50%",
+                    border: "2px solid #000",
+                    borderTopColor: "transparent",
+                  }}
+                />
+                Encrypting &amp; Sealing...
+              </>
+            ) : (
+              <>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                Encrypt &amp; Seal Coordinates
+              </>
+            )}
+          </button>
+        </div>
       </form>
     </div>
   );

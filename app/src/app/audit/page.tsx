@@ -42,37 +42,51 @@ export default function AuditPage() {
     <div className="container">
       {/* Header section */}
       <section style={{ marginBottom: "28px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
-          <div>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "20px" }}>
+          <div style={{ maxWidth: "740px" }}>
             <div
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "8px",
-                fontSize: "0.8rem",
+                fontSize: "0.76rem",
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
-                color: "var(--amber-primary)",
+                color: "var(--gold-primary)",
+                background: "var(--gold-bg)",
+                border: "1px solid var(--gold-border)",
+                padding: "4px 12px",
+                borderRadius: "9999px",
                 fontWeight: 700,
-                marginBottom: "8px",
+                marginBottom: "12px",
               }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>
-              Cryptographic Audit Log
+              Cryptographic Audit Stream
             </div>
-            <h1 style={{ fontSize: "2.2rem", fontWeight: 800, letterSpacing: "-0.03em", marginBottom: "8px" }}>
+
+            <h1
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontSize: "2.4rem",
+                fontWeight: 700,
+                letterSpacing: "-0.01em",
+                marginBottom: "10px",
+                color: "var(--text-primary)",
+              }}
+            >
               Immutable Governance Trail
             </h1>
-            <p style={{ color: "var(--text-secondary)", fontSize: "1rem", maxWidth: "700px", lineHeight: 1.6 }}>
-              All client-side decryption attempts, access requests, and site sealing actions are recorded
-              with actor identity derived from verified TideCloak tokens. Sorted newest first.
+
+            <p style={{ color: "var(--text-secondary)", fontSize: "1.02rem", lineHeight: 1.65 }}>
+              All client-side decryption attempts, access requests, and site sealing actions are permanently recorded. Actor identities are extracted directly from verified TideCloak JWT tokens. Ordered newest first.
             </p>
           </div>
 
-          <div style={{ display: "flex", gap: "10px" }}>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
             <button
               type="button"
               onClick={loadAudit}
@@ -119,7 +133,7 @@ export default function AuditPage() {
         <ErrorRetryView message={error} onRetry={loadAudit} />
       ) : events.length === 0 ? (
         <EmptyStateView
-          title="No Audit Records"
+          title="No Audit Records Found"
           description="No cryptographic operations or access requests have been logged yet."
         />
       ) : (

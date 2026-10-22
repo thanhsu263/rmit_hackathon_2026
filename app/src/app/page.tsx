@@ -69,64 +69,71 @@ export default function SitesPage() {
             alignItems: "flex-start",
             justifyContent: "space-between",
             flexWrap: "wrap",
-            gap: "20px",
-            marginBottom: "20px",
+            gap: "24px",
+            marginBottom: "28px",
           }}
         >
-          <div>
+          <div style={{ maxWidth: "720px" }}>
             <div
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "8px",
-                fontSize: "0.8rem",
+                fontSize: "0.76rem",
                 textTransform: "uppercase",
                 letterSpacing: "0.08em",
-                color: "var(--amber-primary)",
+                color: "var(--gold-primary)",
+                background: "var(--gold-bg)",
+                border: "1px solid var(--gold-border)",
+                padding: "4px 12px",
+                borderRadius: "9999px",
                 fontWeight: 700,
-                marginBottom: "8px",
+                marginBottom: "14px",
               }}
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
-              Zero-Knowledge Archaeological Vault
+              Zero-Knowledge Archaeological Heritage Vault
             </div>
+
             <h1
               style={{
-                fontSize: "2.4rem",
-                fontWeight: 800,
-                letterSpacing: "-0.03em",
+                fontFamily: "var(--font-serif)",
+                fontSize: "2.6rem",
+                fontWeight: 700,
+                letterSpacing: "-0.01em",
                 lineHeight: 1.15,
-                marginBottom: "12px",
+                marginBottom: "14px",
+                background: "linear-gradient(135deg, #FFFFFF 40%, #CBD5E1 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
               }}
             >
               Archaeological Heritage Sites
             </h1>
+
             <p
               style={{
                 color: "var(--text-secondary)",
                 fontSize: "1.05rem",
-                maxWidth: "680px",
-                lineHeight: 1.6,
+                lineHeight: 1.65,
               }}
             >
-              Exact coordinates are sealed in the browser with TideCloak client-side encryption.
-              General researchers only view coordinates blurred within a 50 km radius.
-              Decryption requires consensus from 2 of 3 multi-party stewards.
+              Exact excavation coordinates are sealed in the browser with Tide end-to-end encryption under tag <code style={{ color: "var(--gold-light)", fontFamily: "var(--font-mono)", background: "rgba(245,158,11,0.08)", padding: "2px 6px", borderRadius: "4px" }}>sitecoords</code>. Public researchers view generalized 50 km boundary circles. Decrypting unblurred locations requires consensus from 2 of 3 multi-party stewards.
             </p>
           </div>
 
           {/* Quick Metrics */}
-          <div style={{ display: "flex", gap: "14px" }}>
+          <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
             <div
               className="vault-card"
-              style={{ padding: "16px 22px", minWidth: "130px", textAlign: "center" }}
+              style={{ padding: "18px 24px", minWidth: "140px", textAlign: "center" }}
             >
-              <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", display: "block" }}>
-                Total Sites
+              <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block", fontWeight: 700 }}>
+                Total Vaults
               </span>
-              <strong style={{ fontSize: "1.8rem", color: "var(--text-primary)", fontWeight: 700 }}>
+              <strong style={{ fontSize: "2rem", color: "var(--text-primary)", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
                 {totalSites}
               </strong>
             </div>
@@ -134,18 +141,65 @@ export default function SitesPage() {
             <div
               className="vault-card"
               style={{
-                padding: "16px 22px",
-                minWidth: "130px",
+                padding: "18px 24px",
+                minWidth: "140px",
                 textAlign: "center",
                 borderColor: "var(--emerald-border)",
+                background: "rgba(16, 185, 129, 0.04)",
               }}
             >
-              <span style={{ fontSize: "0.75rem", color: "var(--emerald-primary)", textTransform: "uppercase", display: "block" }}>
+              <span style={{ fontSize: "0.72rem", color: "var(--emerald-light)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block", fontWeight: 700 }}>
                 Sealed Vaults
               </span>
-              <strong style={{ fontSize: "1.8rem", color: "#6EE7B7", fontWeight: 700 }}>
+              <strong style={{ fontSize: "2rem", color: "#6EE7B7", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
                 {sealedCount}
               </strong>
+            </div>
+          </div>
+        </div>
+
+        {/* 4-Step Architectural Security Flow Banner */}
+        <div
+          style={{
+            background: "rgba(17, 22, 36, 0.5)",
+            border: "1px solid var(--border-subtle)",
+            borderRadius: "var(--radius-lg)",
+            padding: "16px 20px",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: "16px",
+            marginBottom: "24px",
+          }}
+        >
+          <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+            <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "var(--gold-bg)", color: "var(--gold-primary)", border: "1px solid var(--gold-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, flexShrink: 0 }}>1</span>
+            <div>
+              <strong style={{ fontSize: "0.85rem", color: "var(--text-primary)", display: "block" }}>Field Sealing</strong>
+              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>Dig lead encrypts raw coordinates in-browser</span>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+            <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "var(--cyan-bg)", color: "var(--cyan-primary)", border: "1px solid var(--cyan-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, flexShrink: 0 }}>2</span>
+            <div>
+              <strong style={{ fontSize: "0.85rem", color: "var(--text-primary)", display: "block" }}>50 km Blur Derivation</strong>
+              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>Rounded to 0.5° to protect from illicit looting</span>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+            <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "rgba(244, 63, 94, 0.1)", color: "var(--rose-primary)", border: "1px solid var(--rose-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, flexShrink: 0 }}>3</span>
+            <div>
+              <strong style={{ fontSize: "0.85rem", color: "var(--text-primary)", display: "block" }}>2-of-3 Steward Quorum</strong>
+              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>Lone admin is blocked; requires multi-party vote</span>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+            <span style={{ width: "24px", height: "24px", borderRadius: "50%", background: "var(--emerald-bg)", color: "var(--emerald-primary)", border: "1px solid var(--emerald-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", fontWeight: 700, flexShrink: 0 }}>4</span>
+            <div>
+              <strong style={{ fontSize: "0.85rem", color: "var(--text-primary)", display: "block" }}>In-Browser Decrypt</strong>
+              <span style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>Plaintext never touches server or databases</span>
             </div>
           </div>
         </div>
@@ -166,7 +220,7 @@ export default function SitesPage() {
             <input
               type="text"
               className="form-input"
-              placeholder="Search archaeological sites by era or name..."
+              placeholder="Search archaeological sites by era, name, or keywords..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{ paddingLeft: "38px" }}
@@ -186,8 +240,8 @@ export default function SitesPage() {
             </svg>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 500 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+            <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 600 }}>
               Status:
             </span>
             <div style={{ display: "flex", gap: "6px" }}>
@@ -208,7 +262,7 @@ export default function SitesPage() {
               <button
                 type="button"
                 onClick={() => setSealFilter("UNSEALED")}
-                className={`btn btn-sm ${sealFilter === "UNSEALED" ? "btn-outline-amber" : "btn-secondary"}`}
+                className={`btn btn-sm ${sealFilter === "UNSEALED" ? "btn-outline-gold" : "btn-secondary"}`}
               >
                 Not Sealed ({totalSites - sealedCount})
               </button>
@@ -221,7 +275,7 @@ export default function SitesPage() {
       {!authenticated ? (
         <EmptyStateView
           title="Sign-In Required"
-          description="Custodian Vault endpoints require user authentication. Please sign in or select a demo profile to continue."
+          description="Custodian Vault endpoints require user authentication. Please sign in or select a demo profile to inspect archaeological sites."
           action={
             <button
               type="button"
@@ -238,11 +292,11 @@ export default function SitesPage() {
         <ErrorRetryView message={error} onRetry={loadSites} />
       ) : filteredSites.length === 0 ? (
         <EmptyStateView
-          title="No Matching Sites"
+          title="No Matching Sites Found"
           description={
             searchQuery
-              ? `No archaeological sites matched your search "${searchQuery}".`
-              : "No sites found in this category."
+              ? `No archaeological sites matched your search query "${searchQuery}".`
+              : "No sites match the selected status filter."
           }
           action={
             <button
