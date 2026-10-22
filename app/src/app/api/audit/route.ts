@@ -1,4 +1,11 @@
-import { badRequest, notFound, requireUser, unauthorized, usernameOf } from "@/lib/auth";
+import {
+  badRequest,
+  notFound,
+  readJsonObject,
+  requireUser,
+  unauthorized,
+  usernameOf,
+} from "@/lib/auth";
 import { appendAudit, findSite, readAudit } from "@/lib/store";
 import { CLIENT_AUDIT_ACTIONS } from "@/lib/types";
 import type { AuditAction, AuditEvent } from "@/lib/types";
@@ -19,12 +26,8 @@ export async function POST(req: Request) {
   const claims = await requireUser(req);
   if (!claims) return unauthorized();
 
-  let body: AuditBody;
-  try {
-    body = (await req.json()) as AuditBody;
-  } catch {
-    return badRequest("Body must be valid JSON");
-  }
+  const body = (await readJsonObject(req)) as AuditBody | null;
+  if (!body) return badRequest("Body must be a JSON object");
 
   const { siteId, action } = body;
 

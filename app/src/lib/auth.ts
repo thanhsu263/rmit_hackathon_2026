@@ -60,6 +60,26 @@ export function usernameOf(claims: TideClaims): string {
   return typeof name === "string" && name ? name : "unknown";
 }
 
+/**
+ * Parses a JSON object body, or returns null for anything that is not one.
+ *
+ * `req.json()` accepts a bare `null` as valid JSON, and destructuring that throws a
+ * TypeError, which Next turns into a 500. A malformed body is a client error, so every
+ * non-object shape has to come back as 400 instead.
+ */
+export async function readJsonObject(
+  req: Request
+): Promise<Record<string, unknown> | null> {
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return null;
+  }
+  if (typeof body !== "object" || body === null || Array.isArray(body)) return null;
+  return body as Record<string, unknown>;
+}
+
 export function unauthorized(): Response {
   return Response.json({ error: "unauthenticated" }, { status: 401 });
 }

@@ -2,6 +2,7 @@ import {
   badRequest,
   forbidden,
   notFound,
+  readJsonObject,
   requireRole,
   requireUser,
   unauthorized,
@@ -48,12 +49,8 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   const site = await findSite(id);
   if (!site) return notFound(`Unknown site: ${id}`);
 
-  let body: SealBody;
-  try {
-    body = (await req.json()) as SealBody;
-  } catch {
-    return badRequest("Body must be valid JSON");
-  }
+  const body = (await readJsonObject(req)) as SealBody | null;
+  if (!body) return badRequest("Body must be a JSON object");
 
   const { sealedExact, blurred } = body;
 

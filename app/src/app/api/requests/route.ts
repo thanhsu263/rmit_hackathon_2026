@@ -1,4 +1,11 @@
-import { badRequest, notFound, requireUser, unauthorized, usernameOf } from "@/lib/auth";
+import {
+  badRequest,
+  notFound,
+  readJsonObject,
+  requireUser,
+  unauthorized,
+  usernameOf,
+} from "@/lib/auth";
 import { appendAudit, appendRequest, findSite, newId, readRequests } from "@/lib/store";
 import type { AccessRequest } from "@/lib/types";
 
@@ -20,12 +27,8 @@ export async function POST(req: Request) {
   const claims = await requireUser(req);
   if (!claims) return unauthorized();
 
-  let body: RequestBody;
-  try {
-    body = (await req.json()) as RequestBody;
-  } catch {
-    return badRequest("Body must be valid JSON");
-  }
+  const body = (await readJsonObject(req)) as RequestBody | null;
+  if (!body) return badRequest("Body must be a JSON object");
 
   const { siteId, reason } = body;
 
