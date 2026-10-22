@@ -88,12 +88,17 @@ export default function SitesPage() {
                 fontSize: "0.76rem",
                 textTransform: "uppercase",
                 letterSpacing: "0.06em",
-                color: "var(--ink-3)",
+                color: "var(--accent)",
+                background: "rgba(245, 158, 11, 0.08)",
+                border: "1px solid rgba(245, 158, 11, 0.2)",
+                padding: "4px 12px",
+                borderRadius: "9999px",
                 fontWeight: 500,
                 marginBottom: "16px",
               }}
             >
-              Zero-Knowledge Archaeological Vault
+              <span>🦖</span>
+              <span>Prehistoric &amp; Archaeological Heritage Vault</span>
             </div>
 
             <h1
@@ -161,32 +166,32 @@ export default function SitesPage() {
             marginBottom: "40px",
           }}
         >
-          <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-            <span style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0 }}>01</span>
+          <div className="flow-step">
+            <span className="flow-step-num" style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0, transition: "color 0.2s ease" }}>01</span>
             <div>
               <strong style={{ fontSize: "0.88rem", color: "var(--ink)", fontWeight: 500, display: "block" }}>Field Sealing</strong>
               <span style={{ fontSize: "0.82rem", color: "var(--ink-3)", lineHeight: 1.45 }}>Dig lead encrypts raw coordinates in-browser</span>
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-            <span style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0 }}>02</span>
+          <div className="flow-step">
+            <span className="flow-step-num" style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0, transition: "color 0.2s ease" }}>02</span>
             <div>
               <strong style={{ fontSize: "0.88rem", color: "var(--ink)", fontWeight: 500, display: "block" }}>50 km Blur Radius</strong>
               <span style={{ fontSize: "0.82rem", color: "var(--ink-3)", lineHeight: 1.45 }}>Derived to protect site from looting</span>
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-            <span style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0 }}>03</span>
+          <div className="flow-step">
+            <span className="flow-step-num" style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0, transition: "color 0.2s ease" }}>03</span>
             <div>
               <strong style={{ fontSize: "0.88rem", color: "var(--ink)", fontWeight: 500, display: "block" }}>2-of-3 Quorum</strong>
               <span style={{ fontSize: "0.82rem", color: "var(--ink-3)", lineHeight: 1.45 }}>Lone admin blocked; multi-party consensus</span>
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-            <span style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0 }}>04</span>
+          <div className="flow-step">
+            <span className="flow-step-num" style={{ color: "var(--ink-3)", fontSize: "0.82rem", fontFamily: "var(--font-mono)", flexShrink: 0, transition: "color 0.2s ease" }}>04</span>
             <div>
               <strong style={{ fontSize: "0.88rem", color: "var(--ink)", fontWeight: 500, display: "block" }}>In-Browser Decrypt</strong>
               <span style={{ fontSize: "0.82rem", color: "var(--ink-3)", lineHeight: 1.45 }}>Plaintext never touches servers</span>

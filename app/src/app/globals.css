@@ -82,6 +82,10 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html, body {
   background-color: var(--bg);
   color: var(--ink-2);
@@ -100,22 +104,22 @@ body {
   flex-direction: column;
 }
 
-/* Atmospheric Archaeological Cartography & Survey Grid Background Layers */
+/* Atmospheric Archaeological Cartography & Dinosaur Excavation Strata Background */
 .bg-archaeo-ambient {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 920px;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
   background-image: url('/archaeo-vault-bg.jpg');
-  background-position: center top;
+  background-position: center 25%;
   background-repeat: no-repeat;
   background-size: cover;
-  opacity: 0.22;
+  opacity: 0.42;
+  filter: brightness(1.2) contrast(1.1);
   pointer-events: none;
   z-index: 0;
-  mask-image: radial-gradient(ellipse 95% 80% at 50% 25%, black 40%, transparent 100%);
-  -webkit-mask-image: radial-gradient(ellipse 95% 80% at 50% 25%, black 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 120% 100% at 50% 30%, black 75%, rgba(0, 0, 0, 0.3) 100%);
+  -webkit-mask-image: radial-gradient(ellipse 120% 100% at 50% 30%, black 75%, rgba(0, 0, 0, 0.3) 100%);
 }
 
 .bg-archaeo-grid {
@@ -127,8 +131,8 @@ body {
   opacity: 0.55;
   pointer-events: none;
   z-index: 0;
-  mask-image: radial-gradient(circle at 50% 35%, black 45%, transparent 95%);
-  -webkit-mask-image: radial-gradient(circle at 50% 35%, black 45%, transparent 95%);
+  mask-image: radial-gradient(circle at 50% 35%, black 50%, transparent 95%);
+  -webkit-mask-image: radial-gradient(circle at 50% 35%, black 50%, transparent 95%);
 }
 
 /* Kỹ thuật 1: Giảm lửa phần chữ */
@@ -329,7 +333,7 @@ h3 {
   font-family: var(--font-mono);
 }
 
-/* Interactive Buttons - Linear restraint */
+/* Interactive Buttons - High-End Tactile Micro-Interactions */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -342,14 +346,20 @@ h3 {
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   white-space: nowrap;
   touch-action: manipulation;
+  user-select: none;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
 }
 
 .btn:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: scale(0.95) !important;
+  transition-duration: 0.05s;
 }
 
 .btn:focus-visible {
@@ -367,32 +377,37 @@ h3 {
   background: var(--accent);
   color: #07080B;
   font-weight: 500;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.25);
 }
 
 .btn-primary:hover:not(:disabled) {
   background: #FBBF24;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.45), 0 0 12px rgba(245, 158, 11, 0.25);
 }
 
 .btn-emerald {
   background: var(--ok);
   color: #07080B;
   font-weight: 500;
+  box-shadow: 0 2px 10px rgba(110, 231, 183, 0.25);
 }
 
 .btn-emerald:hover:not(:disabled) {
   background: #A7F3D0;
+  box-shadow: 0 4px 20px rgba(110, 231, 183, 0.4);
 }
 
 .btn-secondary {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.03);
   color: var(--ink-2);
   border: 1px solid var(--line);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.08);
   color: var(--ink);
-  border-color: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 .btn-outline-gold {
@@ -404,6 +419,7 @@ h3 {
 .btn-outline-gold:hover:not(:disabled) {
   border-color: var(--accent);
   color: var(--accent);
+  box-shadow: 0 2px 12px rgba(245, 158, 11, 0.2);
 }
 
 .btn-sm {
@@ -412,17 +428,67 @@ h3 {
   border-radius: var(--radius-xs);
 }
 
-/* Vault Card Architecture - ui-recipe: có nền --surface thì KHÔNG viền */
+/* Vault Card Architecture - Glassmorphic depth */
 .vault-card {
-  background: var(--surface);
+  background: rgba(14, 16, 22, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md);
   padding: 24px;
-  transition: background 0.15s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.25s ease, 
+              box-shadow 0.25s ease, 
+              background-color 0.25s ease;
   position: relative;
 }
 
 .vault-card:hover {
-  background: #11141C;
+  background: rgba(18, 21, 30, 0.9);
+  border-color: rgba(245, 158, 11, 0.25);
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.75), 0 0 24px -4px rgba(245, 158, 11, 0.1);
+}
+
+.site-card {
+  cursor: pointer;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.28s ease,
+              box-shadow 0.28s ease;
+}
+
+.site-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: 0 20px 44px -12px rgba(0, 0, 0, 0.8), 0 0 28px -4px rgba(245, 158, 11, 0.15);
+}
+
+/* Flow Steps Hover Interaction */
+.flow-step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+}
+
+.flow-step:hover {
+  transform: translateY(-2px);
+}
+
+.flow-step:hover .flow-step-num {
+  color: var(--accent) !important;
+}
+
+/* Simulated Login Role Buttons */
+.role-card-btn:hover {
+  background: rgba(245, 158, 11, 0.08) !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+  transform: translateX(4px);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.6), 0 0 16px rgba(245, 158, 11, 0.12);
+}
+
+.role-card-btn:active {
+  transform: scale(0.97) !important;
 }
 
 /* Status Badges - restrained, non-shouting */
