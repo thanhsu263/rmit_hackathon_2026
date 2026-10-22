@@ -17,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <html lang="en" suppressHydrationWarning>
+      <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }} suppressHydrationWarning>
         <SimulationBanner />
         <TideCloakProvider>
           <Suspense fallback={<div style={{ height: "108px", background: "#07080B" }} />}>

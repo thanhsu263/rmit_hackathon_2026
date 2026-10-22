@@ -2,6 +2,7 @@
 
 import React from "react";
 import { AuditAction } from "./types";
+import { AUTH_MODE } from "../lib/auth/config";
 
 interface StatusBadgeProps {
   status: "sealed" | "unsealed" | AuditAction;
@@ -11,7 +12,10 @@ interface StatusBadgeProps {
 export function StatusBadge({ status, size = "md" }: StatusBadgeProps) {
   if (status === "sealed") {
     return (
-      <span className="badge badge-sealed" title="Sealed with TideCloak E2EE">
+      <span
+        className="badge badge-sealed"
+        title={AUTH_MODE === "mock" ? "Sealed with E2EE (Simulated)" : "Sealed with TideCloak E2EE"}
+      >
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
           <path d="M7 11V7a5 5 0 0 1 10 0v4" />

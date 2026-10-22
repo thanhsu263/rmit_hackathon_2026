@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Site } from "./types";
 import { useTideCloak } from "./tidecloak";
 import { recordAuditEvent } from "./api";
+import { AUTH_MODE } from "../lib/auth/config";
 
 interface RevealCoordinatesProps {
   site: Site;
@@ -56,7 +57,9 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
               Not sealed yet
             </h4>
             <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
-              Exact coordinates not yet committed to TideCloak E2EE
+              {AUTH_MODE === "mock"
+                ? "Exact coordinates not yet committed to E2EE vault (simulated)"
+                : "Exact coordinates not yet committed to TideCloak E2EE"}
             </span>
           </div>
         </div>
@@ -247,7 +250,7 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
             </span>
           </div>
           <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", lineHeight: 1.55 }}>
-            Clicking &quot;Reveal Exact Location&quot; invokes local WebCrypto decryption. If your token does not contain authorization signed by at least 2 of 3 independent stewards, the TideCloak security policy immediately denies decryption.
+            Clicking &quot;Reveal Exact Location&quot; invokes local WebCrypto decryption. If your token does not contain authorization signed by at least 2 of 3 independent stewards, the {AUTH_MODE === "mock" ? "security policy (simulated)" : "TideCloak security policy"} immediately denies decryption.
           </p>
         </div>
       )}
@@ -263,14 +266,16 @@ export function RevealCoordinates({ site, onAuditLogged }: RevealCoordinatesProp
             </svg>
             <div>
               <strong style={{ display: "block", color: "var(--rose-primary)", fontSize: "0.95rem", marginBottom: "4px" }}>
-                Decryption Denied by TideCloak Policy
+                {AUTH_MODE === "mock"
+                  ? "Decryption Denied (TideCloak Simulation)"
+                  : "Decryption Denied by TideCloak Policy"}
               </strong>
               {/* Mandatory contract copy */}
               <p style={{ color: "#FFE4E6", fontWeight: 600, fontSize: "0.92rem", marginBottom: "8px" }}>
                 {deniedMessage}
               </p>
               <p style={{ fontSize: "0.82rem", color: "var(--text-secondary)", lineHeight: 1.5 }}>
-                A lone administrator or researcher is cryptographically blocked. TideCloak requires multi-party quorum signatures before unsealing cultural coordinates.
+                A lone administrator or researcher is cryptographically blocked. {AUTH_MODE === "mock" ? "Multi-party quorum signatures are required before unsealing cultural coordinates." : "TideCloak requires multi-party quorum signatures before unsealing cultural coordinates."}
               </p>
             </div>
           </div>

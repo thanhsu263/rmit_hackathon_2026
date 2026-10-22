@@ -11,12 +11,36 @@ import { LoadingSpinner, ErrorRetryView } from "../../../components/StateViews";
 import { RevealCoordinates } from "../../../components/RevealCoordinates";
 import { RequestAccessSection } from "../../../components/RequestAccessSection";
 import { SealSiteSection } from "../../../components/SealSiteSection";
+import { AUTH_MODE } from "../../../lib/auth/config";
+
+function formatDateTime(iso: string) {
+  try {
+    const d = new Date(iso);
+    return d.toLocaleString("en-US", {
+      timeZone: "UTC",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    }) + " UTC";
+  } catch {
+    return iso;
+  }
+}
 
 function SiteDetailContent() {
   const params = useParams();
   const siteId = params?.id as string;
 
   const { token, authenticated, login } = useTideCloak();
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [site, setSite] = useState<Site | null>(null);
   const [siteAuditEvents, setSiteAuditEvents] = useState<AuditEvent[]>([]);
@@ -69,6 +93,14 @@ function SiteDetailContent() {
     handleAuditLogged();
   };
 
+  if (!mounted) {
+    return (
+      <div className="container" style={{ padding: "60px 0" }}>
+        <LoadingSpinner message={`Opening encrypted vault dossier for ${siteId}...`} />
+      </div>
+    );
+  }
+
   if (!authenticated) {
     return (
       <div className="container" style={{ padding: "60px 0" }}>
@@ -78,7 +110,7 @@ function SiteDetailContent() {
             You must be signed into Custodian Vault to inspect classified archaeological dossiers.
           </p>
           <button type="button" onClick={login} className="btn btn-primary">
-            Sign In with TideCloak
+            {AUTH_MODE === "mock" ? "Sign In (Mock Mode)" : "Sign In with TideCloak"}
           </button>
         </div>
       </div>
@@ -223,7 +255,7 @@ function SiteDetailContent() {
               {isSealed ? (
                 <>
                   Sealed by <strong style={{ color: "var(--text-primary)", fontFamily: "var(--font-mono)" }}>{site.sealedBy}</strong> on{" "}
-                  {site.sealedAt ? new Date(site.sealedAt).toLocaleString() : "Confirmed"}
+                  <span suppressHydrationWarning>{site.sealedAt ? formatDateTime(site.sealedAt) : "Confirmed"}</span>
                 </>
               ) : (
                 <span style={{ color: "var(--gold-primary)", fontWeight: 600 }}>
@@ -313,8 +345,8 @@ function SiteDetailContent() {
                     actor: <strong style={{ color: "var(--text-primary)" }}>{ev.actor}</strong>
                   </span>
                 </div>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.78rem", color: "var(--text-muted)" }}>
-                  {new Date(ev.at).toLocaleString()}
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.78rem", color: "var(--text-muted)" }} suppressHydrationWarning>
+                  {formatDateTime(ev.at)}
                 </span>
               </div>
             ))}

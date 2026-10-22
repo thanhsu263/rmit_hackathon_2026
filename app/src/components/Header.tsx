@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTideCloak } from "./tidecloak";
 import { resetMockData } from "./api";
+import { AUTH_MODE } from "../lib/auth/config";
 
 export function Header() {
   const pathname = usePathname();
@@ -47,7 +48,7 @@ export function Header() {
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
-              Demo Profile:
+              {AUTH_MODE === "mock" ? "Demo Profile (Mock):" : "TideCloak Profile:"}
             </span>
             <select
               id="demo-profile-select"
@@ -55,6 +56,7 @@ export function Header() {
               value={mounted ? currentProfileKey : "researcher"}
               onChange={(e) => switchUser(e.target.value)}
               aria-label="Switch active demo profile"
+              suppressHydrationWarning
             >
               <option value="researcher">researcher (Field researcher - decrypt only after 2-of-3 approval)</option>
               <option value="diglead">diglead (Lead Archaeologist - Can Seal)</option>
@@ -133,7 +135,9 @@ export function Header() {
             <div>
               <span className="nav-brand-text">Custodian Vault</span>
               <span className="nav-brand-sub">
-                TideCloak 2-of-3 E2EE Protected
+                {AUTH_MODE === "mock"
+                  ? "Simulated 2-of-3 E2EE (Mock Mode)"
+                  : "TideCloak 2-of-3 E2EE Protected"}
               </span>
             </div>
           </Link>
@@ -151,10 +155,20 @@ export function Header() {
             >
               Audit Trail
             </Link>
+            {AUTH_MODE === "mock" && (
+              <Link
+                href="/mock/approvals"
+                className={`nav-link ${pathname === "/mock/approvals" ? "active" : ""}`}
+              >
+                Simulated Approvals
+              </Link>
+            )}
           </div>
 
           <div className="nav-user-panel">
-            {mounted && authenticated && user ? (
+            {!mounted ? (
+              <div style={{ height: "32px", minWidth: "70px" }} />
+            ) : authenticated && user ? (
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                 <div className="user-badge" title={user.roleDescription}>
                   <div className="user-avatar-dot" />
@@ -176,7 +190,7 @@ export function Header() {
                 className="btn btn-primary btn-sm"
                 aria-label="Sign into Custodian Vault"
               >
-                Sign In
+                {AUTH_MODE === "mock" ? "Sign In (Mock)" : "Sign In"}
               </button>
             )}
           </div>
