@@ -1,0 +1,9 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Subtle geodetic crosshair at corner -->
+  <path d="M0 4V-4M-4 0H4" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+  <path d="M64 4V-4M60 0H68" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+  <path d="M0 68V60M-4 64H4" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+  <path d="M64 68V60M60 64H68" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+  <!-- Center micro-point -->
+  <circle cx="32" cy="32" r="0.75" fill="rgba(255,255,255,0.02)"/>
+</svg>

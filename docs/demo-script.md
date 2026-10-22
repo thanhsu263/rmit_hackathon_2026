@@ -1,5 +1,9 @@
 # Demo script - Custodian Vault (2 minutes)
 
+**The team will not speak:** record the screen silently and add English subtitles afterwards. The short on-screen
+captions are in `docs/subtitles/subtitles.draft.srt`; `docs/subtitles/antigravity-subtitle-instructions.md` tells an AI
+agent how to time them to the recording and burn them in. The narration below is the long form of the same text.
+
 Target length **1:50 to 2:00**. Video: `.mp4`, under 100 MB, saved as `demo/demo.mp4`.
 Structure required by the brief: **possibility -> constraint -> prototype -> what changes.**
 
