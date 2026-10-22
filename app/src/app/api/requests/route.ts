@@ -1,69 +1,63 @@
-import {
-  badRequest,
-  notFound,
-  readJsonObject,
-  requireUser,
-  unauthorized,
-  usernameOf,
-} from "@/lib/auth";
-import { appendAudit, appendRequest, findSite, newId, readRequests } from "@/lib/store";
-import type { AccessRequest } from "@/lib/types";
+import { getUser } from '@/lib/auth/server'
+import { err, readJsonObject, unauthenticated } from '@/lib/http'
+import { appendAudit, appendRequest, findSite, newId, readRequests } from '@/lib/store'
+import type { AccessRequest } from '@/lib/types'
+import { NextResponse } from 'next/server'
 
-const MAX_REASON_LENGTH = 500;
+const MAX_REASON_LENGTH = 500
 
 type RequestBody = {
-  siteId?: unknown;
-  reason?: unknown;
-};
+  siteId?: unknown
+  reason?: unknown
+}
 
 export async function GET(req: Request) {
-  const claims = await requireUser(req);
-  if (!claims) return unauthorized();
+  const user = await getUser(req)
+  if (!user) return unauthenticated()
 
-  return Response.json(await readRequests());
+  return NextResponse.json(await readRequests())
 }
 
 export async function POST(req: Request) {
-  const claims = await requireUser(req);
-  if (!claims) return unauthorized();
+  const user = await getUser(req)
+  if (!user) return unauthenticated()
 
-  const body = (await readJsonObject(req)) as RequestBody | null;
-  if (!body) return badRequest("Body must be a JSON object");
+  const body = (await readJsonObject(req)) as RequestBody | null
+  if (!body) return err(400, 'Body must be a JSON object')
 
-  const { siteId, reason } = body;
+  const { siteId, reason } = body
 
-  if (typeof siteId !== "string" || !siteId.trim()) {
-    return badRequest("siteId must be a non-empty string");
+  if (typeof siteId !== 'string' || !siteId.trim()) {
+    return err(400, 'siteId must be a non-empty string')
   }
-  if (typeof reason !== "string" || !reason.trim()) {
-    return badRequest("reason must be a non-empty string");
+  if (typeof reason !== 'string' || !reason.trim()) {
+    return err(400, 'reason must be a non-empty string')
   }
   if (reason.length > MAX_REASON_LENGTH) {
-    return badRequest(`reason must be ${MAX_REASON_LENGTH} characters or fewer`);
+    return err(400, `reason must be ${MAX_REASON_LENGTH} characters or fewer`)
   }
 
-  const site = await findSite(siteId);
-  if (!site) return notFound(`Unknown site: ${siteId}`);
+  const site = await findSite(siteId)
+  if (!site) return err(404, `Unknown site: ${siteId}`)
 
-  const requester = usernameOf(claims);
-  const createdAt = new Date().toISOString();
+  const createdAt = new Date().toISOString()
 
   const request: AccessRequest = {
-    id: newId("req"),
+    id: newId('req'),
     siteId,
-    requester,
+    requester: user.username,
     reason,
     createdAt,
-  };
+  }
 
-  await appendRequest(request);
+  await appendRequest(request)
 
   await appendAudit({
     at: createdAt,
-    actor: requester,
+    actor: user.username,
     siteId,
-    action: "ACCESS_REQUESTED",
-  });
+    action: 'ACCESS_REQUESTED',
+  })
 
-  return Response.json(request);
+  return NextResponse.json(request)
 }

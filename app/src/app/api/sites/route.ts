@@ -1,9 +1,11 @@
-import { requireUser, unauthorized } from "@/lib/auth";
-import { readSites } from "@/lib/store";
+import { getUser } from '@/lib/auth/server'
+import { unauthenticated } from '@/lib/http'
+import { readSites } from '@/lib/store'
+import { NextResponse } from 'next/server'
 
 export async function GET(req: Request) {
-  const claims = await requireUser(req);
-  if (!claims) return unauthorized();
+  const user = await getUser(req)
+  if (!user) return unauthenticated()
 
-  return Response.json(await readSites());
+  return NextResponse.json(await readSites())
 }

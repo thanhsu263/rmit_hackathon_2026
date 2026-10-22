@@ -1,7 +1,10 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { USE_MOCK_AUTH } from "./config";
+// Adapter: keeps the TideCloak-shaped API these components were written against, but delegates to the shared
+// auth layer (src/lib/auth). Live mode -> real TideCloak; mock mode -> simulated sign-in, 2-of-3 approvals and
+// encryption. Roles always come from the auth layer, so a profile can never "grant itself" decrypt access.
+import React, { createContext, useContext, ReactNode } from "react";
+import { AuthProvider, mockSignIn, useAuth } from "../lib/auth/client";
 import { MOCK_USERS } from "./mockData";
 import { TideCloakUser } from "./types";
 
@@ -16,7 +19,7 @@ export interface TideCloakContextType {
   getValueFromToken: (key: string) => any;
   doEncrypt: (items: Array<{ data: string; tags: string[] }>) => Promise<string[]>;
   doDecrypt: (items: Array<{ encrypted: string; tags: string[] }>) => Promise<string[]>;
-  // Hackathon demo helpers
+  // Hackathon demo helpers (mock mode only)
   switchUser: (userKey: string) => void;
   availableUsers: Record<string, TideCloakUser>;
   currentProfileKey: string;
@@ -24,140 +27,58 @@ export interface TideCloakContextType {
 
 const TideCloakContext = createContext<TideCloakContextType | null>(null);
 
-const STORAGE_USER_KEY = "custodian_vault_mock_user";
+// Profiles that map to a real demo account; "researcher_approved" is gone because approval now really takes 2 of 3.
+const DEMO_USERS: Record<string, TideCloakUser> = Object.fromEntries(
+  Object.entries(MOCK_USERS).filter(([key]) => key !== "researcher_approved")
+);
 
 export function TideCloakProvider({ children }: { children: ReactNode }) {
-  const [currentProfileKey, setCurrentProfileKey] = useState<string>("researcher");
-  const [currentUser, setCurrentUser] = useState<TideCloakUser>(MOCK_USERS["researcher"]);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
-  const [tokenVersion, setTokenVersion] = useState<number>(1);
+  return (
+    <AuthProvider>
+      <Bridge>{children}</Bridge>
+    </AuthProvider>
+  );
+}
 
-  // Initialize from localStorage if present
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem(STORAGE_USER_KEY);
-      if (saved && MOCK_USERS[saved]) {
-        setCurrentProfileKey(saved);
-        setCurrentUser(MOCK_USERS[saved]);
+function Bridge({ children }: { children: ReactNode }) {
+  const auth = useAuth();
+  const profile = DEMO_USERS[auth.username];
+  const user: TideCloakUser | null = auth.authenticated
+    ? {
+        username: auth.username,
+        name: profile?.name ?? auth.username,
+        roleDescription: profile?.roleDescription ?? "",
+        roles: auth.roles,
       }
-    }
-  }, []);
-
-  const switchUser = (userKey: string) => {
-    if (userKey === "unauthenticated") {
-      setIsAuthenticated(false);
-      setCurrentProfileKey("unauthenticated");
-      return;
-    }
-    if (MOCK_USERS[userKey]) {
-      setIsAuthenticated(true);
-      setCurrentProfileKey(userKey);
-      setCurrentUser(MOCK_USERS[userKey]);
-      if (typeof window !== "undefined") {
-        localStorage.setItem(STORAGE_USER_KEY, userKey);
-      }
-    }
-  };
-
-  const login = () => {
-    setIsAuthenticated(true);
-    switchUser("researcher");
-  };
-
-  const logout = () => {
-    setIsAuthenticated(false);
-    setCurrentProfileKey("unauthenticated");
-  };
-
-  const refreshToken = async (): Promise<void> => {
-    // Simulates refreshing token from TideCloak server (fetching latest realm roles)
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    setTokenVersion((v) => v + 1);
-  };
-
-  const hasRealmRole = (role: string): boolean => {
-    if (!isAuthenticated || !currentUser) return false;
-    return currentUser.roles.includes(role);
-  };
-
-  const getValueFromToken = (key: string): any => {
-    if (!isAuthenticated || !currentUser) return null;
-    if (key === "preferred_username" || key === "username") return currentUser.username;
-    if (key === "name") return currentUser.name;
-    if (key === "roles") return currentUser.roles;
-    return null;
-  };
-
-  const token = isAuthenticated
-    ? `mock_tidecloak_jwt_token_${currentUser.username}_v${tokenVersion}`
     : null;
 
-  // Browser-side encryption (Contract rule: Tag sitecoords)
-  const doEncrypt = async (
-    items: Array<{ data: string; tags: string[] }>
-  ): Promise<string[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 400)); // Network/crypto delay
-
-    if (!hasRealmRole("_tide_sitecoords.selfencrypt")) {
-      throw new Error(
-        "TideCloak Security Policy: Missing realm role '_tide_sitecoords.selfencrypt'. Cannot seal coordinates."
-      );
-    }
-
-    return items.map((item) => {
-      // Create tamper-evident reversible mock ciphertext with sitecoords tag
-      const b64 = btoa(encodeURIComponent(item.data));
-      return `TIDE_ENC:sitecoords:${b64}`;
-    });
+  const value: TideCloakContextType = {
+    authenticated: auth.authenticated,
+    user,
+    token: auth.token,
+    login: auth.login,
+    logout: auth.logout,
+    refreshToken: auth.refresh,
+    hasRealmRole: auth.hasRole,
+    getValueFromToken: (key) => {
+      if (!user) return null;
+      if (key === "preferred_username" || key === "username") return user.username;
+      if (key === "name") return user.name;
+      if (key === "roles") return user.roles;
+      return null;
+    },
+    doEncrypt: (items) => Promise.all(items.map((i) => auth.encrypt(i.data))),
+    doDecrypt: (items) => Promise.all(items.map((i) => auth.decrypt(i.encrypted))),
+    switchUser: (key) => {
+      if (auth.mode !== "mock") return;
+      if (key === "unauthenticated") auth.logout();
+      else if (DEMO_USERS[key]) mockSignIn(DEMO_USERS[key].username, window.location.pathname);
+    },
+    availableUsers: auth.mode === "mock" ? DEMO_USERS : {},
+    currentProfileKey: auth.authenticated ? auth.username : "unauthenticated",
   };
 
-  // Browser-side decryption (Contract rule: Tag sitecoords, throws if missing selfdecrypt)
-  const doDecrypt = async (
-    items: Array<{ encrypted: string; tags: string[] }>
-  ): Promise<string[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 500)); // Crypto delay
-
-    // Contract: Always attempt doDecrypt so denial comes from TideCloak
-    if (!hasRealmRole("_tide_sitecoords.selfdecrypt")) {
-      throw new Error("You do not hold the decrypt role yet. Two of three stewards must approve.");
-    }
-
-    return items.map((item) => {
-      if (!item.encrypted) return "";
-      try {
-        if (item.encrypted.startsWith("TIDE_ENC:sitecoords:")) {
-          const payload = item.encrypted.replace("TIDE_ENC:sitecoords:", "");
-          return decodeURIComponent(atob(payload));
-        }
-        // Handle pre-seeded direct format
-        return item.encrypted.replace("TIDE_ENC:sitecoords:", "");
-      } catch (err) {
-        throw new Error("TideCloak decryption failed: Invalid ciphertext format.");
-      }
-    });
-  };
-
-  return (
-    <TideCloakContext.Provider
-      value={{
-        authenticated: isAuthenticated,
-        user: isAuthenticated ? currentUser : null,
-        token,
-        login,
-        logout,
-        refreshToken,
-        hasRealmRole,
-        getValueFromToken,
-        doEncrypt,
-        doDecrypt,
-        switchUser,
-        availableUsers: MOCK_USERS,
-        currentProfileKey,
-      }}
-    >
-      {children}
-    </TideCloakContext.Provider>
-  );
+  return <TideCloakContext.Provider value={value}>{children}</TideCloakContext.Provider>;
 }
 
 export function useTideCloak(): TideCloakContextType {

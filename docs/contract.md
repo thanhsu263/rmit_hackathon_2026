@@ -14,23 +14,59 @@ is blocked.
 Demo moment: one steward grants access alone -> request stays PENDING and "Reveal" is denied -> a second steward
 authorizes -> "Reveal" shows the exact location -> a 2-of-3 revocation -> "Reveal" is denied again.
 
-Out of scope: maps/GIS, custodian-mandatory policy, automatic expiry timers, approving inside our app (approvals
-happen in tide-console -> QEA Approvals), real community or site names, deployment.
+Out of scope: maps/GIS, custodian-mandatory policy, automatic expiry timers, approving inside our app in live mode
+(approvals happen in tide-console -> QEA Approvals), real community or site names, deployment.
+
+## Auth modes: live and mock (added 13:50)
+
+Tide's licence service (`Midgard.FinalizeWallet`) failed with HTTP 500 / timeouts from 06:22 UTC, so no Tide realm
+could be provisioned. The app therefore runs in two modes, chosen by `NEXT_PUBLIC_AUTH_MODE`:
+
+| | `live` | `mock` (default) |
+|---|---|---|
+| Sign-in | Tide (TideCloak at `localhost:8080`) | `/mock/login`: pick `diglead`, `heritage`, `custodian` or `researcher` |
+| Roles | realm roles in the TideCloak token | simulated store in `app/.mock-data/` (gitignored) |
+| 2-of-3 role changes | tide-console -> QEA Approvals | `/mock/approvals` (same rule: `max(1, floor(0.7 x admins))`) |
+| Encrypt / decrypt | Tide E2EE in the browser | `/api/mock/crypto`, gated by the same roles; **the server holds the key** |
+
+A red "SIMULATION MODE" banner is shown on every page in mock mode. Never hide it, and never describe mock mode as
+TideCloak in the README or video. **Everyone codes against the same API, so nothing changes when we switch to live.**
+
+Client (pages, components):
+```ts
+import { useAuth } from '@/lib/auth/client'
+const { mode, ready, authenticated, username, token, hasRole, refresh, encrypt, decrypt, login, logout } = useAuth()
+// encrypt(plain) -> sealed string; decrypt(sealed) -> plain, throws when the user lacks the decrypt role
+// call `await refresh()` before decrypt so a just-approved role is picked up
+```
+Server (API routes):
+```ts
+import { getUser } from '@/lib/auth/server'          // -> { username, roles } | null
+import { TAG, ROLE_ENCRYPT, ROLE_DECRYPT, ROLE_ADMIN } from '@/lib/auth/config'
+```
+Do not import `@tidecloak/nextjs` directly anywhere else; go through `src/lib/auth`. Do not commit a filled-in
+`app/tidecloak.json` (it stays `{}` in git).
+
+Run locally: `cd app && npm install && npm run dev` -> http://localhost:3000 (mock mode by default).
 
 ## Team
 
-| Member | Owns | Files |
+| Member | Owns | Files (relative to `app/`) |
 |---|---|---|
-| A (host) | TideCloak server, realm, users, roles, enrolments, README, demo script, video | `docs/runbook.md`, `docs/demo-script.md`, `README.md`, `demo/` |
-| B | Data store, API routes, token checks, seed data, shared config | `app/src/lib/**` (except UI helpers), `app/src/app/api/**`, `app/data/**`, `app/package.json`, root layout/provider files |
-| C | Pages, components, English UI copy | `app/src/app/**` pages except `api/`, `app/src/components/**` |
+| A (host) | Auth layer (live/mock), mock governance pages, TideCloak server and realm, README, demo script, video | `src/lib/auth/**`, `src/components/tidecloak.tsx` (adapter), `src/app/api/mock/**`, `src/app/mock/**`, `src/app/auth/**`, `src/app/tide_dpop/**`, `tidecloak.json`, `init/**`, `../docs/**`, `../README.md`, `../demo/` |
+| B | Data store, Custodian Vault API routes, seed data, dependencies | `src/lib/*.ts` outside `src/lib/auth`, `src/app/api/**` except `api/mock`, `data/**`, `package.json` |
+| C | Pages, components, layout, English UI copy | `src/app/**` pages and styles except `mock/`, `auth/`, `api/`; `src/components/**` except `tidecloak.tsx` |
 
-Paths assume the scaffold uses `app/src/app` (App Router). After A creates the app, check the real layout and keep
-the same split. Do not edit another member's files; ask in the team chat.
+The app is C's Next.js 16 project with `src/app` (App Router); the `@/` alias points at `src/`. C's components keep
+calling `useTideCloak()` from `src/components/tidecloak.tsx`, which is now an adapter over `useAuth()` - roles come
+from the auth layer, never from a profile picker. `USE_MOCK_AUTH` in `src/components/config.ts` is no longer used;
+`USE_MOCK_API` switches C's localStorage data to B's API once B's routes land. Sites pre-sealed in C's mock data use
+a fake ciphertext and will not reveal; seal sites through the app (as `diglead`) for the demo.
+Do not edit another member's files; ask in the team chat.
 
 Demo cast: A = dig lead (`diglead`) + researcher (`researcher`, second browser profile); B = heritage authority
-(`heritage`); C = community custodian (`custodian`). **All sign-ins and Tide enrolments happen on A's laptop**,
-because TideCloak runs on its `localhost:8080`.
+(`heritage`); C = community custodian (`custodian`). **All sign-ins happen on A's laptop**, because the demo server
+(and TideCloak, if it comes back) runs on A's `localhost`.
 
 ## TideCloak facts (docs.tide.org, read 22 Oct 12:00)
 
@@ -51,7 +87,7 @@ because TideCloak runs on its `localhost:8080`.
 type Site = {
   id: string; name: string; era: string; summary: string;        // fictional, public
   blurred: { lat: number; lng: number; radiusKm: 50 };            // exact rounded to the nearest 0.5 degree
-  sealedExact: string | null;                                     // doEncrypt output of "lat,lng", tag sitecoords
+  sealedExact: string | null;                                     // useAuth().encrypt("lat,lng") output
   sealedBy: string | null; sealedAt: string | null;               // ISO time
 };
 type AccessRequest = { id: string; siteId: string; requester: string; reason: string; createdAt: string };
@@ -62,31 +98,30 @@ type AuditEvent = { at: string; actor: string; siteId: string;
 | Route | Body | Response | Rule |
 |---|---|---|---|
 | `GET /api/sites` | - | `Site[]` | signed in |
-| `POST /api/sites/:id/seal` | `{ sealedExact: string, blurred: {lat,lng,radiusKm} }` | `Site` | token holds `_tide_sitecoords.selfencrypt`; appends SITE_SEALED |
+| `POST /api/sites/:id/seal` | `{ sealedExact: string, blurred: {lat,lng,radiusKm} }` | `Site` | user holds `ROLE_ENCRYPT`; appends SITE_SEALED |
 | `GET /api/requests` | - | `AccessRequest[]` newest first | signed in |
 | `POST /api/requests` | `{ siteId, reason }` | `AccessRequest` | signed in; appends ACCESS_REQUESTED |
 | `GET /api/audit` | - | `AuditEvent[]` newest first | signed in |
 | `POST /api/audit` | `{ siteId, action: "DECRYPT_SUCCEEDED" \| "DECRYPT_DENIED" }` | `AuditEvent` | signed in |
 
-- Every route reads `Authorization: Bearer <token>` (the client sends `token` from `useTideCloak()`) and verifies
-  it with `verifyTideCloakToken()`. No/invalid token -> `401 {"error":"unauthenticated"}`; missing role ->
+- Every route calls `getUser(request)` from `@/lib/auth/server` (the client sends `Authorization: Bearer ${token}`
+  with `token` from `useAuth()`). No/invalid token -> `401 {"error":"unauthenticated"}`; missing role ->
   `403 {"error":"forbidden"}`; bad body or unknown site -> `400`/`404` with `{"error": "..."}`.
 - `actor`, `requester` and `sealedBy` come from the verified token (`preferred_username`), never from the body.
 - The server never receives or stores exact coordinates in plaintext.
 
 ## Timeline
 
+Revised at 13:50 after the Tide licence outage.
+
 | Time | A | B | C |
 |---|---|---|---|
-| 12:15-12:45 | Task 1: TideCloak + scaffold `app/` | read this file, prepare store code | sketch UI against this contract |
-| 12:45-13:15 | Task 2 gate with B | Task 2 gate with A | build pages with mock data |
-| ~13:30 | send enrolment links | enrol `heritage` on A's laptop | enrol `custodian` on A's laptop |
-| 13:15-15:15 | users/roles, runbook, README draft | Task 4 API | Task 5 UI |
-| 15:15-15:45 | Task 6 rehearsal | Task 6 | Task 6 |
-| 15:45-16:45 | README final, video | review README, act in video | review README, act in video |
+| 14:00-15:30 | retry realm every 20-30 min, report outage to organisers, README draft | Task 4 API in mock mode | Task 5 UI in mock mode |
+| 15:30-16:00 | Task 6 rehearsal (live if Tide is back, otherwise mock) | Task 6 | Task 6 |
+| 16:00-16:45 | README final, video | review README, act in video | review README, act in video |
 
-**13:15 gate:** if a user holding `selfdecrypt` cannot decrypt ciphertext sealed by another user, everyone stops and
-A re-plans. Do not invent another encryption scheme.
+**16:00 decision:** if Tide is back and the realm works, the demo runs in `live`; otherwise we submit in `mock` with the
+banner and an honest README section on the outage.
 
 ## Rules
 
