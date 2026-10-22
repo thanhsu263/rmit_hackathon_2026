@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { AuditEvent } from "./types";
 import { StatusBadge } from "./StatusBadge";
+import { AUTH_MODE } from "../lib/auth/config";
 
 interface AuditTableProps {
   events: AuditEvent[];
@@ -30,15 +31,18 @@ export function AuditTable({ events }: AuditTableProps) {
   const formatTimestamp = (iso: string) => {
     try {
       const d = new Date(iso);
-      return d.toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      });
+      return (
+        d.toLocaleString("en-US", {
+          timeZone: "UTC",
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        }) + " UTC"
+      );
     } catch {
       return iso;
     }
@@ -47,7 +51,9 @@ export function AuditTable({ events }: AuditTableProps) {
   const getActionExplanation = (action: string) => {
     switch (action) {
       case "DECRYPT_DENIED":
-        return "Quorum threshold unmet (TideCloak blocked lone actor)";
+        return AUTH_MODE === "mock"
+          ? "Quorum threshold unmet (Simulation blocked lone actor)"
+          : "Quorum threshold unmet (TideCloak blocked lone actor)";
       case "DECRYPT_SUCCEEDED":
         return "2-of-3 steward consensus verified (Local client decrypt)";
       case "SITE_SEALED":
@@ -124,7 +130,7 @@ export function AuditTable({ events }: AuditTableProps) {
           <thead>
             <tr>
               <th scope="col">Timestamp</th>
-              <th scope="col">Actor (From JWT)</th>
+              <th scope="col">{AUTH_MODE === "mock" ? "Actor (From Token)" : "Actor (From JWT)"}</th>
               <th scope="col">Site Dossier</th>
               <th scope="col">Cryptographic Action</th>
               <th scope="col">Security Governance Context</th>
@@ -141,7 +147,7 @@ export function AuditTable({ events }: AuditTableProps) {
               filteredEvents.map((ev, idx) => (
                 <tr key={`${ev.at}-${idx}`}>
                   {/* Timestamp */}
-                  <td style={{ fontFamily: "var(--font-mono)", fontSize: "0.82rem", whiteSpace: "nowrap" }}>
+                  <td style={{ fontFamily: "var(--font-mono)", fontSize: "0.82rem", whiteSpace: "nowrap" }} suppressHydrationWarning>
                     <span style={{ color: "var(--text-primary)" }}>{formatTimestamp(ev.at)}</span>
                   </td>
 

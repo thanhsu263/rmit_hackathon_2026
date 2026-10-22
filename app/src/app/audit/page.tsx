@@ -7,9 +7,15 @@ import { getAuditEvents } from "../../components/api";
 import { useTideCloak } from "../../components/tidecloak";
 import { AuditTable } from "../../components/AuditTable";
 import { LoadingSpinner, ErrorRetryView, EmptyStateView } from "../../components/StateViews";
+import { AUTH_MODE } from "../../lib/auth/config";
 
 export default function AuditPage() {
   const { token, authenticated, login } = useTideCloak();
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [events, setEvents] = useState<AuditEvent[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -82,7 +88,7 @@ export default function AuditPage() {
             </h1>
 
             <p style={{ color: "var(--text-secondary)", fontSize: "1.02rem", lineHeight: 1.65 }}>
-              All client-side decryption attempts, access requests, and site sealing actions are permanently recorded. Actor identities are extracted directly from verified TideCloak JWT tokens. Ordered newest first.
+              All client-side decryption attempts, access requests, and site sealing actions are permanently recorded. Actor identities are extracted directly from {AUTH_MODE === "mock" ? "simulated session tokens" : "verified TideCloak JWT tokens"}. Ordered newest first.
             </p>
           </div>
 
@@ -117,13 +123,15 @@ export default function AuditPage() {
       </section>
 
       {/* Main Body */}
-      {!authenticated ? (
+      {!mounted ? (
+        <LoadingSpinner message="Querying immutable audit events..." />
+      ) : !authenticated ? (
         <EmptyStateView
           title="Sign-In Required"
           description="Access to the immutable audit registry requires authenticated credentials."
           action={
             <button type="button" onClick={login} className="btn btn-primary">
-              Sign In to View Audit Log
+              {AUTH_MODE === "mock" ? "Sign In (Mock Mode)" : "Sign In to View Audit Log"}
             </button>
           }
         />

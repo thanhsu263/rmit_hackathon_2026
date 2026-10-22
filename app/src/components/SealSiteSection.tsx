@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Site, BlurredLocation } from "./types";
 import { useTideCloak } from "./tidecloak";
 import { sealSite } from "./api";
+import { AUTH_MODE } from "../lib/auth/config";
 
 interface SealSiteSectionProps {
   site: Site;
@@ -99,7 +100,9 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
       setLatInput("");
       setLngInput("");
       setSuccessMessage(
-        `Successfully sealed site coordinates with TideCloak E2EE! Generalized boundary committed to ${blurred.lat}, ${blurred.lng} (50 km blur radius).`
+        AUTH_MODE === "mock"
+          ? `Successfully sealed site coordinates with E2EE (simulated)! Generalized boundary committed to ${blurred.lat}, ${blurred.lng} (50 km blur radius).`
+          : `Successfully sealed site coordinates with TideCloak E2EE! Generalized boundary committed to ${blurred.lat}, ${blurred.lng} (50 km blur radius).`
       );
 
       onSiteSealed(updatedSite);
@@ -165,7 +168,7 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
       </div>
 
       <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: 1.6, marginBottom: "20px" }}>
-        Enter true GPS coordinates to commit this archaeological discovery. Coordinates are encrypted locally in your browser with TideCloak. The server only receives ciphertext, and a generalized 50 km boundary is derived automatically.
+        Enter true GPS coordinates to commit this archaeological discovery. Coordinates are encrypted locally in your browser {AUTH_MODE === "mock" ? "with simulated E2EE" : "with TideCloak"}. The server only receives ciphertext, and a generalized 50 km boundary is derived automatically.
       </p>
 
       {/* Success banner */}

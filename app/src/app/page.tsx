@@ -6,9 +6,15 @@ import { getSites } from "../components/api";
 import { useTideCloak } from "../components/tidecloak";
 import { SiteCard } from "../components/SiteCard";
 import { LoadingSpinner, ErrorRetryView, EmptyStateView } from "../components/StateViews";
+import { AUTH_MODE } from "../lib/auth/config";
 
 export default function SitesPage() {
   const { token, authenticated, login } = useTideCloak();
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [sites, setSites] = useState<Site[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -120,7 +126,7 @@ export default function SitesPage() {
                 lineHeight: 1.65,
               }}
             >
-              Exact excavation coordinates are sealed in the browser with Tide end-to-end encryption under tag <code style={{ color: "var(--gold-light)", fontFamily: "var(--font-mono)", background: "rgba(245,158,11,0.08)", padding: "2px 6px", borderRadius: "4px" }}>sitecoords</code>. Public researchers view generalized 50 km boundary circles. Decrypting unblurred locations requires consensus from 2 of 3 multi-party stewards.
+              Exact excavation coordinates are sealed in the browser with {AUTH_MODE === "mock" ? "simulated end-to-end encryption (mock mode)" : "Tide end-to-end encryption"} under tag <code style={{ color: "var(--gold-light)", fontFamily: "var(--font-mono)", background: "rgba(245,158,11,0.08)", padding: "2px 6px", borderRadius: "4px" }}>sitecoords</code>. Public researchers view generalized 50 km boundary circles. Decrypting unblurred locations requires consensus from 2 of 3 multi-party stewards.
             </p>
           </div>
 
@@ -133,8 +139,11 @@ export default function SitesPage() {
               <span style={{ fontSize: "0.72rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block", fontWeight: 700 }}>
                 Total Vaults
               </span>
-              <strong style={{ fontSize: "2rem", color: "var(--text-primary)", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
-                {totalSites}
+              <strong
+                style={{ fontSize: "2rem", color: "var(--text-primary)", fontWeight: 700, fontFamily: "var(--font-mono)" }}
+                suppressHydrationWarning
+              >
+                {mounted ? totalSites : 0}
               </strong>
             </div>
 
@@ -151,8 +160,11 @@ export default function SitesPage() {
               <span style={{ fontSize: "0.72rem", color: "var(--emerald-light)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block", fontWeight: 700 }}>
                 Sealed Vaults
               </span>
-              <strong style={{ fontSize: "2rem", color: "#6EE7B7", fontWeight: 700, fontFamily: "var(--font-mono)" }}>
-                {sealedCount}
+              <strong
+                style={{ fontSize: "2rem", color: "#6EE7B7", fontWeight: 700, fontFamily: "var(--font-mono)" }}
+                suppressHydrationWarning
+              >
+                {mounted ? sealedCount : 0}
               </strong>
             </div>
           </div>
@@ -249,22 +261,25 @@ export default function SitesPage() {
                 type="button"
                 onClick={() => setSealFilter("ALL")}
                 className={`btn btn-sm ${sealFilter === "ALL" ? "btn-primary" : "btn-secondary"}`}
+                suppressHydrationWarning
               >
-                All Sites ({totalSites})
+                All Sites ({mounted ? totalSites : 0})
               </button>
               <button
                 type="button"
                 onClick={() => setSealFilter("SEALED")}
                 className={`btn btn-sm ${sealFilter === "SEALED" ? "btn-emerald" : "btn-secondary"}`}
+                suppressHydrationWarning
               >
-                Sealed ({sealedCount})
+                Sealed ({mounted ? sealedCount : 0})
               </button>
               <button
                 type="button"
                 onClick={() => setSealFilter("UNSEALED")}
                 className={`btn btn-sm ${sealFilter === "UNSEALED" ? "btn-outline-gold" : "btn-secondary"}`}
+                suppressHydrationWarning
               >
-                Not Sealed ({totalSites - sealedCount})
+                Not Sealed ({mounted ? totalSites - sealedCount : 0})
               </button>
             </div>
           </div>
@@ -272,7 +287,9 @@ export default function SitesPage() {
       </section>
 
       {/* Main Content Area */}
-      {!authenticated ? (
+      {!mounted ? (
+        <LoadingSpinner message="Opening archaeological vault records..." />
+      ) : !authenticated ? (
         <EmptyStateView
           title="Sign-In Required"
           description="Custodian Vault endpoints require user authentication. Please sign in or select a demo profile to inspect archaeological sites."
@@ -282,7 +299,7 @@ export default function SitesPage() {
               onClick={login}
               className="btn btn-primary"
             >
-              Sign In to View Sites
+              {AUTH_MODE === "mock" ? "Sign In (Mock Mode)" : "Sign In to View Sites"}
             </button>
           }
         />
