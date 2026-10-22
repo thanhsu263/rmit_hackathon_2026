@@ -2,7 +2,7 @@
 // One auth API for pages and components, in both modes:
 //   const { ready, authenticated, username, token, hasRole, refresh, encrypt, decrypt, login, logout } = useAuth()
 // live -> backed by @tidecloak/nextjs (useTideCloak); mock -> backed by /api/mock/* routes.
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from 'react'
 import { TideCloakProvider, useTideCloak } from '@tidecloak/nextjs'
 import tcConfig from '../../../tidecloak.json'
 import { AUTH_MODE, TAG, type AuthMode } from './config'
@@ -73,9 +73,18 @@ async function mockFetch(path: string, token: string, body?: unknown) {
   return data
 }
 
+// Read the mock user through useSyncExternalStore so hydration always uses the server value ('' / not ready),
+// even for Suspense boundaries that hydrate late. Reading it in an effect caused hydration mismatches.
+const subscribeStorage = (onChange: () => void) => {
+  window.addEventListener('storage', onChange)
+  return () => window.removeEventListener('storage', onChange)
+}
+const readMockUser = () => { try { return localStorage.getItem(MOCK_KEY) ?? '' } catch { return '' } }
+const noSubscribe = () => () => {}
+
 function MockProvider({ children }: { children: ReactNode }) {
-  const [ready, setReady] = useState(false)
-  const [username, setUsername] = useState('')
+  const ready = useSyncExternalStore(noSubscribe, () => true, () => false)
+  const username = useSyncExternalStore(subscribeStorage, readMockUser, () => '')
   const [roles, setRoles] = useState<string[]>([])
   const token = username ? `mock:${username}` : null
 
@@ -84,11 +93,6 @@ function MockProvider({ children }: { children: ReactNode }) {
     const me = await mockFetch('/api/mock/governance?me=1', token)
     setRoles(me.roles ?? [])
   }, [token])
-
-  useEffect(() => {
-    try { setUsername(localStorage.getItem(MOCK_KEY) ?? '') } catch { /* storage blocked */ }
-    setReady(true)
-  }, [])
 
   useEffect(() => { refresh().catch(() => setRoles([])) }, [refresh])
 
@@ -106,7 +110,7 @@ function MockProvider({ children }: { children: ReactNode }) {
     login: () => { window.location.href = '/mock/login' },
     logout: () => {
       try { localStorage.removeItem(MOCK_KEY) } catch { /* storage blocked */ }
-      setUsername(''); setRoles([])
+      setRoles([])
       window.location.href = '/'
     },
   }), [ready, username, token, roles, refresh])
