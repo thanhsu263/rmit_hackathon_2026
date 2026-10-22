@@ -52,8 +52,7 @@ export function Header() {
               onChange={(e) => switchUser(e.target.value)}
               aria-label="Switch active demo profile"
             >
-              <option value="researcher">researcher (No decrypt role - Tests Denied)</option>
-              <option value="researcher_approved">researcher (2-of-3 Approved - Tests Reveal)</option>
+              <option value="researcher">researcher (Field researcher - decrypt only after 2-of-3 approval)</option>
               <option value="diglead">diglead (Lead Archaeologist - Can Seal)</option>
               <option value="custodian">custodian (Community Steward 1 of 3)</option>
               <option value="heritage">heritage (Heritage Authority Steward 2 of 3)</option>

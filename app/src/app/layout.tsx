@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { TideCloakProvider } from "../components/tidecloak";
 import { Header } from "../components/Header";
+import { SimulationBanner } from "../lib/auth/client";
 
 export const metadata: Metadata = {
   title: "Custodian Vault | Archaeological Heritage Protection",
@@ -18,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+        <SimulationBanner />
         <TideCloakProvider>
           <Suspense fallback={<div style={{ height: "105px", background: "#07090E" }} />}>
             <Header />
