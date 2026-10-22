@@ -18,16 +18,17 @@ Structure required by the brief: **possibility -> constraint -> prototype -> wha
 |---|---|---|
 | A | `diglead` | Dig lead - seals the site |
 | A (second profile) | `researcher` | Researcher - asks for the exact location |
-| C | `custodian` | Community custodian - steward 1 |
-| B | `heritage` | Heritage authority - steward 2 |
+| C | `custodian` | Community custodian - a steward |
+| B | `heritage` | Heritage authority - a steward |
 
-If only one person films: use **one window** and switch accounts with the profile menu at the top of the page.
-Every approval below is a button click on `/mock/approvals`.
+If only one person films: use **one window** and switch accounts with the **Demo Profile (Mock)** menu in the bar at the
+top of the page. Every approval below happens on the **Simulated Approvals** page (nav link at the top).
 
 ## Before you hit record
 
 1. Reset everything: `cd app && npm run demo:reset` (works while the app is running). Optional check: `npm run test:flow`
-   runs the whole flow and ends with the demo reset again.
+   runs the whole flow and ends with the demo reset again. **Do not use the header's "Reset Demo Data" button**: it only
+   clears this browser's local storage, not the server data or the simulated approvals.
 2. `cd app && npm run dev`, open http://localhost:3000. Check the red **SIMULATION MODE** banner is visible.
 3. Use the site **Thornwick Hollow** (it starts unsealed). Fictional coordinates to type: **-31.4321, 141.9876**.
 4. Close notifications; browser zoom 110%; hide bookmarks. Rehearse once, with a timer.
@@ -38,12 +39,12 @@ Every approval below is a button click on `/mock/approvals`.
 | Time | On screen | Narration (read at a calm pace) |
 |---|---|---|
 | **0:00-0:15**<br>*possibility + constraint* | Home page, red banner visible, site cards | "Archaeological sites are easy to loot once someone knows where they are. So the exact location is the most valuable data, and the most dangerous to share. Today one administrator can read it, so one leak or one stolen password exposes every site." |
-| **0:15-0:30**<br>*prototype: seal* | Sign in as **diglead**. Open Thornwick Hollow. Type -31.4321, 141.9876. Click **Encrypt and seal coordinates**. | "Custodian Vault removes that single point of authority. The dig lead enters the true coordinates, and they are sealed: only ciphertext is stored, next to a blurred position." |
-| **0:30-0:48**<br>*denied* | Switch to **researcher**. Show "Approximate location ... within 50 km". Click **Reveal**: denied message. Type a reason, click **Request exact location**. | "A researcher sees only a fifty kilometre blur. Asking for the real position is denied, because that needs the decrypt role. So the researcher files a request with a reason." |
-| **0:48-1:05**<br>*one steward is not enough* | Switch to **custodian**, open Simulated approvals. File: Grant `_tide_sitecoords.selfdecrypt` to `researcher`. Show **approvals 1/2**. Switch back to researcher, click **Reveal**: still denied. | "The community custodian agrees, but one steward is not enough. The change waits at one of two approvals, and the researcher is still locked out. No single administrator can open this alone." |
-| **1:05-1:22**<br>*what changes* | Switch to **heritage**, click **Authorize**: status **COMMITTED**. Switch to researcher, click **Reveal**: **-31.4321, 141.9876** appears. | "When a second, independent steward, the heritage authority, approves, the role is granted. Now the researcher can decrypt. A decision by two of three parties, not trust in one." |
-| **1:22-1:35**<br>*revoke* | Heritage files **Remove role**; **diglead** authorizes. Researcher clicks **Reveal**: denied again. | "Taking access back needs the same two of three. Once it is revoked, the researcher is locked out again." |
-| **1:35-1:42**<br>*audit* | Open **Audit Log**: sealed, denied, requested, succeeded, denied. | "Every step is in the audit trail." |
+| **0:15-0:30**<br>*prototype: seal* | On the sign-in screen (**Sign In (Mock)**) click the **Marcus Thorne • Dig Lead** card. Open **Thornwick Hollow**. Enter **Exact Latitude** -31.4321 and **Exact Longitude** 141.9876. Click **Encrypt & Seal Coordinates**: **Vault Sealed Successfully**. | "Custodian Vault removes that single point of authority. The dig lead enters the true coordinates, and they are sealed: only ciphertext is stored, next to a blurred position." |
+| **0:30-0:48**<br>*denied* | In the **Demo Profile (Mock)** menu pick **researcher**. Show "Approximate location ... (within 50 km)". Click **Reveal Exact Location**: **Decryption Denied (TideCloak Simulation)**, "missing role _tide_sitecoords.selfdecrypt". Type a reason (or pick a *Quick Sample Justification*) and click **Request Exact Location**: **Access Request Registered**. | "A researcher sees only a fifty kilometre blur. Asking for the real position is denied, because that needs the decrypt role. So the researcher files a request with a reason." |
+| **0:48-1:05**<br>*one steward is not enough* | Pick **custodian** in the menu, open **Simulated Approvals**. Under **File a Change Request** choose Action *Grant role*, Role `_tide_sitecoords.selfdecrypt`, Target User `researcher`, click **File Change Request**. **Pending Requests (1)** shows **Approvals 1/2**. Switch back to **researcher**, click **Reveal Exact Location**: still denied. | "The community custodian agrees, but one steward is not enough. The change waits at one of two approvals, and the researcher is still locked out. No single administrator can open this alone." |
+| **1:05-1:22**<br>*what changes* | Pick **heritage**, open **Simulated Approvals**, click **Authorize** on the pending request: it moves to **Approval History** as **COMMITTED**. Switch to **researcher**, click **Reveal Exact Location**: the exact coordinates (-31.4321, 141.9876) appear under *High-Precision Archaeological GPS (WGS84)*. | "When a second, independent steward, the heritage authority, approves, the role is granted. Now the researcher can decrypt. A decision by two of three parties, not trust in one." |
+| **1:22-1:35**<br>*revoke* | As **heritage** on **Simulated Approvals**: Action *Remove role*, Role `_tide_sitecoords.selfdecrypt`, Target User `researcher`, **File Change Request**. Switch to **diglead** and click **Authorize**. As **researcher**, **Reveal Exact Location**: denied again. | "Taking access back needs the same two of three. Once it is revoked, the researcher is locked out again." |
+| **1:35-1:42**<br>*audit* | Open **Audit Trail** (top nav): sealed, denied, requested, succeeded, denied. | "Every step is in the audit trail." |
 | **1:42-2:00**<br>*Plan C: where TideCloak fits* | Cut to the README, section **Where TideCloak fits (Plan C)**. Slowly scroll the table: sign-in, roles, 2-of-3 approval, sealing, API identity. Show the red banner once more. | "Tide's network was overloaded, so, as the organisers' Plan C allows, this runs in simulation. Here is where TideCloak plugs in: sign-in, roles, two-of-three approvals and encryption in the browser. With it live, nobody, not even the operator, holds a key." |
 
 ## Narration only (for a quick read-through, about 215 words, roughly 95 seconds of speech)
