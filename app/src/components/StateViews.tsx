@@ -22,7 +22,7 @@ export function LoadingSpinner({ message = "Decrypting vault records..." }: { me
           width: "28px",
           height: "28px",
           borderRadius: "50%",
-          border: "2px solid rgba(255, 255, 255, 0.1)",
+          border: "2px solid var(--line-strong)",
           borderTopColor: "var(--accent)",
         }}
       />
@@ -117,7 +117,7 @@ export function EmptyStateView({
           width: "44px",
           height: "44px",
           borderRadius: "50%",
-          background: "rgba(255, 255, 255, 0.04)",
+          background: "rgba(31, 27, 22, 0.05)",
           color: "var(--ink-3)",
           display: "inline-flex",
           alignItems: "center",

@@ -12,6 +12,7 @@ import { RevealCoordinates } from "../../../components/RevealCoordinates";
 import { RequestAccessSection } from "../../../components/RequestAccessSection";
 import { SealSiteSection } from "../../../components/SealSiteSection";
 import { AUTH_MODE } from "../../../lib/auth/config";
+import { SITE_PHOTOS } from "../../../components/siteImages";
 
 function formatDateTime(iso: string) {
   try {
@@ -96,7 +97,7 @@ function SiteDetailContent() {
   if (!mounted) {
     return (
       <div className="container" style={{ padding: "60px 0" }}>
-        <LoadingSpinner message={`Opening encrypted vault dossier for ${siteId}...`} />
+        <LoadingSpinner message={`Unfolding the survey plate…`} />
       </div>
     );
   }
@@ -105,12 +106,12 @@ function SiteDetailContent() {
     return (
       <div className="container" style={{ padding: "60px 0" }}>
         <div className="vault-card" style={{ textAlign: "center", padding: "50px 24px" }}>
-          <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "1.6rem", marginBottom: "10px" }}>Authentication Required</h2>
+          <h2 style={{ marginBottom: "10px" }}>Sign in to open this plate</h2>
           <p style={{ color: "var(--text-secondary)", marginBottom: "20px" }}>
-            You must be signed into Custodian Vault to inspect classified archaeological dossiers.
+            Every view of a site is recorded, so the archive needs to know who is looking.
           </p>
           <button type="button" onClick={login} className="btn btn-primary">
-            {AUTH_MODE === "mock" ? "Sign In (Mock Mode)" : "Sign In with TideCloak"}
+            {AUTH_MODE === "mock" ? "Sign in (simulated)" : "Sign in with TideCloak"}
           </button>
         </div>
       </div>
@@ -120,7 +121,7 @@ function SiteDetailContent() {
   if (loading) {
     return (
       <div className="container" style={{ padding: "60px 0" }}>
-        <LoadingSpinner message={`Opening encrypted vault dossier for ${siteId}...`} />
+        <LoadingSpinner message={`Unfolding the survey plate…`} />
       </div>
     );
   }
@@ -129,7 +130,7 @@ function SiteDetailContent() {
     return (
       <div className="container">
         <Link href="/" className="btn btn-secondary btn-sm" style={{ marginBottom: "20px" }}>
-          ← Back to Sites
+          ← All sites
         </Link>
         <ErrorRetryView message={error || "Site not found."} onRetry={loadSiteData} />
       </div>
@@ -137,207 +138,95 @@ function SiteDetailContent() {
   }
 
   const isSealed = Boolean(site.sealedExact);
+  const photo = SITE_PHOTOS[site.id];
 
   return (
-    <div className="container">
-      {/* Breadcrumb Navigation */}
-      <nav aria-label="Breadcrumb" style={{ marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <Link
-          href="/"
-          className="btn btn-secondary btn-sm"
-          style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
-          Back to Vault Registry
+    <div className="container rise-in">
+      <nav aria-label="Breadcrumb" style={{ marginBottom: "28px" }}>
+        <Link href="/" style={{ color: "var(--ink-2)", textDecoration: "none", fontSize: "0.9rem" }}>
+          ← All sites
         </Link>
-
-        <span style={{ fontSize: "0.74rem", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
-          CLASSIFIED // HERITAGE PROTECTION PROTOCOL
-        </span>
       </nav>
 
-      {/* Main Dossier Header Card */}
-      <div className="vault-card" style={{ marginBottom: "32px", padding: "32px" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "16px",
-            marginBottom: "16px",
-          }}
-        >
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px", flexWrap: "wrap" }}>
-              <span
-                style={{
-                  fontSize: "0.74rem",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                  fontWeight: 500,
-                  color: "var(--ink-3)",
-                }}
-              >
-                {site.era}
-              </span>
-              <span style={{ color: "var(--ink-3)", fontSize: "0.74rem" }}>•</span>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.76rem", color: "var(--ink-3)" }}>
-                VAULT ID: {site.id}
-              </span>
-            </div>
-
-            <h1
+      <header style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "24px", flexWrap: "wrap", marginBottom: "32px" }}>
+        <div style={{ maxWidth: "720px" }}>
+          <span className="eyebrow">{site.era}</span>
+          <h1 style={{ margin: "10px 0 14px" }}>{site.name}</h1>
+          <p style={{ color: "var(--ink-2)", fontSize: "1.05rem", lineHeight: 1.6 }}>{site.summary}</p>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "12px" }}>
+          {photo && (
+            <figure
               style={{
-                fontSize: "clamp(2rem, 4vw, 2.75rem)",
-                fontWeight: 500,
-                letterSpacing: "-0.022em",
-                lineHeight: 1.15,
-                color: "var(--ink)",
-                marginBottom: "12px",
+                margin: 0,
+                width: "260px",
+                background: "var(--surface)",
+                border: "1px solid var(--line)",
+                borderRadius: "4px",
+                padding: "8px 8px 10px",
+                transform: "rotate(2deg)",
+                boxShadow: "0 22px 36px -22px rgba(60,40,20,0.4)",
               }}
             >
-              {site.name}
-            </h1>
-          </div>
-
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={photo.src} alt="" className="paper-photo" style={{ width: "100%", aspectRatio: "4 / 3", objectFit: "cover", display: "block", borderRadius: "2px" }} />
+              <figcaption style={{ fontSize: "0.7rem", color: "var(--ink-3)", marginTop: "6px" }}>
+                Illustrative photo · <a href={photo.href} target="_blank" rel="noreferrer" style={{ color: "var(--ink-3)" }}>{photo.credit}</a>
+              </figcaption>
+            </figure>
+          )}
           <StatusBadge status={isSealed ? "sealed" : "unsealed"} />
+          {isSealed && (
+            <span style={{ fontSize: "0.8rem", color: "var(--ink-3)" }} suppressHydrationWarning>
+              by {site.sealedBy} · {site.sealedAt ? formatDateTime(site.sealedAt) : ""}
+            </span>
+          )}
         </div>
+      </header>
 
-        <p style={{ color: "var(--ink-2)", fontSize: "1.02rem", lineHeight: 1.6, marginBottom: "32px", maxWidth: "840px" }}>
-          {site.summary}
-        </p>
+      <RevealCoordinates site={site} onAuditLogged={handleAuditLogged} />
 
-        {/* Generalized Location & Seal Metadata - clean borderTop without nested box */}
-        <div
-          style={{
-            borderTop: "1px solid var(--line)",
-            paddingTop: "24px",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "24px",
-          }}
-        >
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--ink-3)" }}>
-                Generalized Public Coordinates (50 km Blur Radius)
-              </span>
-            </div>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: "1rem", color: "var(--ink)", fontWeight: 500 }}>
-              Approximate location: {site.blurred.lat.toFixed(1)}, {site.blurred.lng.toFixed(1)} (within {site.blurred.radiusKm} km)
-            </div>
-          </div>
-
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
-              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--ink-3)" }}>
-                Cryptographic Seal State
-              </span>
-            </div>
-            <div style={{ fontSize: "0.88rem", color: "var(--ink-2)" }}>
-              {isSealed ? (
-                <>
-                  Sealed by <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontWeight: 500 }}>{site.sealedBy}</strong> on{" "}
-                  <span suppressHydrationWarning>{site.sealedAt ? formatDateTime(site.sealedAt) : "Confirmed"}</span>
-                </>
-              ) : (
-                <span style={{ color: "var(--ink-3)" }}>
-                  Awaiting field sealing by Dig Lead
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Grid: Reveal and Request Access */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: "24px" }}>
-        {/* Section 1: Reveal exact location (browser decrypt) */}
-        <RevealCoordinates site={site} onAuditLogged={handleAuditLogged} />
-
-        {/* Section 2: Request access */}
-        <RequestAccessSection site={site} onRequestCreated={handleAuditLogged} />
-      </div>
-
-      {/* Section 3: Dig Lead Seal Control (Visible ONLY if hasRealmRole '_tide_sitecoords.selfencrypt') */}
       <SealSiteSection site={site} onSiteSealed={handleSiteSealed} />
 
-      {/* Section 4: Site-Specific Immutable Audit Trail */}
-      <section className="vault-card" style={{ marginTop: "32px", padding: "32px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px", flexWrap: "wrap", gap: "12px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <div
-              style={{
-                width: "28px",
-                height: "28px",
-                borderRadius: "var(--radius-xs)",
-                background: "rgba(255, 255, 255, 0.04)",
-                color: "var(--ink-2)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="16" y1="13" x2="8" y2="13" />
-                <line x1="16" y1="17" x2="8" y2="17" />
-              </svg>
-            </div>
-            <div>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 500, color: "var(--ink)" }}>
-                Cryptographic Governance &amp; Security Trail
-              </h3>
-              <span style={{ fontSize: "0.78rem", color: "var(--ink-3)" }}>
-                Immutable event stream for {site.name}
-              </span>
-            </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "24px", marginTop: "24px" }}>
+        <RequestAccessSection site={site} onRequestCreated={handleAuditLogged} />
+
+        <section className="vault-card">
+          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "14px", gap: "12px" }}>
+            <h3>What happened here</h3>
+            <span style={{ fontSize: "0.8rem", color: "var(--ink-3)" }}>{siteAuditEvents.length} entries</span>
           </div>
 
-          <span style={{ fontSize: "0.76rem", color: "var(--ink-3)", fontFamily: "var(--font-mono)" }}>
-            {siteAuditEvents.length} events logged
-          </span>
-        </div>
-
-        {siteAuditEvents.length === 0 ? (
-          <p style={{ color: "var(--ink-3)", fontSize: "0.88rem", padding: "16px 0" }}>
-            No cryptographic events recorded yet for this site.
-          </p>
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            {siteAuditEvents.map((ev, i) => (
-              <div
-                key={i}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "12px 0",
-                  borderTop: i > 0 ? "1px solid var(--line)" : "none",
-                  fontSize: "0.88rem",
-                  flexWrap: "wrap",
-                  gap: "10px",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-                  <StatusBadge status={ev.action} size="sm" />
-                  <span style={{ fontFamily: "var(--font-mono)", color: "var(--ink-2)", fontSize: "0.82rem" }}>
-                    actor: <strong style={{ color: "var(--ink)", fontWeight: 500 }}>{ev.actor}</strong>
+          {siteAuditEvents.length === 0 ? (
+            <p style={{ color: "var(--ink-3)", fontSize: "0.9rem" }}>Nothing recorded yet.</p>
+          ) : (
+            <ol style={{ listStyle: "none", display: "flex", flexDirection: "column" }}>
+              {siteAuditEvents.map((ev, i) => (
+                <li
+                  key={i}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: "10px 0",
+                    borderTop: i > 0 ? "1px solid var(--line)" : "none",
+                    gap: "10px",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <StatusBadge status={ev.action} size="sm" />
+                    <span style={{ color: "var(--ink)", fontSize: "0.88rem" }}>{ev.actor}</span>
+                  </div>
+                  <span className="mono" style={{ fontSize: "0.76rem", color: "var(--ink-3)" }} suppressHydrationWarning>
+                    {formatDateTime(ev.at)}
                   </span>
-                </div>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.76rem", color: "var(--ink-3)" }} suppressHydrationWarning>
-                  {formatDateTime(ev.at)}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+                </li>
+              ))}
+            </ol>
+          )}
+        </section>
+      </div>
     </div>
   );
 }
@@ -347,7 +236,7 @@ export default function SiteDetailPage() {
     <Suspense
       fallback={
         <div className="container" style={{ padding: "60px 0" }}>
-          <LoadingSpinner message="Opening archaeological vault dossier..." />
+          <LoadingSpinner message="Unfolding the survey plate…" />
         </div>
       }
     >

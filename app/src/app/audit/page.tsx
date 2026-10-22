@@ -50,37 +50,10 @@ export default function AuditPage() {
       <section style={{ marginBottom: "48px" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "24px" }}>
           <div style={{ maxWidth: "720px" }}>
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                fontSize: "0.76rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.06em",
-                color: "var(--ink-3)",
-                fontWeight: 500,
-                marginBottom: "16px",
-              }}
-            >
-              Cryptographic Audit Stream
-            </div>
-
-            <h1
-              style={{
-                fontSize: "clamp(2rem, 4vw, 2.75rem)",
-                fontWeight: 500,
-                letterSpacing: "-0.022em",
-                lineHeight: 1.1,
-                marginBottom: "14px",
-                color: "var(--ink)",
-              }}
-            >
-              Immutable Governance Trail
-            </h1>
-
-            <p style={{ color: "var(--ink-2)", fontSize: "1.02rem", lineHeight: 1.6, maxWidth: "680px" }}>
-              All client-side decryption attempts, access requests, and site sealing actions are permanently recorded. Actor identities are extracted directly from {AUTH_MODE === "mock" ? "simulated session tokens" : "verified TideCloak JWT tokens"}. Ordered newest first.
+            <span className="eyebrow">Audit Log</span>
+            <h1 style={{ margin: "10px 0 14px" }}>Every look is written down.</h1>
+            <p style={{ color: "var(--ink-2)", fontSize: "1.02rem", maxWidth: "56ch" }}>
+              Seals, requests, reveals and refusals, newest first. Names come from the {AUTH_MODE === "mock" ? "simulated session token" : "verified TideCloak token"}, never from the page.
             </p>
           </div>
 
@@ -123,7 +96,7 @@ export default function AuditPage() {
           description="Access to the immutable audit registry requires authenticated credentials."
           action={
             <button type="button" onClick={login} className="btn btn-primary">
-              {AUTH_MODE === "mock" ? "Sign In (Mock Mode)" : "Sign In to View Audit Log"}
+              {AUTH_MODE === "mock" ? "Sign in (simulated)" : "Sign in"}
             </button>
           }
         />
@@ -133,7 +106,7 @@ export default function AuditPage() {
         <ErrorRetryView message={error} onRetry={loadAudit} />
       ) : events.length === 0 ? (
         <EmptyStateView
-          title="No Audit Records Found"
+          title="Nothing recorded yet"
           description="No cryptographic operations or access requests have been logged yet."
         />
       ) : (

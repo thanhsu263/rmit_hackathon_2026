@@ -101,8 +101,8 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
       setLngInput("");
       setSuccessMessage(
         AUTH_MODE === "mock"
-          ? `Successfully sealed site coordinates with E2EE (simulated)! Generalized boundary committed to ${blurred.lat}, ${blurred.lng} (50 km blur radius).`
-          : `Successfully sealed site coordinates with TideCloak E2EE! Generalized boundary committed to ${blurred.lat}, ${blurred.lng} (50 km blur radius).`
+          ? `Only ciphertext was stored (simulated encryption). The public sees a blur around ${blurred.lat}, ${blurred.lng}.`
+          : `Only ciphertext was stored, sealed by TideCloak. The public sees a blur around ${blurred.lat}, ${blurred.lng}.`
       );
 
       onSiteSealed(updatedSite);
@@ -117,55 +117,20 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
     <div
       className="vault-card"
       style={{
-        marginTop: "32px",
-        marginBottom: "32px",
+        marginTop: "24px",
+        borderTop: "3px solid var(--accent)",
       }}
     >
-      {/* Lead Title & Authorization Badge */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: "16px",
-          marginBottom: "16px",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <div
-            style={{
-              width: "32px",
-              height: "32px",
-              borderRadius: "var(--radius-sm)",
-              background: "rgba(255, 255, 255, 0.05)",
-              color: "var(--ink)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-            </svg>
-          </div>
-          <div>
-            <h3 style={{ fontSize: "1.15rem", fontWeight: 500, letterSpacing: "-0.018em", color: "var(--ink)" }}>
-              Dig Lead Vault Sealing Console
-            </h3>
-            <span style={{ fontSize: "0.78rem", color: "var(--ink-3)" }}>
-              Authorized by realm role: <code style={{ fontFamily: "var(--font-mono)", color: "var(--ink-2)" }}>_tide_sitecoords.selfencrypt</code>
-            </span>
-          </div>
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", flexWrap: "wrap", gap: "12px", marginBottom: "8px" }}>
+        <div>
+          <span className="eyebrow">Dig lead only</span>
+          <h3 style={{ fontSize: "1.5rem", marginTop: "6px" }}>Seal the true point</h3>
         </div>
-
-        <span className="badge badge-unsealed">
-          Field Sealing Authorized
-        </span>
+        <span className="badge badge-unsealed">You can seal</span>
       </div>
 
-      <p style={{ color: "var(--ink-2)", fontSize: "0.88rem", lineHeight: 1.55, marginBottom: "20px" }}>
-        Enter true GPS coordinates to commit this archaeological discovery. Coordinates are encrypted locally in your browser {AUTH_MODE === "mock" ? "with simulated E2EE" : "with TideCloak"}. The server only receives ciphertext, and a generalized 50 km boundary is derived automatically.
+      <p style={{ color: "var(--ink-2)", fontSize: "0.95rem", marginBottom: "20px", maxWidth: "60ch" }}>
+        Encrypted {AUTH_MODE === "mock" ? "(simulated) " : ""}before it leaves this page. The server keeps ciphertext and a 50 km blur.
       </p>
 
       {/* Success banner */}
@@ -176,7 +141,7 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
           </svg>
           <div>
             <strong style={{ display: "block", color: "var(--ok)", fontWeight: 500, marginBottom: "2px" }}>
-              Vault Sealed Successfully
+              Sealed.
             </strong>
             <p style={{ fontSize: "0.86rem", color: "var(--ink)" }}>{successMessage}</p>
           </div>
@@ -195,7 +160,7 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px", marginBottom: "16px" }}>
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label htmlFor="seal-lat" className="form-label">
-              Exact Latitude (°N / °S)
+              Latitude
             </label>
             <input
               type="number"
@@ -213,7 +178,7 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
 
           <div className="form-group" style={{ marginBottom: 0 }}>
             <label htmlFor="seal-lng" className="form-label">
-              Exact Longitude (°E / °W)
+              Longitude
             </label>
             <input
               type="number"
@@ -246,23 +211,20 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
           >
             <div>
               <span style={{ fontSize: "0.72rem", color: "var(--ink-3)", textTransform: "uppercase", letterSpacing: "0.06em", display: "block" }}>
-                Auto-Derived Generalized Boundary (Contract Formula)
+                What the public will see
               </span>
               <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.92rem", color: "var(--ink)", fontWeight: 500 }}>
                 Approximate: {previewBlurredLat.toFixed(1)}, {previewBlurredLng.toFixed(1)} (within 50 km)
               </span>
             </div>
 
-            <span className="badge badge-info" style={{ fontSize: "0.7rem" }}>
-              Formula: Math.round(deg * 2) / 2
-            </span>
           </div>
         )}
 
         {/* Quick Demo Fill Buttons & Submit */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px", marginTop: "12px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-            <span style={{ fontSize: "0.78rem", color: "var(--ink-3)" }}>Demo Quick-Fill:</span>
+            <span style={{ fontSize: "0.78rem", color: "var(--ink-3)" }}>Quick fill:</span>
             <button
               type="button"
               onClick={() => handleFillDemoCoords(36.4128, 25.4317)}
@@ -285,7 +247,7 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
             type="submit"
             id="submit-seal-btn"
             disabled={isSubmitting || !latInput || !lngInput}
-            className="btn btn-primary"
+            className="btn btn-emerald"
             aria-label="Encrypt and seal site coordinates"
           >
             {isSubmitting ? (
@@ -296,11 +258,11 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
                     width: "14px",
                     height: "14px",
                     borderRadius: "50%",
-                    border: "2px solid #000",
+                    border: "2px solid currentColor",
                     borderTopColor: "transparent",
                   }}
                 />
-                Encrypting &amp; Sealing...
+                Sealing…
               </>
             ) : (
               <>
@@ -308,7 +270,7 @@ export function SealSiteSection({ site, onSiteSealed }: SealSiteSectionProps) {
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                 </svg>
-                Encrypt &amp; Seal Coordinates
+                Encrypt and seal coordinates
               </>
             )}
           </button>
