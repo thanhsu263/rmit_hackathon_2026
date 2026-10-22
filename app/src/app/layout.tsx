@@ -18,19 +18,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }} suppressHydrationWarning>
+      <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column", position: "relative" }} suppressHydrationWarning>
+        {/* Thematic Archaeological Cartography & Survey Grid Background Layers */}
+        <div className="bg-archaeo-ambient" aria-hidden="true" />
+        <div className="bg-archaeo-grid" aria-hidden="true" />
         <SimulationBanner />
         <TideCloakProvider>
           <Suspense fallback={<div style={{ height: "108px", background: "#07080B" }} />}>
             <Header />
           </Suspense>
-          <main style={{ flex: 1, padding: "36px 0 68px" }}>
+          <main style={{ flex: 1, padding: "36px 0 68px", position: "relative", zIndex: 1 }}>
             <Suspense fallback={<div className="container" style={{ padding: "48px 0" }}>Loading vault environment...</div>}>
               {children}
             </Suspense>
           </main>
           <footer
             style={{
+              position: "relative",
+              zIndex: 1,
               borderTop: "1px solid var(--line)",
               padding: "32px 0",
               color: "var(--ink-3)",
