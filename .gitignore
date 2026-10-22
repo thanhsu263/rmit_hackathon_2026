@@ -35,3 +35,7 @@ Thumbs.db
 
 # Custodian Vault mock-mode state (simulated roles, approvals, key)
 .mock-data/
+
+# Third-party agent skills (kept local, not part of the submission)
+.agents/
+skills-lock.json
