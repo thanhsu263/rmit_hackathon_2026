@@ -1,0 +1,75 @@
+1
+00:00:00,400 --> 00:00:05,500
+Archaeological sites get looted once
+their exact location is known.
+
+2
+00:00:05,900 --> 00:00:11,500
+Today one administrator can read it:
+one leak exposes every site.
+
+3
+00:00:12,200 --> 00:00:19,200
+The dig lead seals the true coordinates:
+only ciphertext is kept, plus a 50 km blur.
+
+4
+00:00:19,800 --> 00:00:25,600
+Custodian Vault: no single administrator
+can open a site alone.
+
+5
+00:00:26,400 --> 00:00:31,800
+A researcher sees only the blur.
+Revealing the real position is denied.
+
+6
+00:00:32,300 --> 00:00:37,800
+So the researcher files a request
+with a reason.
+
+7
+00:00:38,500 --> 00:00:46,500
+The community custodian approves:
+1 of 2 approvals. One steward is not enough.
+
+8
+00:00:47,000 --> 00:00:53,500
+The researcher is still locked out.
+
+9
+00:00:54,300 --> 00:01:05,500
+The heritage authority, a second
+independent steward, approves.
+
+10
+00:01:06,000 --> 00:01:15,800
+2 of 3 agree: the role is granted
+and the exact coordinates appear.
+
+11
+00:01:16,500 --> 00:01:33,500
+Revoking access also takes 2 of 3
+approvals, never one person alone.
+
+12
+00:01:34,500 --> 00:01:41,500
+Once revoked, the researcher is
+locked out again.
+
+13
+00:01:42,500 --> 00:01:47,500
+Every step is in the audit trail.
+
+14
+00:01:47,800 --> 00:01:50,400
+As Plan C allows, this demo is simulated.
+
+15
+00:01:50,600 --> 00:01:55,200
+Where TideCloak fits: sign-in, roles,
+2-of-3 approvals, browser encryption.
+
+16
+00:01:55,400 --> 00:01:58,000
+With TideCloak live, nobody holds a key.
