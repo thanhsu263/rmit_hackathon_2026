@@ -83,7 +83,7 @@ export function AuditTable({ events }: AuditTableProps) {
             <input
               type="text"
               className="form-input"
-              placeholder="Search audit trail by actor, site, or action..."
+              placeholder="Search by person, site or action"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{ paddingLeft: "38px" }}
@@ -105,8 +105,8 @@ export function AuditTable({ events }: AuditTableProps) {
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-          <label htmlFor="audit-filter-action" style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 600 }}>
-            Filter Action:
+          <label htmlFor="audit-filter-action" style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 500 }}>
+            Show
           </label>
           <select
             id="audit-filter-action"
@@ -115,11 +115,11 @@ export function AuditTable({ events }: AuditTableProps) {
             onChange={(e) => setFilterAction(e.target.value)}
             style={{ padding: "8px 12px", minWidth: "180px" }}
           >
-            <option value="ALL">All Events ({events.length})</option>
-            <option value="SITE_SEALED">Site Sealed ({events.filter(e => e.action === "SITE_SEALED").length})</option>
-            <option value="ACCESS_REQUESTED">Access Requested ({events.filter(e => e.action === "ACCESS_REQUESTED").length})</option>
-            <option value="DECRYPT_SUCCEEDED">Decryption Succeeded ({events.filter(e => e.action === "DECRYPT_SUCCEEDED").length})</option>
-            <option value="DECRYPT_DENIED">Decryption Denied ({events.filter(e => e.action === "DECRYPT_DENIED").length})</option>
+            <option value="ALL">All events ({events.length})</option>
+            <option value="SITE_SEALED">Sealed ({events.filter(e => e.action === "SITE_SEALED").length})</option>
+            <option value="ACCESS_REQUESTED">Requested ({events.filter(e => e.action === "ACCESS_REQUESTED").length})</option>
+            <option value="DECRYPT_SUCCEEDED">Revealed ({events.filter(e => e.action === "DECRYPT_SUCCEEDED").length})</option>
+            <option value="DECRYPT_DENIED">Denied ({events.filter(e => e.action === "DECRYPT_DENIED").length})</option>
           </select>
         </div>
       </div>
@@ -129,11 +129,11 @@ export function AuditTable({ events }: AuditTableProps) {
         <table className="audit-table" aria-label="Cryptographic Audit Event Registry">
           <thead>
             <tr>
-              <th scope="col">Timestamp</th>
-              <th scope="col">{AUTH_MODE === "mock" ? "Actor (From Token)" : "Actor (From JWT)"}</th>
-              <th scope="col">Site Dossier</th>
-              <th scope="col">Cryptographic Action</th>
-              <th scope="col">Security Governance Context</th>
+              <th scope="col">When</th>
+              <th scope="col">Who</th>
+              <th scope="col">Site</th>
+              <th scope="col">Action</th>
+              <th scope="col">What it means</th>
             </tr>
           </thead>
           <tbody>

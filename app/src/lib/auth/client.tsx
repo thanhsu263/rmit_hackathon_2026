@@ -127,7 +127,7 @@ export function mockSignIn(username: string, redirectTo = '/') {
 export function SimulationBanner() {
   if (AUTH_MODE !== 'mock') return null
   return (
-    <div role="status" style={{ background: '#7a2e00', color: '#fff', padding: '8px 16px', fontSize: 14, lineHeight: 1.4 }}>
+    <div role="status" style={{ background: '#8E2B22', color: '#FFF6EE', padding: '8px 24px', fontSize: 13.5, lineHeight: 1.45, textAlign: 'center' }}>
       <strong>SIMULATION MODE.</strong> Tide&apos;s licence service was unavailable during the hackathon, so sign-in,
       the 2-of-3 steward approvals and encryption are simulated by this app&apos;s server. In live mode TideCloak
       enforces them and no server can decrypt. <a href="/mock/approvals" style={{ color: '#ffd9c2' }}>Simulated approvals</a>

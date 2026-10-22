@@ -20,7 +20,7 @@ export function StatusBadge({ status, size = "md" }: StatusBadgeProps) {
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
           <path d="M7 11V7a5 5 0 0 1 10 0v4" />
         </svg>
-        Sealed Vault
+        Sealed
       </span>
     );
   }
@@ -33,7 +33,7 @@ export function StatusBadge({ status, size = "md" }: StatusBadgeProps) {
           <line x1="12" y1="8" x2="12" y2="12" />
           <line x1="12" y1="16" x2="12.01" y2="16" />
         </svg>
-        Not Sealed Yet
+        Not sealed
       </span>
     );
   }
@@ -47,7 +47,7 @@ export function StatusBadge({ status, size = "md" }: StatusBadgeProps) {
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
-          Site Sealed
+          Sealed
         </span>
       );
     case "ACCESS_REQUESTED":
@@ -59,7 +59,7 @@ export function StatusBadge({ status, size = "md" }: StatusBadgeProps) {
             <line x1="16" y1="13" x2="8" y2="13" />
             <line x1="16" y1="17" x2="8" y2="17" />
           </svg>
-          Access Requested
+          Requested
         </span>
       );
     case "DECRYPT_SUCCEEDED":
@@ -68,7 +68,7 @@ export function StatusBadge({ status, size = "md" }: StatusBadgeProps) {
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
             <polyline points="20 6 9 17 4 12" />
           </svg>
-          Decrypted (2-of-3 Quorum)
+          Revealed
         </span>
       );
     case "DECRYPT_DENIED":
@@ -78,7 +78,7 @@ export function StatusBadge({ status, size = "md" }: StatusBadgeProps) {
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
-          Decryption Denied
+          Denied
         </span>
       );
     default:

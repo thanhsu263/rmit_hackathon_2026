@@ -4,201 +4,67 @@ import React from "react";
 import Link from "next/link";
 import { Site } from "./types";
 import { StatusBadge } from "./StatusBadge";
+import { SurveyPlate } from "./SurveyPlate";
+import { SITE_PHOTOS } from "./siteImages";
 
 interface SiteCardProps {
   site: Site;
+  index?: number;
 }
 
-export function SiteCard({ site }: SiteCardProps) {
+export function SiteCard({ site, index = 0 }: SiteCardProps) {
   const isSealed = Boolean(site.sealedExact);
+  const photo = SITE_PHOTOS[site.id];
 
   return (
-    <article
-      className="vault-card"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        padding: "26px",
-      }}
-    >
-      {/* Top Era & Sealed Status Bar */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "12px",
-          marginBottom: "16px",
-        }}
+    <Link href={`/sites/${site.id}`} style={{ textDecoration: "none", color: "inherit", display: "block", height: "100%" }} aria-label={`Open ${site.name}`}>
+      <article
+        className="vault-card site-plate rise-in"
+        style={{ display: "flex", flexDirection: "column", height: "100%", padding: "14px", animationDelay: `${index * 80}ms` }}
       >
-        <span
-          style={{
-            fontSize: "0.74rem",
-            textTransform: "uppercase",
-            letterSpacing: "0.06em",
-            fontWeight: 500,
-            color: "var(--ink-3)",
-          }}
-        >
-          {site.era}
-        </span>
-        <StatusBadge status={isSealed ? "sealed" : "unsealed"} />
-      </div>
-
-      {/* Site Name - Inter font, weight 500 */}
-      <h3
-        style={{
-          fontFamily: "var(--font-sans)",
-          fontSize: "1.25rem",
-          fontWeight: 500,
-          color: "var(--ink)",
-          marginBottom: "10px",
-          lineHeight: 1.25,
-          letterSpacing: "-0.015em",
-        }}
-      >
-        {site.name}
-      </h3>
-
-      {/* Summary */}
-      <p
-        style={{
-          color: "var(--ink-2)",
-          fontSize: "0.9rem",
-          lineHeight: 1.55,
-          marginBottom: "24px",
-          flexGrow: 1,
-        }}
-      >
-        {site.summary}
-      </p>
-
-      {/* Approximate Location Notice with 50km Blur Radar Signature */}
-      <div
-        style={{
-          borderTop: "1px solid var(--line)",
-          paddingTop: "16px",
-          marginTop: "auto",
-          marginBottom: "20px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "10px",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "0.72rem",
-              color: "var(--ink-3)",
-              textTransform: "uppercase",
-              letterSpacing: "0.05em",
-            }}
-          >
-            50 km Blur Zone
-          </span>
-
-          <span
-            style={{
-              fontSize: "0.72rem",
-              fontFamily: "var(--font-mono)",
-              color: isSealed ? "var(--ok)" : "var(--ink-3)",
-            }}
-          >
-            {isSealed ? "E2EE Sealed" : "Unsealed Draft"}
-          </span>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-          }}
-        >
-          {/* Nét ký riêng: Vòng tròn mờ 50 km SVG nét đứt */}
-          <div
-            style={{
-              width: "42px",
-              height: "42px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              position: "relative",
-              flexShrink: 0,
-            }}
-            aria-hidden="true"
-          >
-            <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
-              <circle
-                cx="21"
-                cy="21"
-                r="18"
-                stroke="var(--ink-3)"
-                strokeWidth="1.2"
-                strokeDasharray="3 3"
-                opacity="0.8"
-              />
-              <circle
-                cx="21"
-                cy="21"
-                r="9"
-                stroke="var(--ink-3)"
-                strokeWidth="0.8"
-                opacity="0.3"
-              />
-              {/* Toạ độ thật chưa mở khoá: điểm tâm mờ */}
-              <circle
-                cx="21"
-                cy="21"
-                r="2"
-                fill="var(--ink-3)"
-                opacity="0.5"
-              />
-            </svg>
-          </div>
-
-          {/* Mandatory contract copy: Approximate location: {lat}, {lng} (within 50 km) */}
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "0.82rem",
-              color: "var(--ink)",
-              lineHeight: 1.45,
-            }}
-          >
-            Approximate location: {site.blurred.lat.toFixed(1)}, {site.blurred.lng.toFixed(1)} (within {site.blurred.radiusKm} km)
+        <div style={{ position: "relative", borderRadius: "6px", overflow: "hidden" }}>
+          {photo ? (
+            <div style={{ position: "relative", aspectRatio: "4 / 3" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={photo.src} alt="" className="paper-photo" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <svg viewBox="0 0 400 300" aria-hidden="true" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+                <circle cx="200" cy="150" r="92" fill="#F2ECE0" fillOpacity="0.16" stroke="#FBF8F1" strokeWidth="1.6" strokeDasharray="6 6" />
+              </svg>
+            </div>
+          ) : (
+            <SurveyPlate siteId={site.id} blurred={site.blurred} compact />
+          )}
+          <div style={{ position: "absolute", top: "10px", left: "10px", background: "rgba(251, 248, 241, 0.92)", borderRadius: "4px", padding: "2px 2px" }}>
+            <StatusBadge status={isSealed ? "sealed" : "unsealed"} />
           </div>
         </div>
-      </div>
 
-      {/* Card Action Link */}
-      <Link
-        href={`/sites/${site.id}`}
-        className="btn btn-secondary"
-        style={{
-          width: "100%",
-          justifyContent: "space-between",
-          padding: "9px 14px",
-        }}
-      >
-        <span>Inspect Site Vault</span>
-        <svg
-          width="15"
-          height="15"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <line x1="5" y1="12" x2="19" y2="12" />
-          <polyline points="12 5 19 12 12 19" />
-        </svg>
-      </Link>
-    </article>
+        <div style={{ padding: "18px 10px 8px", display: "flex", flexDirection: "column", flexGrow: 1 }}>
+          <span className="eyebrow">{site.era}</span>
+          <h3 style={{ fontSize: "1.55rem", margin: "6px 0 8px" }}>{site.name}</h3>
+          <p
+            style={{
+              color: "var(--ink-2)",
+              fontSize: "0.92rem",
+              lineHeight: 1.55,
+              marginBottom: "18px",
+              flexGrow: 1,
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {site.summary}
+          </p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", borderTop: "1px solid var(--line)", paddingTop: "12px" }}>
+            <span className="mono" style={{ fontSize: "0.8rem", color: "var(--ink-2)" }}>
+              Approximate location: {site.blurred.lat.toFixed(1)}, {site.blurred.lng.toFixed(1)} (within {site.blurred.radiusKm} km)
+            </span>
+            <span aria-hidden="true" style={{ color: "var(--accent-ink)", fontSize: "1.1rem" }}>→</span>
+          </div>
+        </div>
+      </article>
+    </Link>
   );
 }

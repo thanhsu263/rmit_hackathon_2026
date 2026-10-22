@@ -28,7 +28,7 @@ export function Header() {
 
   const handleResetData = () => {
     resetMockData();
-    setResetMessage("Mock data reset!");
+    setResetMessage("Reset");
     setTimeout(() => {
       setResetMessage(null);
       window.location.reload();
@@ -37,142 +37,69 @@ export function Header() {
 
   const hasEncrypt = hasRealmRole("_tide_sitecoords.selfencrypt");
   const hasDecrypt = hasRealmRole("_tide_sitecoords.selfdecrypt");
+  const access = hasDecrypt ? "Can read exact" : hasEncrypt ? "Can seal" : "Sees 50 km blur";
 
   return (
     <header className="header-wrapper">
-      {/* Hackathon Demo Governance Bar */}
-      <div className="demo-bar">
-        <div className="container demo-bar-inner">
-          <div className="demo-role-selector">
-            <span className="demo-label">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-              {AUTH_MODE === "mock" ? "Demo Profile (Mock):" : "TideCloak Profile:"}
-            </span>
-            <select
-              id="demo-profile-select"
-              className="demo-select"
-              value={mounted ? currentProfileKey : "researcher"}
-              onChange={(e) => switchUser(e.target.value)}
-              aria-label="Switch active demo profile"
-              suppressHydrationWarning
-            >
-              <option value="researcher">researcher (Field researcher - decrypt only after 2-of-3 approval)</option>
-              <option value="diglead">diglead (Lead Archaeologist - Can Seal)</option>
-              <option value="custodian">custodian (Community Steward 1 of 3)</option>
-              <option value="heritage">heritage (Heritage Authority Steward 2 of 3)</option>
-              <option value="unauthenticated">Unauthenticated Guest (Simulate 401)</option>
-            </select>
-          </div>
-
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-            {mounted && authenticated && (
-              <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-                {hasEncrypt && (
-                  <span
-                    className="badge badge-info"
-                    style={{ fontSize: "0.72rem", padding: "3px 8px" }}
-                    title="User token holds _tide_sitecoords.selfencrypt"
-                  >
-                    🔑 role: selfencrypt
-                  </span>
-                )}
-                {hasDecrypt && (
-                  <span
-                    className="badge badge-sealed"
-                    style={{ fontSize: "0.72rem", padding: "3px 8px" }}
-                    title="User token holds _tide_sitecoords.selfdecrypt (2 of 3 stewards authorized)"
-                  >
-                    🔓 role: selfdecrypt
-                  </span>
-                )}
-                {!hasEncrypt && !hasDecrypt && (
-                  <span
-                    className="badge"
-                    style={{
-                      fontSize: "0.72rem",
-                      padding: "3px 8px",
-                      background: "rgba(255,255,255,0.06)",
-                      color: "var(--text-secondary)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                    }}
-                  >
-                    👁️ generalized 50km view
-                  </span>
-                )}
-              </div>
-            )}
-
-            <button
-              type="button"
-              onClick={handleResetData}
-              className="btn btn-secondary btn-sm"
-              style={{ fontSize: "0.75rem", padding: "4px 10px" }}
-              title="Reset mock sites and audit log to initial state"
-            >
-              {resetMessage ? (
-                <span style={{ color: "var(--emerald-light)" }}>✓ {resetMessage}</span>
-              ) : (
-                "Reset Demo Data"
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Navbar */}
       <div className="container">
         <nav className="nav-bar" aria-label="Main Navigation">
           <Link href="/" className="nav-brand">
-            <div className="nav-logo-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                <circle cx="12" cy="16" r="1.5" />
+            <div className="nav-logo-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+                <circle cx="12" cy="12" r="8.5" strokeDasharray="2.4 2.4" />
+                <circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none" />
               </svg>
             </div>
             <div>
               <span className="nav-brand-text">Custodian Vault</span>
-              <span className="nav-brand-sub">
-                {AUTH_MODE === "mock"
-                  ? "Simulated 2-of-3 E2EE (Mock Mode)"
-                  : "TideCloak 2-of-3 E2EE Protected"}
-              </span>
+              <span className="nav-brand-sub">Heritage locations, held in common</span>
             </div>
           </Link>
 
           <div className="nav-links">
-            <Link
-              href="/"
-              className={`nav-link ${pathname === "/" ? "active" : ""}`}
-            >
-              Archaeological Sites
+            <Link href="/" className={`nav-link ${pathname === "/" ? "active" : ""}`}>
+              Sites
             </Link>
-            <Link
-              href="/audit"
-              className={`nav-link ${pathname === "/audit" ? "active" : ""}`}
-            >
-              Audit Trail
+            <Link href="/audit" className={`nav-link ${pathname === "/audit" ? "active" : ""}`}>
+              Audit Log
             </Link>
             {AUTH_MODE === "mock" && (
               <Link
                 href="/mock/approvals"
                 className={`nav-link ${pathname === "/mock/approvals" ? "active" : ""}`}
               >
-                Simulated Approvals
+                Simulated approvals
               </Link>
             )}
           </div>
 
           <div className="nav-user-panel">
+            <label className="demo-role-selector" htmlFor="demo-profile-select">
+              <span className="demo-label">{AUTH_MODE === "mock" ? "Acting as" : "Profile"}</span>
+              <select
+                id="demo-profile-select"
+                className="demo-select"
+                value={mounted ? currentProfileKey : "researcher"}
+                onChange={(e) => switchUser(e.target.value)}
+                aria-label="Switch active demo profile"
+                suppressHydrationWarning
+              >
+                <option value="researcher">Researcher</option>
+                <option value="diglead">Dig lead</option>
+                <option value="custodian">Community custodian</option>
+                <option value="heritage">Heritage authority</option>
+                <option value="unauthenticated">Signed out</option>
+              </select>
+            </label>
+
             {!mounted ? (
               <div style={{ height: "32px", minWidth: "70px" }} />
             ) : authenticated && user ? (
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <>
                 <div className="user-badge" title={user.roleDescription}>
-                  <div className="user-avatar-dot" />
+                  <div className="user-avatar-dot" style={{ background: hasDecrypt ? "var(--accent)" : "var(--ok)" }} />
                   <span className="user-username">{user.username}</span>
+                  <span className="user-access" style={{ color: "var(--ink-3)", fontSize: "0.78rem" }}>· {access}</span>
                 </div>
                 <button
                   type="button"
@@ -180,9 +107,9 @@ export function Header() {
                   className="btn btn-secondary btn-sm"
                   aria-label="Sign out of Custodian Vault"
                 >
-                  Sign Out
+                  Sign out
                 </button>
-              </div>
+              </>
             ) : (
               <button
                 type="button"
@@ -190,7 +117,19 @@ export function Header() {
                 className="btn btn-primary btn-sm"
                 aria-label="Sign into Custodian Vault"
               >
-                {AUTH_MODE === "mock" ? "Sign In (Mock)" : "Sign In"}
+                Sign in
+              </button>
+            )}
+
+            {AUTH_MODE === "mock" && (
+              <button
+                type="button"
+                onClick={handleResetData}
+                className="btn btn-sm"
+                style={{ background: "transparent", color: "var(--ink-3)", padding: "6px 8px" }}
+                title="Reset mock sites and audit log to initial state"
+              >
+                {resetMessage ? `✓ ${resetMessage}` : "Reset demo"}
               </button>
             )}
           </div>
