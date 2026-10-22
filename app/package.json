@@ -9,10 +9,10 @@
     "init": "bash init/tcinit.sh"
   },
   "dependencies": {
+    "@tidecloak/nextjs": "^0.14.40",
     "next": "16.4.2",
     "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "@tidecloak/nextjs": "^0.13.33"
+    "react-dom": "19.3.0"
   },
   "devDependencies": {
     "@types/node": "^20",
