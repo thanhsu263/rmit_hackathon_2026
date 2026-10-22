@@ -12,18 +12,22 @@ import path from "node:path";
 
 const CONFIG_FILE = path.join(process.cwd(), "tidecloak.json");
 
-let cached: object | null | undefined;
+// Only a successful load is cached. A failure is deliberately not remembered, so dropping
+// the file in beside a running server starts working on the next request instead of
+// answering 401 until someone restarts it.
+let cached: object | null = null;
 let warned = false;
 
 export async function loadTideCloakConfig(): Promise<object | null> {
-  if (cached !== undefined) return cached;
+  if (cached) return cached;
 
   try {
     const raw = await readFile(CONFIG_FILE, "utf8");
     cached = JSON.parse(raw) as object;
+    warned = false;
+    return cached;
   } catch (err) {
-    const code = (err as NodeJS.ErrnoException)?.code;
-    if (code !== "ENOENT" || !warned) {
+    if (!warned) {
       console.warn(
         `[tidecloak] No usable adapter config at ${CONFIG_FILE}. ` +
           "Every API route will answer 401 until member A provides it. " +
@@ -31,8 +35,6 @@ export async function loadTideCloakConfig(): Promise<object | null> {
       );
       warned = true;
     }
-    cached = null;
+    return null;
   }
-
-  return cached;
 }
